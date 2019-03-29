@@ -1,0 +1,15 @@
+:selenium_ip: 'docker_host_ip'  # default selenium ip. please set ip or 'docker_host_ip'. ip route | awk 'NR==1 {print $3}'
+:selenium_port: <%= ENV['SELENIUM_PORT'] || 4444 %>
+:browser: :chrome
+:sp_device_name: :iphone
+:tablet_device_name: :ipad
+:device_name_on_chrome:
+  :iphone: 'iPhone X'
+  :android: 'Galaxy S5'
+  :ipad: 'iPad'
+:user_agent: 'QA-E2E (X11; Linux x86_64)'
+:js_error_check: false
+:js_error_collector_path: '/var/lib/selenium/ChromeJSErrorCollector-master/extension' # https://github.com/dharrya/ChromeJSErrorCollector
+:driver_read_timeout: 120
+:driver_open_timeout: 90
+:find_element_timeout: 60

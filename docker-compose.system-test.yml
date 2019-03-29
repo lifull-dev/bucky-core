@@ -1,0 +1,21 @@
+version: '3'
+services:
+  bucky-core:
+    container_name: bucky-core
+    build:
+      context: .
+      dockerfile: Dockerfile.system-test
+    volumes:
+      - .:/bucky-core
+    tty: true
+  chrome:
+    container_name: bucky-chrome
+    image: selenium/standalone-chrome-debug:3.11.0
+    ports:
+      - '4444:4444'
+      # For local debug
+      - '5901:5900'
+  web:
+    container_name: bucky.net
+    build:
+      context: docker/nginx

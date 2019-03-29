@@ -1,0 +1,20 @@
+desc: teardown each pc e2e suits
+device: pc
+service: service_a
+priority: high
+test_category: e2e
+teardown_each:
+    procs:
+      - proc: open test_page.html
+        exec:
+          operate: go
+          url: http://bucky.net/test_page.html
+cases:
+  - case_name: teardown_each_pc_e2e_1
+    func: teardown each pc e2e 1 func
+    desc: teardown each pc e2e 1 func
+    procs:
+      - proc: open page
+        exec:
+          operate: go
+          url: http://bucky.net

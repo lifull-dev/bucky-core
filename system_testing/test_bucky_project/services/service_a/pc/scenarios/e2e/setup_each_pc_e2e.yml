@@ -1,0 +1,20 @@
+desc: setup each pc e2e suits
+device: pc
+service: service_a
+priority: high
+test_category: e2e
+setup_each:
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+cases:
+  - case_name: setup_each_pc_e2e_1
+    func: setup each pc e2e 1 func
+    desc: setup each pc e2e 1 func
+    procs:
+      - proc: check title
+        exec:
+          verify: assert_title
+          expect: Test Index

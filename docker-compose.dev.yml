@@ -1,0 +1,18 @@
+version: '3'
+services:
+  bucky-core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bucky-core
+    volumes:
+      - .:/bucky-core
+      - .sample:/app
+    tty: true
+  chrome:
+    image: selenium/standalone-chrome-debug:3.11.0
+    container_name: chrome
+    ports:
+      - '4444:4444'
+      - '5901:5900'
+    shm_size: 1G

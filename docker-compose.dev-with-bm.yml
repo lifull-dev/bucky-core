@@ -1,0 +1,28 @@
+version: '3'
+services:
+  bucky-core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bucky-core
+    volumes:
+      - .:/bucky-core
+      - .sample:/app
+    tty: true
+    environment:
+      - BUCKY_DB_USERNAME=root
+      - BUCKY_DB_PASSWORD=password
+      - BUCKY_DB_HOSTNAME=bm-mysql
+      - BUCKY_DB_NAME=bucky_development
+    networks:
+      - bucky-management_default
+  chrome:
+    image: selenium/standalone-chrome-debug:3.11.0
+    container_name: chrome
+    ports:
+      - '4444:4444'
+      - '5901:5900'
+    shm_size: 1G
+networks:
+ bucky-management_default:
+   external: true

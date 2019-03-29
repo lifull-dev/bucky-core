@@ -1,0 +1,211 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'rubygems'
+require 'optparse'
+require 'color_echo'
+require 'fileutils'
+require_relative '../lib/bucky/version'
+
+# Color Settings
+CE.fg(:cyan)
+
+NEW_COMMAND = %w[new].freeze
+MAKE_SERVICE_COMMAND = %w[make service].freeze
+MAKE_PAGE_COMMAND = %w[make page].freeze
+RUN_COMMAND = %w[run].freeze
+RERUN_COMMAND = %w[rerun].freeze
+LINT_COMMAND = %w[lint].freeze
+
+# ===================================
+# Parse options =====================
+# ===================================
+opts = OptionParser.new
+opts.banner = 'Bucky: A test framework that supports Life Cycle of System Testing.'
+opts.define_head 'Usage: bucky [task]'
+opts.separator ''
+opts.separator 'Examples:'
+opts.separator "  bucky #{RUN_COMMAND.join(' ')} --test_category e2e --suite_name test_suite --case_name test_case_1"
+opts.separator "  bucky #{RUN_COMMAND.join(' ')} -t e2e -s 1 -c 1"
+opts.separator "  bucky #{RUN_COMMAND.join(' ')} --test_category linkstatus --re_test_count 3"
+opts.separator "  bucky #{RUN_COMMAND.join(' ')} --test_category e2e --suite_name test_suite --case_name test_case_1 --device sp --priority high --re_test_count 3"
+opts.separator ''
+opts.separator 'For more information see https://github.com/lifull-dev/bucky-core'
+opts.separator ''
+opts.separator 'Options:'
+
+opts.on_tail('-h', '-?', '--help', 'Show this message') do
+  puts opts
+  exit
+end
+
+opts.on_tail('-v', '--version', 'Show version') do
+  puts "BuckyCore: #{Bucky::Version::VERSION}"
+  exit
+end
+
+test_cond = {}
+# Save command and option
+test_cond[:command_and_option] = 'bucky ' + ARGV.join(' ')
+opts.on('-t', '--test_category TEST_CATEGORY', 'e.g. --test_category e2e, -t e2e') do |v|
+  test_cond[:test_category] = v
+end
+opts.on('-s', '--suite_name SUITE_NAME') do |v|
+  test_cond[:suite_name] = v
+end
+# opts.on('-c', '--case_id CASE_ID') do |v|
+#  test_cond[:case_id] = v
+# end
+opts.on('-S', '--service SERVICE') do |v|
+  test_cond[:service] = v
+end
+opts.on('-D', '--device DEVICE') do |v|
+  test_cond[:device] = v
+end
+opts.on('-p', '--priority PRIORITY') do |v|
+  test_cond[:priority] = v
+end
+opts.on('-d', 'Not Insert TestReport') do |_|
+  $debug = true
+end
+
+# TODO: Add error handling, if the argument of '-r' is not greater than 0
+opts.on('-r', '--re_test_count RE_TEST_COUNT') do |v|
+  test_cond[:re_test_count] = v
+end
+opts.on('-c', '--case CASE_NAME') do |v|
+  test_cond[:case] = v
+end
+opts.on('-j', '--job_id JOB_ID') do |v|
+  test_cond[:job] = v
+end
+opts.on('-l', '--label LABEL_NAME') do |v|
+  test_cond[:label] = v
+end
+opts.on('-m', '--link_check_max_times') do |v|
+  test_cond[:link_check_max_times] = v.to_i
+end
+
+lint_cond = {}
+opts.on('-C', '--category CATEGORY_NAME') do |v|
+  lint_cond[:lint_category] = v
+end
+
+opts.parse!
+
+# ===================================
+# Select by command =================
+# ===================================
+
+# Output error message and exit
+# @param [String] msg error message
+def error_and_exit(msg = nil)
+  CE.fg(:yellow)
+  puts 'Invalid command error.'
+  CE.fg(:red)
+  puts "  [Error] #{msg}" if msg
+  CE.fg(:yellow)
+  puts "  your command : bucky #{ARGV.join(' ')}"
+  puts '  Please input some commands.'
+  puts "  e.g. bucky #{NEW_COMMAND.join(' ')}"
+  puts "       bucky #{RUN_COMMAND.join(' ')}"
+  puts "       bucky #{MAKE_SERVICE_COMMAND.join(' ')}"
+  puts "       bucky #{MAKE_PAGE_COMMAND.join(' ')}"
+  puts "       bucky #{RERUN_COMMAND.join(' ')}"
+  puts "       bucky #{LINT_COMMAND.join(' ')}"
+  exit
+end
+
+def bucky_home?
+  File.exist?('.bucky_home')
+end
+
+current_dir = Dir.pwd
+gem_script_dir = __dir__
+
+if ARGV == RUN_COMMAND
+  error_and_exit('Not bucky project dirctory here.') unless bucky_home?
+
+  $bucky_home_dir = Dir.pwd
+  # Default conditions setting conditions setting
+  test_cond[:test_category] ||= 'e2e'
+  test_cond[:re_test_count] = test_cond[:re_test_count] ? test_cond[:re_test_count].to_i : 1
+  test_cond[:link_check_max_times] ||= 3
+  # Change to array e.g.--suite_id 1,2,3 -> :suite_id=>[1,2,3]
+  test_cond.each { |k, v| test_cond[k] = v.split(',') if v.instance_of?(String) }
+  require_relative '../lib/bucky/core/test_core/test_manager'
+  Bucky::Core::TestCore::TestManager.new(test_cond).run
+
+elsif ARGV == RERUN_COMMAND
+  $bucky_home_dir = Dir.pwd
+  # Default conditions setting conditions setting
+  test_cond[:test_category] ||= 'e2e'
+  test_cond[:link_check_max_times] ||= 3
+  test_cond[:re_test_count] = test_cond[:re_test_count] ? test_cond[:re_test_count].to_i : 1
+  # Change to array e.g.--suite_id 1,2,3 -> :suite_id=>[1,2,3]
+  test_cond.each { |k, v| test_cond[k] = v.split(',') if v.instance_of?(String) }
+  require_relative '../lib/bucky/core/test_core/test_manager'
+  Bucky::Core::TestCore::TestManager.new(test_cond).rerun
+
+elsif ARGV == LINT_COMMAND
+  $bucky_home_dir = Dir.pwd
+  # Default conditions setting
+  lint_cond[:lint_category] ||= 'config'
+  require_relative '../lib/bucky/tools/lint'
+  Bucky::Tools::Lint.check(lint_cond[:lint_category])
+
+elsif ARGV[0..0] == NEW_COMMAND
+  error_and_exit('No test app name.') if ARGV.length < 2
+
+  # Copy template
+  FileUtils.cp_r("#{gem_script_dir}/../template/new/", current_dir, verbose: true)
+  # Rename dir
+  FileUtils.mv("#{current_dir}/new", "#{current_dir}/#{ARGV[1]}", verbose: true)
+
+elsif ARGV[0..1] == MAKE_SERVICE_COMMAND
+  error_and_exit('Not bucky project dirctory here.') unless bucky_home?
+  error_and_exit('No service name.') if ARGV.length < 3
+
+  service_name = ARGV[2]
+
+  # Check if there is any directory in same service name.
+  error_and_exit("Already exist #{service_name} directory.") if File.exist?("#{current_dir}/services/#{service_name}")
+  FileUtils.mkdir("#{current_dir}/services/#{service_name}", verbose: true)
+
+elsif ARGV[0..1] == MAKE_PAGE_COMMAND
+  error_and_exit('Not bucky project dirctory here.') unless bucky_home?
+  error_and_exit('No page name.') if ARGV.length < 3
+  error_and_exit('No service name.') unless test_cond[:service]
+
+  # Default conditions setting
+  test_cond[:device] ||= 'pc'
+
+  page_name = ARGV[2]
+  pageobject_dir = "#{current_dir}/services/#{test_cond[:service]}/#{test_cond[:device]}/pageobject"
+  pageobject_rb = "#{pageobject_dir}/#{page_name}.rb"
+  parts_dir = "#{current_dir}/services/#{test_cond[:service]}/#{test_cond[:device]}/parts"
+  parts_file = "#{parts_dir}/#{page_name}.yml"
+
+  error_and_exit("Already exist pageobject file: #{pageobject_rb}.") if File.exist?(pageobject_rb)
+  error_and_exit("Already exist parts file: #{parts_file}.") if File.exist?(parts_file)
+  FileUtils.mkdir_p("#{current_dir}/services/#{test_cond[:service]}/#{test_cond[:device]}")
+  FileUtils.cp_r(
+    "#{gem_script_dir}/../template/make_page/#{test_cond[:device]}",
+    "#{current_dir}/services/#{test_cond[:service]}",
+    verbose: true
+  )
+
+  FileUtils.mv("#{pageobject_dir}/sample_page.rb", pageobject_rb, verbose: true)
+  FileUtils.mv("#{parts_dir}/sample_page.yml", parts_file, verbose: true)
+
+  # Change service name and page name on pageobject
+  # | {SampleService} -> ServiceName
+  # | {SamplePage} -> PageName
+  script = File.open(pageobject_rb).read
+  split_and_capitalize = proc { |str| str.split(/_|-/).map(&:capitalize).join }
+  script.sub!('{SampleService}', split_and_capitalize.call(test_cond[:service]))
+  script.sub!('{SamplePage}', split_and_capitalize.call(page_name))
+  File.open(pageobject_rb, 'w+') { |f| f.write script }
+else
+  error_and_exit
+end

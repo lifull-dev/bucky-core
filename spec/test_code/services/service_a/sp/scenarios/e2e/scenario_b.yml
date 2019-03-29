@@ -1,0 +1,16 @@
+desc: suite description
+device: sp
+service: service_b
+priority: middle
+test_category: e2e
+cases:
+  - desc: open toppage and title check 
+    procs:
+      - proc: open toppage
+        exec:
+          operate: go
+          url: http://example.com/
+      - proc: check title
+        exec:
+          verify: assert_title
+          expect: 'TItle : hogehoge'

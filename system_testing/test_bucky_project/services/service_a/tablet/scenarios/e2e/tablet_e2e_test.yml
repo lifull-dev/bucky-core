@@ -1,0 +1,26 @@
+desc: tablet e2e suits
+device: tablet
+service: service_a
+priority: high
+test_category: e2e
+cases:
+  - case_name: tablet_e2e_1
+    func: tablet e2e 1 func UserAgent
+    desc: tablet e2e 1 func UserAgent
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+      - proc: check UserAgent(DeviceName)
+        exec:
+          verify: assert_contained_text
+          expect: iPad
+          page: index
+          part: ua
+      - proc: check UserAgent(Browser)
+        exec:
+          verify: assert_contained_text
+          expect: Safari
+          page: index
+          part: ua

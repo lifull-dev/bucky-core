@@ -1,0 +1,10 @@
+desc: pc linkstatus test suites
+device: pc
+service: service_a
+priority: high
+test_category: linkstatus
+cases:
+  - case_name: pc_link_1
+    desc: pc linkstatus test 1
+    urls:
+      - http://bucky.net

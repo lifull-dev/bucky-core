@@ -1,0 +1,10 @@
+desc: status check
+device: sp
+service: service_c
+priority: high
+test_category: linkstatus
+cases:
+  - desc: top page
+    urls:
+      - http://example.com
+      - http://example.com/fugafuga/

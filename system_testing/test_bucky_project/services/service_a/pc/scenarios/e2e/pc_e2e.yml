@@ -1,0 +1,68 @@
+desc: pc e2e suits
+device: pc
+service: service_a
+priority: high
+test_category: e2e
+cases:
+  - case_name: pc_e2e_1
+    func: pc e2e 1 func
+    desc: pc e2e 1 func
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+      - proc: open index
+        exec:
+          operate: click
+          page: index
+          part: link
+      - proc: check title
+        exec:
+          verify: assert_title
+          expect: Test Page
+  - case_name: pc_e2e_2
+    func: pc e2e 2 func
+    desc: pc e2e 2 func
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+      - proc: open index
+        exec:
+          operate: click
+          page: index
+          part: link
+      - proc: check title(NG)
+        exec:
+          verify: assert_title
+          expect: Test Page Wrong
+  - case_name: pc_e2e_3
+    func: pc e2e 3 func UserAgent
+    desc: pc e2e 3 func UserAgent
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+      - proc: check UserAgent(OS)
+        exec:
+          verify: assert_contained_text
+          page: index
+          part: ua
+          expect: Linux
+  - case_name: pc_e2e_4
+    func: pc e2e 4 func when
+    desc: pc e2e 4 func when
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+      - proc: index
+        exec:
+          operate: click
+          page: index
+          part: link
+        when: <%= ENV['STAGE'] == 'development' %>

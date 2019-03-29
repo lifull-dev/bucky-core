@@ -1,0 +1,32 @@
+# bucky_config ================
+:parallel_num: 4
+:log_path: './spec/utils/'
+:screen_shot_path: './system/screen_shots/'
+:bucky_error: 'bucky_error'
+
+# e2e_config ================
+:selenium_ip: 'docker_host_ip'  # Default selenium ip. please set ip or 'my_ssh_ip'.
+:selenium_port: '4444'     # Default selenium port
+:selenium_mode: :remote    # Other selection: :local(only PC mode), :headless
+:browser: :chrome          # Other selection: :firefox (only PC mode)
+:sp_device_name: :iphone6  # Other selection: nexus5
+:device_chrome_name:
+  :iphone6: 'Apple iPhone 6'
+  :nexus5: 'Google Nexus 5'
+:js_error_check: true
+:js_error_collector_path: '/ChromeJSErrorCollector-master/extension/' # https://github.com/dharrya/ChromeJSErrorCollector
+
+# test_db_config ================
+:test_db:
+  :bucky_test:
+    :username: 'db_username'
+    :password: 'db_password'
+    :database: 'bucky_development'
+    :host: 'loaclhost'
+    :port: 3306
+    :adapter: :mysql
+
+# linkstatus_config ==================
+:linkstatus_open_timeout: 60
+:linkstatus_read_timeout: 60
+:linkstatus_parallel_num: 8

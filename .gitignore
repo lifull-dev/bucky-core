@@ -1,0 +1,40 @@
+*.sw[pon]
+tags
+bak_*
+tmp_*
+*.log
+*.png
+*.json
+vendor/
+.bundle
+
+### https://raw.github.com/github/gitignore/cc542de017c606138a87ee4880e5f06b3a306def/ruby.gitignore
+
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+/tmp/
+
+## Documentation cache and generated files:
+/.yardoc/
+/_yardoc/
+/doc/
+/rdoc/
+
+## Environment normalization:
+/.bundle/
+/vendor/bundle
+/lib/bundler/man/
+
+# Unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+.rvmrc
+
+.DS_Store
+.sample

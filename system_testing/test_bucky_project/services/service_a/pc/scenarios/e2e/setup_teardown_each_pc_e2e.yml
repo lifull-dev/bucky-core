@@ -1,0 +1,35 @@
+desc: setup teardown each pc e2e suits
+device: pc
+service: service_a
+priority: high
+test_category: e2e
+setup_each:
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+teardown_each:
+    procs:
+      - proc: open test_page.html
+        exec:
+          operate: go
+          url: http://bucky.net/test_page.html
+
+cases:
+  - case_name: setup_teardown_each_pc_e2e_1
+    func: setup teardown each pc e2e 1 func
+    desc: setup teardown each pc e2e 1 func
+    procs:
+      - proc: check title
+        exec:
+          verify: assert_title
+          expect: Test Index
+  - case_name: setup_teardown_each_pc_e2e_2
+    func: setup teardown each pc e2e 2 func
+    desc: setup teardown each pc e2e 2 func
+    procs:
+      - proc: check title
+        exec:
+          verify: assert_title
+          expect: Test Index

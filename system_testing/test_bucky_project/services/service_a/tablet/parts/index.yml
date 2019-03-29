@@ -1,0 +1,6 @@
+link:
+   - xpath
+   - "//*[@id='test_link']"
+ua:
+   - xpath
+   - "//*[@id='user_agent']"
