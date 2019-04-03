@@ -2,20 +2,52 @@
 
 ## Overview
 
-Bucky is a testing framework that supports Web System Testing Life Cycle.
+Bucky is a testing framework that supports web system testing life cycle.
 
 ## Feature
 
-* Tests run in parallel
-* Re-run function
-* Codes of test suite are of the form YAML
-* Multiple browser support (Chrome)
-* Some Test Categories support
-  * E2E Tests including JavaScript Error Check
-  * LINK Status Tests in web page
-* Test Report by [bucky-management](https://github.com/lifull-dev/bucky-management)
+* Run tests in parallel
+* Re-run tests whice failed last time
+* Support test code in YAML
+* Multiple browser supported (Currently only Chrome is supported)
+* Customizable test categories
+  * [Default] E2E: E2E tests including JavaScript error check
+  * [Default] Linkstatus: http respond check in web page
+* Making test Report with [bucky-management](https://github.com/lifull-dev/bucky-management)
 
-### Set connection infomation for database
+
+## Setup
+
+### Install
+```bash
+gem install bucky-core
+```
+
+### Implemente test code
+```bash
+# Make project directory
+bucky new {your_project_name}
+
+# Make service directory
+bucky make service {your_service_name}
+
+# Make pageobject(.rb) and part(.yml) in device directory
+## PC
+bucky make page {page_name} --service {your_service_name} --device pc
+## Smart phone
+bucky make page {page_name} --service {your_service_name} --device sp
+## Tablet
+bucky make page {page_name} --service {your_service_name} --device tablet
+
+# Write your test code in following directory:
+# services/{your_service_name}/{devce}/scenarios/e2e/
+# services/{your_service_name}/{devce}/scenarios/linkstatus/
+
+# Some samples are at bottom of Usage
+vim services/first_serive/pc/scenarios/e2e/test_code.yml
+```
+
+### Set connecting infomation for database
 
 ```bash
 export BUCKY_DB_USERNAME="{your database username}"
@@ -26,72 +58,53 @@ export BUCKY_DB_NAME="{your database name}"
 
 ## Usage
 
-### Install
-```bash
-gem install bucky-core
-```
-
 ### Run test
-
 ```bash
-# Examples:
-# Select test categories
-bucky run --test_category e2e
-bucky run -t e2e
-bucky run -t linkstatus
-# Filter test condition
+# Condition filter using option
 bucky run --test_category e2e --device sp --priority high
 bucky run --test_category e2e --case login
 bucky run --test_category e2e -D tablet --priority high
 bucky run --test_category e2e -D pc --label foo,bar,baz --priority high
-# For debug (-d,--debug: not insert test result)
+# Run test in debug mod (It won't insert test result into DB)
 bucky run -t e2e -d
-# Re test for flaky test
+# Use -r to run more times for flaky test
+# It will only run tests that failed in last count
 bucky run --test_category e2e --re_test_count 3
 bucky run -t linkstatus -s bukken_detail -D pc -r 3
-# Rerun from job id
-bucky rerun -j 100
-bucky rerun -j 100 -r 3
-# If you want to use environment variables in test code
-FOO=foo bucky run ...
+# Use environment variables in test
+ENV_FOO=foo bucky run -t e2e -d
 
 # Options:
-    -t TEST_CATEGORY,                e.g. --test_category e2e, -t e2e
-        --test_category
+    -d, --debug # Won't insert test result into DB
+    -t, --test_category TEST_CATEGORY
     -s, --suite_name SUITE_NAME
     -S, --service SERVICE
     -c, --case CASE_NAME
     -D, --device DEVICE
     -p, --priority PRIORITY
-    -r RE_TEST_COUNT,
-        --re_test_count
-    -d --debug Not Insert TestResult
-    -j, --job_id JOB_ID (works only with bucky rerun)
+    -r, --re_test_count RE_TEST_COUNT # How many round you run tests
     -l, --label LABEL_NAME
-    -m, --link_check_max_times (works only with category linkstatus)
+    -m, --link_check_max_times MAX_TIMES # Works only with category linkstatus
 ```
 
-### Implemente test code
-
+### Rerun test
 ```bash
-# Make test code dir
-bucky new {test project name}
+# Only work with saved test result
+# Rerun from job id
+bucky rerun -j 100
+bucky rerun -j 100 -r 3
 
-# Make test service dir
-bucky make service {service_name}
-
-# Make pageobject(rb) and part(yml)
-## PC
-bucky make page {page_name} --service {service_name} --device pc
-## Smart phone
-bucky make page {page_name} --service {service_name} --device sp
-## Tablet
-bucky make page {page_name} --service {service_name} --device tablet
+# Options:
+    -d, --debug # Won't insert test result into DB
+    -r, --re_test_count RE_TEST_COUNT # How many round you run tests
+    -j, --job_id JOB_ID
 ```
 
-#### Sample e2e test_code.yml
+#### Sample E2E test_code.yml
 
-you can use erb notation
+* You can use erb notation in test code
+* [Operation list](https://github.com/lifull-dev/bucky-core/blob/master/lib/bucky/test_equipment/user_operation/user_operation_helper.rb)
+* [Verification list](https://github.com/lifull-dev/bucky-core/blob/master/lib/bucky/test_equipment/verifications/e2e_verification.rb)
 
 ```yaml
 desc: suite description
@@ -100,13 +113,13 @@ service: service_name
 priority: high
 test_category: e2e
 labels: test_label_foo
-setup_each:
+setup_each: # Thes procedures will be executed before every case
   procs:
     - proc: login
       exec:
         operate: go
         url: https://example.com/login
-teardown_each:
+teardown_each: # Thes procedures will be executed after every case
   procs:
     - proc: login
       exec:
@@ -138,10 +151,10 @@ cases:
       - proc: one of elements click # Using xpaths
         exec:
           operate: click
-          page: next_page
+          page: next_page # This file is at services/service_name/pc/parts/next_page.yml
           part:
-            locate: many_links
-            num: 0
+            locate: many_links #  many_links is a xpath that describe in services/service_name/pc/parts/next_page.yml
+            num: 0 # You can choose number of element when xpath have multiple elements
       - proc: switch tab
         exec:
           operate: switch_next_window
@@ -157,7 +170,7 @@ cases:
       - exec:
           operate: wait
           sec: 2
-      - exec: # For debug
+      - exec: # You can stop your test by using stop operator
           operate: stop
       - proc: check message
         exec:
@@ -175,7 +188,7 @@ cases:
 
 #### Sample linkstatus test_code.yml
 
-you can use erb notation
+* linkstatus will check every \<a> tag's http response in url
 
 ```yaml
 desc: suite description
@@ -192,7 +205,7 @@ cases:
     urls:
         - https://example.com/
         - https://www.example.com/
-  - case_name: test_code_2 # Suite filename + number
+  - case_name: test_code_2
     desc: statuscheck for detail page
     urls:
         - https://example.com/detail/1
@@ -201,11 +214,12 @@ cases:
 
 # Development
 
-## Development(only executing debug-mode)
-
+## Development
+Should always execute bucky run with -d option
 ```bash
 git clone git@github.com:lifull-dev/bucky-core.git
 cd bucky-core
+# clone from some test code
 git clone git@github.com:${sample_test_code_owner}/${sample_testcode}.git .sample
 docker-compose -f docker-compose.dev.yml up --build -d
 docker-compose -f docker-compose.dev.yml down

@@ -24,5 +24,5 @@ services:
       - '5901:5900'
     shm_size: 1G
 networks:
- bucky-management_default:
-   external: true
+  bucky-management_default:
+    external: true
