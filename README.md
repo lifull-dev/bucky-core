@@ -7,12 +7,12 @@ Bucky is a testing framework that supports web system testing life cycle.
 ## Feature
 
 * Run tests in parallel
-* Re-run tests whice failed last time
+* Re-run tests which failed last time
 * Support test code in YAML
 * Multiple browser supported (Currently only Chrome is supported)
 * Customizable test categories
-  * [Default] E2E: E2E tests including JavaScript error check
-  * [Default] Linkstatus: http respond check in web page
+  * [Default] E2E: E2E (End to End) tests including JavaScript error check
+  * [Default] Linkstatus: http status code check in web page
 * Making test Report with [bucky-management](https://github.com/lifull-dev/bucky-management)
 
 
@@ -23,7 +23,7 @@ Bucky is a testing framework that supports web system testing life cycle.
 gem install bucky-core
 ```
 
-### Implemente test code
+### Implement test code
 ```bash
 # Make project directory
 bucky new {your_project_name}
@@ -31,7 +31,7 @@ bucky new {your_project_name}
 # Make service directory
 bucky make service {your_service_name}
 
-# Make pageobject(.rb) and part(.yml) in device directory
+# Make page object(.rb) and part(.yml) in device directory
 ## PC
 bucky make page {page_name} --service {your_service_name} --device pc
 ## Smart phone
@@ -40,14 +40,14 @@ bucky make page {page_name} --service {your_service_name} --device sp
 bucky make page {page_name} --service {your_service_name} --device tablet
 
 # Write your test code in following directory:
-# services/{your_service_name}/{devce}/scenarios/e2e/
-# services/{your_service_name}/{devce}/scenarios/linkstatus/
+# services/{your_service_name}/{device}/scenarios/e2e/
+# services/{your_service_name}/{device}/scenarios/linkstatus/
 
 # Some samples are at bottom of Usage
 vim services/first_serive/pc/scenarios/e2e/test_code.yml
 ```
 
-### Set connecting infomation for database
+### Set connecting information for database
 
 ```bash
 export BUCKY_DB_USERNAME="{your database username}"
@@ -65,7 +65,7 @@ bucky run --test_category e2e --device sp --priority high
 bucky run --test_category e2e --case login
 bucky run --test_category e2e -D tablet --priority high
 bucky run --test_category e2e -D pc --label foo,bar,baz --priority high
-# Run test in debug mod (It won't insert test result into DB)
+# Run test in debug mode (It won't insert test result into DB)
 bucky run -t e2e -d
 # Use -r to run more times for flaky test
 # It will only run tests that failed in last count
@@ -84,7 +84,7 @@ ENV_FOO=foo bucky run -t e2e -d
     -p, --priority PRIORITY
     -r, --re_test_count RE_TEST_COUNT # How many round you run tests
     -l, --label LABEL_NAME
-    -m, --link_check_max_times MAX_TIMES # Works only with category linkstatus
+    -m, --link_check_max_times MAX_TIMES # Works only with which category is linkstatus
 ```
 
 ### Rerun test
@@ -113,13 +113,13 @@ service: service_name
 priority: high
 test_category: e2e
 labels: test_label_foo
-setup_each: # Thes procedures will be executed before every case
+setup_each: # Thess procedures will be executed before every case
   procs:
     - proc: login
       exec:
         operate: go
         url: https://example.com/login
-teardown_each: # Thes procedures will be executed after every case
+teardown_each: # These procedures will be executed after every case
   procs:
     - proc: login
       exec:
@@ -158,7 +158,7 @@ cases:
       - proc: switch tab
         exec:
           operate: switch_next_window
-      - proc: select by dropdown
+      - proc: select by drop down
         exec:
           operate: choose
           page: input_page
@@ -201,12 +201,12 @@ exclude_urls:
   - https://example.com/fuga/* # PARTIAL MATCHING
 cases:
   - case_name: test_code_1 # Suite filename + number
-    desc: statuscheck for top page
+    desc: status check for top page
     urls:
         - https://example.com/
         - https://www.example.com/
   - case_name: test_code_2
-    desc: statuscheck for detail page
+    desc: status check for detail page
     urls:
         - https://example.com/detail/1
         - <%= ENV['FQDN'] %>/detail/2 # Using erb notation to get environment variable
