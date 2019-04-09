@@ -28,6 +28,10 @@ gem install bucky-core
 # Make project directory
 bucky new {your_project_name}
 
+# Move into project directory
+# It's the working directory when execute Bucky command
+cd {your_project_name}
+
 # Make service directory
 bucky make service {your_service_name}
 
@@ -57,6 +61,8 @@ export BUCKY_DB_NAME="{your database name}"
 ```
 
 ## Usage
+You can find some examples is here!
+* [bucky-core/example](https://github.com/lifull-dev/bucky-core/blob/master/example)
 
 ### Run test
 ```bash
