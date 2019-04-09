@@ -1,0 +1,39 @@
+# Describe for this test suite
+desc: search in github and check page transition
+device: pc
+service: bucky_hands_on
+priority: high
+test_category: e2e
+labels:
+  - example
+cases:
+  # You should create test case name as {test suite name + _ + number}
+  - case_name: search_and_asseret_1
+    func: transition
+    desc: Should able to search bucky-core in github, and move to bucky-core page.
+    # Procedures to do in this case
+    procs:
+      - proc: Open github top page
+        exec:
+          operate: go
+          url: https://github.com/
+      - proc: Input 'bucky-core' in search bar
+        exec:
+          operate: input
+          page: github_top
+          part: search_bar
+          word: 'bucky-core'
+      - proc: Click search result
+        exec:
+          operate: click
+          page: github_top
+          part: search_resault
+      - proc: Click target result
+        exec:
+          operate: click
+          page: github_search_list
+          part: bucky_core_a_tag
+      - proc: assert_text
+        exec:
+          verify: assert_title
+          expect: 'GitHub - lifull-dev/bucky-core: Bucky is a testing framework that supports Web System Testing Life Cycle.'
