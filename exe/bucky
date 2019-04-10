@@ -173,14 +173,14 @@ elsif ARGV[0..1] == MAKE_SERVICE_COMMAND
   FileUtils.mkdir("#{current_dir}/services/#{service_name}", verbose: true)
 
 elsif ARGV[0..1] == MAKE_PAGE_COMMAND
-  support_device = ['pc', 'sp', 'tablet']
+  support_device = %w[pc sp tablet]
   error_and_exit('Not bucky project dirctory here.') unless bucky_home?
   error_and_exit('No page name.') if ARGV.length < 3
   error_and_exit('No service name.') unless test_cond[:service]
 
   # Default conditions setting
   test_cond[:device] ||= 'pc'
-  
+
   error_and_exit("#{test_cond[:device]} device is not supported. (only pc/sp/tablet.)") unless support_device.include?(test_cond[:device])
 
   page_name = ARGV[2]
