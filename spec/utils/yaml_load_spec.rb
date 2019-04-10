@@ -4,8 +4,8 @@ require_relative '../../lib/bucky/utils/yaml_load'
 
 describe Bucky::Utils::YamlLoad do
   let(:yaml_load) { Class.new { extend Bucky::Utils::YamlLoad } }
-  let(:yaml_file) { './template/new/config/test_db_config.yml' }
-  let(:yaml_dir) { './template/new/config/**/*yml' }
+  let(:yaml_file) { './spec/test_config/test_config.yml' }
+  let(:yaml_dir) { './spec/test_config//**/*yml' }
 
   describe '#load_yaml' do
     it 'load target yaml' do
@@ -15,7 +15,7 @@ describe Bucky::Utils::YamlLoad do
 
   describe '#file_sort_hierarchy' do
     it 'sort and deepest file last' do
-      expect(yaml_load.file_sort_hierarchy(yaml_dir).last).to include('for_spec')
+      expect(yaml_load.file_sort_hierarchy(yaml_dir).last).to include('hierarchy_config')
     end
   end
 end

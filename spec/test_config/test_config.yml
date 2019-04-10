@@ -1,0 +1,3 @@
+:test_config:
+  :bucky_test:
+    :config_test: 'test'
