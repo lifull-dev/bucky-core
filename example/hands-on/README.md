@@ -1,13 +1,13 @@
 # Hands-on
 
 # What is this example doing
-It will show you how to create a project ,service and some test code using Bucky command.
+It will show you how to create a project, service, page and some test code using Bucky command.
 And will show you how to execute these test code.
 
 ## Before starting
 Make sure you have already installed gem "bucky-core"
 ```bash
-gen install bucky-core
+gem install bucky-core
 ```
 
 ## 1. Create a new test project
@@ -17,7 +17,7 @@ Create a new test project.
 ```bash
 bucky new hands-on
 ```
-You will get a new directory which name is "hands-on" in you current directory.
+You will get a new directory which name is "hands-on" in current directory.
 
 ## 2. Create a new service in project
 * Service means the application name that you are going to test
@@ -45,16 +45,32 @@ bucky make page github_top --service bucky_hands_on --device pc
 # Create github search list page
 bucky make page github_search_list --service bucky_hands_on --device pc
 ```
-You will get some new directories and new files like the following:
+In this time, your directory will look like the following:
 ```bash
-hands-on/services/bucky_hands_on/
-└── pc
-    ├── pageobject
-    │   ├── github_search_list.yml
-    │   └── github-top.rb
-    └── parts
-        ├── github_search_list.yml
-        └── github-top.yml
+hands-on/
+├── README.md
+├── config
+│   ├── bucky_config.yml
+│   ├── e2e_config.yml
+│   ├── linkstatus_config.yml
+│   └── test_db_config.yml
+├── services
+│   ├── README.md
+│   └── bucky_hands_on
+│       └── pc
+│           ├── pageobject
+│           │   ├── github_search_list.rb
+│           │   └── github_top.rb
+│           └── parts
+│               ├── github_search_list.yml
+│               └── github_top.yml
+└── system
+    ├── evidences
+    │   ├── README.md
+    │   └── screen_shots
+    │       └──  README.md
+    └── logs
+        └──  README.md
 ```
 
 ## 4. Add the element in part file, which are going to be used in test code
@@ -63,9 +79,7 @@ hands-on/services/bucky_hands_on/
 
 Add the search bar and search result element in github_top.yml.
 ```
-vim services/bucky_hands_on/pc/parts/github-top.yml
-
-## github_top.yml ##
+## services/bucky_hands_on/pc/parts/github-top.yml ##
 search_bar:
     - xpath
     - //input[contains(@class,'header-search-input')]
@@ -75,9 +89,7 @@ search_resault:
 ```
 Add bucky-core click element in github_search_list.yml.
 ```
-vim services/bucky_hands_on/pc/parts/github_search_list.yml
-
-## github_search_list.yml ##
+## services/bucky_hands_on/pc/parts/github_search_list.yml ##
 bucky_core_a_tag:
     - xpath
     - //a[contains(text(),'lifull-dev')]
@@ -91,15 +103,13 @@ Create e2e category directory.
 ```bash
 mkdir -p services/bucky_hands_on/pc/scenarios/e2e
 ```
-Create test code file, which test suite name is "search_and_asseret"
+Create test code file, which test suite name is "search_and_asseret".
 ```bash
 touch services/bucky_hands_on/pc/scenarios/e2e/search_and_asseret.yml
 ```
 Add test code in test suite.
 ```
-vim services/bucky_hands_on/pc/scenarios/e2e/search_and_asseret.yml
-
-## search_and_asseret.yml ##
+## services/bucky_hands_on/pc/scenarios/e2e/search_and_asseret.yml ##
 # Describe for this test suite
 desc: search in github and check page transition
 device: pc
@@ -148,15 +158,13 @@ Create linkstatus category directory.
 ```bash
 mkdir -p services/bucky_hands_on/pc/scenarios/linkstatus
 ```
-Create test code file, which test suite name is "github_top"
+Create test code file, which test suite name is "github_top".
 ```bash
 touch services/bucky_hands_on/pc/scenarios/linkstatus/github_top.yml
 ```
 Add test code in test suite.
 ```
-vim services/bucky_hands_on/pc/scenarios/linkstatus/github_top.yml
-
-## github_top.yml ##
+## services/bucky_hands_on/pc/scenarios/linkstatus/github_top.yml ##
 # Describe for this test suite
 desc: Check all a tag in githib top
 device: pc
@@ -178,11 +186,11 @@ cases:
 ## 7. Execute test code
 * You should start selenium chrome driver first
 
+You can find how to start Selenium chrome driver by Docker in [SeleniumHQ/docker-selenium](https://github.com/SeleniumHQ/docker-selenium)
+
 Set the connection for E2E test
 ```
-vim config/e2e_config.yml
-
-## e2e_config.yml ##
+## config/e2e_config.yml ##
 :selenium_ip: {your ip for selenium}
 :selenium_port: '4444'
 ```
@@ -288,3 +296,43 @@ Finished in 11.283795 seconds.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 0.09 tests/s, 0.18 assertions/s
 ```
+
+## At last
+Congratulations!! You have just finish this example.
+
+If you follow these procedures your directory will be like this:
+```
+hands-on/
+├── README.md
+├── config
+│   ├── bucky_config.yml
+│   ├── e2e_config.yml
+│   ├── linkstatus_config.yml
+│   └── test_db_config.yml
+├── services
+│   ├── README.md
+│   └── bucky_hands_on
+│       └── pc
+│           ├── pageobject
+│           │   ├── github_search_list.rb
+│           │   └── github_top.rb
+│           ├── parts
+│           │   ├── github_search_list.yml
+│           │   └── github_top.yml
+│           └── scenarios
+│               ├── e2e
+│               │   └── search_and_asseret.yml
+│               └── linkstatus
+│                   └── github_top.yml
+└── system
+    ├── evidences
+    │   ├── README.md
+    │   └── screen_shots
+    │       └──  README.md
+    └── logs
+        └──  README.md
+```
+
+We have learned how to create project, service, page, and test code. And also learned how to execute test code using Bucky command.
+
+Now you can create you own test code!!
