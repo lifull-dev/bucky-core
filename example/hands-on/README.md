@@ -184,9 +184,9 @@ cases:
 ```
 
 ## 7. Execute test code
-* You should start selenium chrome driver first
+* You should start Selenium Chrome driver first
 
-You can find how to start Selenium chrome driver by Docker in [SeleniumHQ/docker-selenium](https://github.com/SeleniumHQ/docker-selenium)
+You can find how to start Selenium Chrome driver by Docker in [SeleniumHQ/docker-selenium](https://github.com/SeleniumHQ/docker-selenium).
 
 Set the connection for E2E test
 ```

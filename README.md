@@ -61,9 +61,10 @@ export BUCKY_DB_NAME="{your database name}"
 ```
 
 ## Usage
-You can find some examples is here!
+You can find some examples in here!
 * [bucky-core/example](https://github.com/lifull-dev/bucky-core/blob/master/example)
 
+You should start Selenium Chrome driver first. And you can find how to start Selenium Chrome driver by Docker in [SeleniumHQ/docker-selenium](https://github.com/SeleniumHQ/docker-selenium).
 ### Run test
 ```bash
 # Condition filter using option
