@@ -4,16 +4,18 @@
 
 Bucky is a testing framework that supports web system testing life cycle.
 
+Bucky-core run test code which is written in YAML. End-to-End test (working with Selenium) and Linkstatus test (HTTP status check) are supported in default. The page object model pattern and page based element management is the main concept in Bucky-core. You can create scenarios and execute it easily by using Bucky-core.
+
 ## Feature
 
 * Run tests in parallel
 * Re-run tests which failed last time
 * Support test code in YAML
-* Multiple browser supported (Currently only Chrome is supported)
+* Multiple browser supported (currently only Chrome is supported)
 * Customizable test categories
   * [Default] E2E: E2E (End to End) tests including JavaScript error check
   * [Default] Linkstatus: http status code check in web page
-* Making test Report with [bucky-management](https://github.com/lifull-dev/bucky-management)
+* Making test report with [bucky-management](https://github.com/lifull-dev/bucky-management)
 
 
 ## Setup
@@ -195,7 +197,7 @@ cases:
 
 #### Sample linkstatus test_code.yml
 
-* linkstatus will check every \<a> tag's http response in url
+* Linkstatus will check every \<a> tag's http response in url
 
 ```yaml
 desc: suite description

@@ -5,7 +5,7 @@ It will show you how to create a project, service, page and some test code using
 And will show you how to execute these test code.
 
 ## Before starting
-Make sure you have already installed gem "bucky-core"
+Make sure you have already installed gem "bucky-core".
 ```bash
 gem install bucky-core
 ```
@@ -17,9 +17,9 @@ Create a new test project.
 ```bash
 bucky new hands-on
 ```
-You will get a new directory which name is "hands-on" in current directory.
+You will get a new directory which name is "hands-on" in the current directory.
 
-## 2. Create a new service in project
+## 2. Create a new service in the project
 * Service means the application name that you are going to test
 * You are able to create multiple services in one project
 * Use snake case for naming
@@ -31,14 +31,14 @@ bucky make service bucky_hands_on
 ```
 You will get a new directory which name is "bucky_hands_on" under services directory.
 
-## 3. Create devices directory, and create pageobject, parts for test code
+## 3. Create devices directory and create page_object, parts for test code
 * Device only support PC, SP and tablet
-* Test code will be executed in different user agent according to device
-* Pageobject is the file that you can add customize method in
-* Parts is the file that html element of page is declared in
+* Test code will be executed in different user agents according to the device
+* Page_object is the file that you can add customize method in
+* Parts is the file that HTML element of the page is declared in
 * Use snake case for naming
 
-Create device directory, pageobject file and part file.
+Create device directory, page_object file and part file.
 ```bash
 # Create github top page
 bucky make page github_top --service bucky_hands_on --device pc
@@ -150,7 +150,7 @@ cases:
           verify: assert_title
           expect: 'GitHub - lifull-dev/bucky-core: Bucky is a testing framework that supports Web System Testing Life Cycle.'
 ```
-## 6. Create test code in linkstatus category
+## 6. Create test code in Linkstatus category
 * This step can't be done by Bucky command
 * Use snake case for naming
 
@@ -188,14 +188,14 @@ cases:
 
 You can find how to start Selenium Chrome driver by Docker in [SeleniumHQ/docker-selenium](https://github.com/SeleniumHQ/docker-selenium).
 
-Set the connection for E2E test
+Set the connection for E2E test.
 ```
 ## config/e2e_config.yml ##
 :selenium_ip: {your ip for selenium}
 :selenium_port: '4444'
 ```
 
-Execute the test by Bucky command
+Execute the test by Bucky command.
 ```bash
 # Use -d option, because we doesn't start-up bucky-managemnt in this example.
 bucky run -t e2e -c search_and_asseret_1 -d
