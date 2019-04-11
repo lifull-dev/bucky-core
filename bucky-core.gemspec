@@ -10,10 +10,10 @@ Gem::Specification.new do |spec|
   spec.authors       = %w[NaotoKishino HikaruFukuzawa SeiyaSato NaokiNakano RikiyaHikimochi JyeRuey]
   spec.email         = ['KishinoNaoto@lifull.com']
 
-  spec.summary = 'A test framework that supports Life Cycle of System Testing.'
-  spec.description = <<-DESCRIPTION
-    Bucky support run in parellel, test results managed in database, and some test categories(E2E, http status check) and so on.
-  DESCRIPTION
+  spec.summary = 'System testing framework for WEB application.'
+  spec.description = 'Bucky is a testing framework that supports web system testing life cycle.'
+
+  spec.required_rubygems_version = '>= 2.4.2'
   spec.homepage      = 'https://github.com/lifull-dev/bucky-core'
   spec.license       = 'MIT'
 
