@@ -1,4 +1,4 @@
-:selenium_ip: 'Your selenium ip'  # default selenium ip. please set ip or 'docker_host_ip'. ip route | awk 'NR==1 {print $3}'
+:selenium_ip: localhost  # default selenium ip. please set ip or 'docker_host_ip'. ip route | awk 'NR==1 {print $3}'
 :selenium_port: '4444'     # default selenium port
 :browser: :chrome          # Only chrome
 :sp_device_name: :iphone

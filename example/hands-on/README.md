@@ -195,7 +195,7 @@ Set the connection for E2E test.
 :selenium_port: '4444'
 ```
 
-Execute the test by Bucky command.
+Execute the test by Bucky command. You should execute the test code in working directory. In this case, the working directory is: "hands-on/".
 ```bash
 # Use -d option, because we doesn't start-up bucky-managemnt in this example.
 bucky run -t e2e -c search_and_asseret_1 -d
