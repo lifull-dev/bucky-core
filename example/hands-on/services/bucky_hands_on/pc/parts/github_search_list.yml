@@ -1,0 +1,3 @@
+bucky_core_a_tag:
+    - xpath
+    - //a[contains(text(),'lifull-dev')]

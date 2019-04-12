@@ -1,0 +1,6 @@
+search_bar:
+    - xpath
+    - //input[contains(@class,'header-search-input')]
+search_resault:
+    - xpath
+    - //div[contains(@class,'jump-to-suggestions')]
