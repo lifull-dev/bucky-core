@@ -3,6 +3,6 @@
     :username: <%= ENV['BUCKY_DB_USERNAME'] %>
     :password:  <%= ENV['BUCKY_DB_PASSWORD'] %>
     :database: 'bucky_development'
-    :host:  <%= ENV['BUCKY_DB_HOST'] %>
+    :host:  <%= ENV['BUCKY_DB_HOSTNAME'] %>
     :port: 3306
     :adapter: :mysql
