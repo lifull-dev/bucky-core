@@ -103,13 +103,13 @@ Create e2e category directory.
 ```bash
 mkdir -p services/bucky_hands_on/pc/scenarios/e2e
 ```
-Create test code file, which test suite name is "search_and_asseret".
+Create test code file, which test suite name is "search_and_assert".
 ```bash
-touch services/bucky_hands_on/pc/scenarios/e2e/search_and_asseret.yml
+touch services/bucky_hands_on/pc/scenarios/e2e/search_and_assert.yml
 ```
 Add test code in test suite.
 ```
-## services/bucky_hands_on/pc/scenarios/e2e/search_and_asseret.yml ##
+## services/bucky_hands_on/pc/scenarios/e2e/search_and_assert.yml ##
 # Describe for this test suite
 desc: search in github and check page transition
 device: pc
@@ -120,7 +120,7 @@ labels:
   - example
 cases:
   # You should create test case name as {test suite name + _ + number}
-  - case_name: search_and_asseret_1
+  - case_name: search_and_assert_1
     func: transition
     desc: Should able to search bucky-core in github, and move to bucky-core page.
     # Procedures to do in this case
@@ -198,18 +198,18 @@ Set the connection for E2E test.
 Execute the test by Bucky command. You should execute the test code in working directory. In this case, the working directory is: "hands-on/".
 ```bash
 # Use -d option, because we doesn't start-up bucky-managemnt in this example.
-bucky run -t e2e -c search_and_asseret_1 -d
+bucky run -t e2e -c search_and_assert_1 -d
 bucky run -t linkstatus -c github_top_1 -d
 ```
 
 You will get resault like the following:
 ```
-bucky run -t e2e -c search_and_asseret_1 -d
+bucky run -t e2e -c search_and_assert_1 -d
 
 Loaded suite /usr/local/bin/bucky
 Started
 
-search_and_asseret_1(TestBuckyHandsOnPcE2eSearchAndAsseret)
+search_and_assert_1(TestBuckyHandsOnPcE2eSearchAndassert)
  Sholud able to serch bucky-core in github, and transition to it. ....
   1:Open github top page
     {:operate=>"go", :url=>"https://github.com/"}
@@ -321,7 +321,7 @@ hands-on/
 │           │   └── github_top.yml
 │           └── scenarios
 │               ├── e2e
-│               │   └── search_and_asseret.yml
+│               │   └── search_and_assert.yml
 │               └── linkstatus
 │                   └── github_top.yml
 └── system
