@@ -12,7 +12,7 @@ services:
     environment:
       - BUCKY_DB_USERNAME=root
       - BUCKY_DB_PASSWORD=password
-      - BUCKY_DB_HOSTNAME=bm-mysql
+      - BUCKY_DB_HOST=bm-mysql
       - BUCKY_DB_NAME=bucky_development
     networks:
       - bucky-management_default
