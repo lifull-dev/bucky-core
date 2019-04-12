@@ -36,4 +36,4 @@ cases:
       - proc: assert_text
         exec:
           verify: assert_title
-          expect: 'GitHub - lifull-dev/bucky-core: Bucky is a testing framework that supports Web System Testing Life Cycle.'
+          expect: 'GitHub - lifull-dev/bucky-core: System testing framework for web application.'
