@@ -10,9 +10,12 @@ Gem::Specification.new do |spec|
   spec.authors       = %w[NaotoKishino HikaruFukuzawa SeiyaSato NaokiNakano RikiyaHikimochi JyeRuey]
   spec.email         = ['KishinoNaoto@lifull.com']
 
-  spec.summary = 'System testing framework for WEB application.'
-  spec.description = 'Bucky is a testing framework that supports web system testing life cycle.'
+  spec.summary = 'System testing framework for web application.'
+  spec.description = <<-DESCRIPTION
+    Bucky-core can run test code which is written in YAML. End-to-End test (working with Selenium) and Linkstatus test (HTTP status check) are supported in default. Page object model pattern and page based element management is the main concept in Bucky-core. You can create scenarios and execute it easily by using Bucky-core.
 
+  When working with Bucky-management, Bucky-core can also record test results. You can make test results visualization by using Bucky-management.
+  DESCRIPTION
   spec.required_rubygems_version = '>= 2.4.2'
   spec.homepage      = 'https://github.com/lifull-dev/bucky-core'
   spec.license       = 'MIT'
