@@ -19,12 +19,16 @@ When working with [Bucky-management](https://github.com/lifull-dev/bucky-managem
 
 ## Setup
 
+Checkout Hands-on in example to get a quick start.
+* [bucky-core/example/hands-on](https://github.com/lifull-dev/bucky-core/tree/master/example/hands-on)
+
 ### Install
 ```bash
 gem install bucky-core
 ```
 
 ### Implement test code
+* Use snake case for naming
 ```bash
 # Make project directory
 bucky new {your_project_name}
