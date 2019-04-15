@@ -1,19 +1,20 @@
 # Bucky-Core
 
 ## Overview
+Bucky-core can run test code which is written in YAML. End-to-End test (working with Selenium) and Linkstatus test (HTTP status check) are supported in default. Page object model pattern and page based element management is the main concept in Bucky-core.  You can create scenarios and execute it easily by using Bucky-core.
 
-Bucky is a testing framework that supports web system testing life cycle.
+When working with [Bucky-management](https://github.com/lifull-dev/bucky-management), Bucky-core can also record test results. You can make test results visualization by using Bucky-management.
 
 ## Feature
 
 * Run tests in parallel
 * Re-run tests which failed last time
 * Support test code in YAML
-* Multiple browser supported (Currently only Chrome is supported)
+* Multiple browser supported (currently only Chrome is supported)
 * Customizable test categories
   * [Default] E2E: E2E (End to End) tests including JavaScript error check
   * [Default] Linkstatus: http status code check in web page
-* Making test Report with [bucky-management](https://github.com/lifull-dev/bucky-management)
+* Making test report with [Bucky-management](https://github.com/lifull-dev/bucky-management)
 
 
 ## Setup
@@ -27,6 +28,10 @@ gem install bucky-core
 ```bash
 # Make project directory
 bucky new {your_project_name}
+
+# Move into project directory
+# It's the working directory when execute Bucky command
+cd {your_project_name}
 
 # Make service directory
 bucky make service {your_service_name}
@@ -57,7 +62,10 @@ export BUCKY_DB_NAME="{your database name}"
 ```
 
 ## Usage
+You can find some examples in here!
+* [bucky-core/example](https://github.com/lifull-dev/bucky-core/blob/master/example)
 
+You should start Selenium Chrome driver first. And you can find how to start Selenium Chrome driver by Docker in [SeleniumHQ/docker-selenium](https://github.com/SeleniumHQ/docker-selenium).
 ### Run test
 ```bash
 # Condition filter using option
@@ -188,7 +196,7 @@ cases:
 
 #### Sample linkstatus test_code.yml
 
-* linkstatus will check every \<a> tag's http response in url
+* Linkstatus will check every \<a> tag's http response in url
 
 ```yaml
 desc: suite description
