@@ -16,9 +16,9 @@ Gem::Specification.new do |spec|
 
   When working with Bucky-management, Bucky-core can also record test results. You can make test results visualization by using Bucky-management.
   DESCRIPTION
-  spec.required_rubygems_version = '>= 2.4.2'
+  spec.required_ruby_version = '>= 2.4.2'
   spec.homepage      = 'https://github.com/lifull-dev/bucky-core'
-  spec.license       = 'MIT'
+  spec.license       = 'Apache License 2.0'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f|
     f.match(%r{^(test|spec|features)/})
