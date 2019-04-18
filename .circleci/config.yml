@@ -16,7 +16,7 @@ jobs:
   unit_test:
     working_directory: ~/bucky-core
     docker:
-      - image: circleci/ruby:2.4.1-node
+      - image: circleci/ruby:2.4.2-node
         environment:
           CC_TEST_REPORTER_ID: 502b34fc3185ccc1230423dc8727976a66ad79be8faafa14cdb81af83dd69ab9
     steps:
@@ -41,7 +41,7 @@ jobs:
           ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
   syntax_check:
     docker:
-      - image: circleci/ruby:2.4.1-node
+      - image: circleci/ruby:2.4.2-node
     steps:
       - checkout
       - type: cache-restore
