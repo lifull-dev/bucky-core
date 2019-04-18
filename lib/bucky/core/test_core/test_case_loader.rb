@@ -87,8 +87,8 @@ module Bucky
               end
             end
             test_suite
-          rescue StandardError => ex
-            raise ex, "loading #{file}, #{ex.message}"
+          rescue StandardError => e
+            raise e, "loading #{file}, #{e.message}"
           end
 
           def when_match?(proc)

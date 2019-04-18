@@ -6,8 +6,7 @@ module Services
     module Pc
       module PageObject
         class GithubTop < Bucky::TestEquipment::PageObject::BasePageObject
-
-          protected
+          # protected
 
           # add some user operations for this page
           # sample ====================

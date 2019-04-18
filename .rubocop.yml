@@ -8,7 +8,7 @@ AllCops:
     - 'template/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.4
 
 AbcSize:
   Enabled: false
