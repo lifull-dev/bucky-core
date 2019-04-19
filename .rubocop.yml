@@ -74,3 +74,7 @@ UselessAssignment:
 
 ClassLength:
   Max: 110
+
+Lint/UselessAccessModifier:
+  Exclude:
+    - 'example/**/*'
