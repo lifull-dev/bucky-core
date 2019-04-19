@@ -6,7 +6,6 @@ module Services
     module Pc
       module PageObject
         class GithubSearchList < Bucky::TestEquipment::PageObject::BasePageObject
-
           protected
 
           # add some user operations for this page
