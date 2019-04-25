@@ -7,7 +7,6 @@ module Services
     module Tablet
       module PageObject
         class {SamplePage} < Bucky::TestEquipment::PageObject::BasePageObject
-
           protected
 
           # Add some user operations for this page

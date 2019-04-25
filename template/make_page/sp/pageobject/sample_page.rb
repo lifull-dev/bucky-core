@@ -7,7 +7,6 @@ module Services
     module Sp
       module PageObject
         class {SamplePage} < Bucky::TestEquipment::PageObject::BasePageObject
-
           protected
 
           # Add some user operations for this page
