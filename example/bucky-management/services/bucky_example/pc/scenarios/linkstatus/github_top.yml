@@ -1,0 +1,16 @@
+# Describe for this test suite
+desc: Check all a tag in githib top
+device: pc
+service: bucky_example
+priority: high
+test_category: linkstatus
+labels:
+  - example
+# You can exclude url that you don't want to check
+exclude_urls:
+  - https://github.com/customer-stories/*
+cases:
+  - case_name: github_top_1
+    desc: Check github top
+    urls:
+      - https://github.com/
