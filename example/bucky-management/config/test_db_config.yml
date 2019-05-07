@@ -1,0 +1,8 @@
+:test_db:
+  :bucky_test:
+    :username: root
+    :password: password
+    :database: bucky_test
+    :host: 127.0.0.1
+    :port: 3306
+    :adapter: :mysql

@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 require 'bucky/test_equipment/pageobject/base_pageobject'
-
 module Services
-  module {SampleService}
-    module Tablet
+  module BuckyExample
+    module Pc
       module PageObject
-        class {SamplePage} < Bucky::TestEquipment::PageObject::BasePageObject
+        class GithubTop < Bucky::TestEquipment::PageObject::BasePageObject
           protected
 
           # Add some user operations for this page

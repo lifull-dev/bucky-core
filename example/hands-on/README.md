@@ -1,6 +1,6 @@
 # Hands-on
 
-# What is this example doing
+## What is this example doing
 It will show you how to create a project, service, page and some test code using Bucky command.
 And will show you how to execute these test code.
 
@@ -148,7 +148,7 @@ cases:
       - proc: assert_text
         exec:
           verify: assert_title
-          expect: 'GitHub - lifull-dev/bucky-core: Bucky is a testing framework that supports Web System Testing Life Cycle.'
+          expect: 'GitHub - lifull-dev/bucky-core: System testing framework for web application.'
 ```
 ## 6. Create test code in Linkstatus category
 * This step can't be done by Bucky command
