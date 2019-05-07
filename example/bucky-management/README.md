@@ -1,6 +1,6 @@
 # Bucky-management
 
-# What is this example doing
+## What is this example doing
 This example will show you how to connect to Bucky-management and how to get test report automatically.
 
 ## Before starting
