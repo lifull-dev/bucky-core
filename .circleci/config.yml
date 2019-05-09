@@ -17,8 +17,8 @@ jobs:
     working_directory: ~/bucky-core
     docker:
       - image: circleci/ruby:2.4.2-node
-        # environment:
-        #   CC_TEST_REPORTER_ID: 502b34fc3185ccc1230423dc8727976a66ad79be8faafa14cdb81af83dd69ab9
+        environment:
+          CC_TEST_REPORTER_ID: fd7bd9d517bdf8953c4d4803ca4ad7539d12d5c760048b8daf80cbc7d54fb262
     steps:
       - checkout
       - type: cache-restore
@@ -29,16 +29,16 @@ jobs:
         paths:
           - vendor/bundle
       # Download test-reporter
-      # - run:
-      #     name: Setup Code Climate test-reporter
-      #     command: |
-      #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-      #       chmod +x ./cc-test-reporter
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
       # Run rspec and show on code climate
       - run: |
-          # ./cc-test-reporter before-build
+          ./cc-test-reporter before-build
           bundle exec rspec
-          # ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
+          ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
   syntax_check:
     docker:
       - image: circleci/ruby:2.4.2-node

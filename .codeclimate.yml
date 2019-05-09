@@ -40,9 +40,9 @@ checks:
     enabled: true
     config:
       threshold: #language-specific defaults. overrides affect all languages.
-plugins:
-  rubocop:
-    enabled: true
-    channel: rubocop-0-58
+# plugins:
+#   rubocop: # run by CircleCI
+#     enabled: true
+#     channel: rubocop-0-58
 exclude_patterns:
 - "spec/"
