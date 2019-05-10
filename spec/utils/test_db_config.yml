@@ -1,0 +1,8 @@
+:test_db:
+  :bucky_test:
+    :username: 'db_username'
+    :password: 'db_password'
+    :database: 'bucky_development'
+    :host: 'loaclhost'
+    :port: 3306
+    :adapter: :mysql

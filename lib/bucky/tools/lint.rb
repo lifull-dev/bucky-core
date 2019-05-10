@@ -8,7 +8,7 @@ module Bucky
       class << self
         include Bucky::Utils::YamlLoad
         @@config_dir = "#{$bucky_home_dir}/config/**/*yml"
-        @@rule_config_dir = "#{$bucky_home_dir}/.bucky-core/template/new/config/*yml"
+        @@rule_config_dir = '/bucky-core/template/new/config/*yml'
 
         def check(category)
           method = "check_#{category}".to_sym

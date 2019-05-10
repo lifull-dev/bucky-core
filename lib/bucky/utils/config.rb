@@ -10,31 +10,31 @@ module Bucky
       include Singleton
       @@dir = "#{$bucky_home_dir}/config/**/*yml"
 
+      attr_reader :data
       # @param [String] *.yml or hoge/fuga.yml
       def initialize
         @data = {}
         @resources = []
+        @default_config_dir = '/bucky-core/template/new/config/'
 
         # Read from a file of shallow hierarchy, then overwrite it if there is same key in deep hierarchy
         file_sort_hierarchy(@@dir).each do |file|
+          file_name = file.split("/").last
           data = load_yaml(file)
-          unless data.empty?
-            @data = @data.merge(data)
-            @resources << file
-          end
+          default_config_data = load_yaml(@default_config_dir + file_name)
+          next if data.empty?
+
+          data = default_config_data.merge(data)
+          @data = @data.merge(data)
+          @resources << file
         end
 
         set_selenium_ip
       end
 
-      # @return [Hash] loaded data
-      def data
-        @data || {}
-      end
-
       # Get data by []
       def [](column)
-        return data[column] if data.key?(column)
+        return @data[column] if @data.key?(column)
 
         # If there is no key, raise exeption
         raise "Undefined Config : #{column}\nKey doesn't match in config file. Please check config file in config/*"
