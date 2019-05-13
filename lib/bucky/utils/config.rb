@@ -19,7 +19,7 @@ module Bucky
 
         # Read from a file of shallow hierarchy, then overwrite it if there is same key in deep hierarchy
         file_sort_hierarchy(@@dir).each do |file|
-          file_name = file.split("/").last
+          file_name = file.split('/').last
           data = load_yaml(file)
           default_config_data = load_yaml(@default_config_dir + file_name)
           next if data.empty?

@@ -41,7 +41,7 @@ module Bucky
           if diff.empty?
             puts "\e[32mok\e[0m"
           else
-            puts "\e[31m[ERROR] The following configures are undefined. Use default value automatically."
+            puts "\e[31m[ERROR] The following configures are undefined. Tests can still be executed with default value automatically."
             diff.each do |key|
               puts "- #{key}\e[0m"
               puts "{#{key}: #{@rule_data[:"#{key}"]}}"
