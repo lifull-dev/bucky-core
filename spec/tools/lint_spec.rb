@@ -30,7 +30,7 @@ describe Bucky::Tools::Lint do
   describe '#check_config' do
     it 'print error message, when there is difference of hash' do
       lint.class_variable_set(:@@rule_config_dir, rule_config_dir)
-      expect { lint.check_config }.to output("\e[31m[ERROR] The following configures are undefined.\n- device_name_on_chrome-ipad\e[0m\n").to_stdout
+      expect { lint.check_config }.to output("\e[31m[ERROR] The following configures are undefined. Use default value automatically.\n- device_name_on_chrome-ipad\e[0m\n{device_name_on_chrome-ipad: }\n").to_stdout
     end
     it 'print ok, when there is no difference of hash' do
       lint.class_variable_set(:@@dir, config_dir)
@@ -50,7 +50,7 @@ describe Bucky::Tools::Lint do
 
   describe '#make_message' do
     it 'when there are element in given array, print error message' do
-      expect { lint.send(:make_message, ['foo']) }.to output("\e[31m[ERROR] The following configures are undefined.\n- foo\e[0m\n").to_stdout
+      expect { lint.send(:make_message, ['foo']) }.to output("\e[31m[ERROR] The following configures are undefined. Use default value automatically.\n- foo\e[0m\n{foo: }\n").to_stdout
     end
     it 'when there are no element in given array, print ok' do
       expect { lint.send(:make_message, []) }.to output("\e[32mok\e[0m\n").to_stdout
