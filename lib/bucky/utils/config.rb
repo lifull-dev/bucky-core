@@ -15,13 +15,13 @@ module Bucky
       def initialize
         @data = {}
         @resources = []
-        @default_config_dir = '/bucky-core/template/new/config/'
+        @default_config_dir = File.expand_path('../../../template/new/config', __dir__)
 
         # Read from a file of shallow hierarchy, then overwrite it if there is same key in deep hierarchy
         file_sort_hierarchy(@@dir).each do |file|
           file_name = file.split('/').last
           data = load_yaml(file)
-          default_config_data = load_yaml(@default_config_dir + file_name)
+          default_config_data = load_yaml(@default_config_dir + '/' + file_name)
           next if data.empty?
 
           data = default_config_data.merge(data)
