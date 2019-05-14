@@ -8,8 +8,6 @@
   :android: 'Galaxy S5'
   :ipad: 'iPad'
 :user_agent: 'QA-E2E (X11; Linux x86_64)'
-:js_error_check: false
-:js_error_collector_path: '/var/lib/selenium/ChromeJSErrorCollector-master/extension' # https://github.com/dharrya/ChromeJSErrorCollector
 :driver_read_timeout: 120
 :driver_open_timeout: 90
 :find_element_timeout: 60

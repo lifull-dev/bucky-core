@@ -16,8 +16,6 @@ describe Bucky::TestEquipment::SeleniumHandler::WebdriverHandler do
     allow(config_double).to receive('[]').with(:browser).and_return(browser)
     allow(config_double).to receive('[]').with(:selenium_ip).and_return(selenium_ip)
     allow(config_double).to receive('[]').with(:selenium_port).and_return(selenium_port)
-    allow(config_double).to receive('[]').with(:js_error_check).and_return(js_error_check)
-    allow(config_double).to receive('[]').with(:js_error_collector_path).and_return(js_error_collector_path)
     allow(config_double).to receive('[]').with(:device_name_on_chrome).and_return(device_name_on_chrome)
     allow(config_double).to receive('[]').with(:sp_device_name).and_return(sp_device_name)
     allow(config_double).to receive('[]').with(:tablet_device_name).and_return(sp_device_name)
@@ -38,8 +36,6 @@ describe Bucky::TestEquipment::SeleniumHandler::WebdriverHandler do
   describe '#create_webdriver' do
     let(:selenium_ip) { '11.22.33.44' }
     let(:selenium_port) { '4444' }
-    let(:js_error_check) { true }
-    let(:js_error_collector_path) { './' }
     let(:device_name_on_chrome) { { iphone6: 'Apple iPhone 6' } }
     let(:sp_device_name) { :iphone6 }
     let(:sp_device_name) { :ipad }

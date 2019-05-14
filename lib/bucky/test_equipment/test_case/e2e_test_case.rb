@@ -5,7 +5,6 @@ require_relative './abst_test_case'
 require_relative '../user_operation/user_operator'
 require_relative '../pageobject/pages'
 require_relative '../selenium_handler/webdriver_handler'
-require_relative '../verifications/js_error_checker'
 require_relative '../verifications/service_verifications'
 
 module Bucky
@@ -13,7 +12,6 @@ module Bucky
     module TestCase
       class E2eTestCase < Bucky::TestEquipment::TestCase::AbstTestCase
         include Bucky::TestEquipment::SeleniumHandler::WebdriverHandler
-        include Bucky::TestEquipment::Verifications::JsErrorChecker
 
         TEST_CATEGORY = 'e2e'
 
@@ -48,11 +46,6 @@ module Bucky
         # @param [Hash] op_args e.g.){page: 'top', part: 'rosen_tokyo', operation: 'click'}
         def operate(**op_args)
           @user_operator.send(op_args[:operate], method_name, op_args)
-        end
-
-        # Check javascript error
-        def check_js_error
-          assert_no_js_error(@driver) if @@config[:js_error_check]
         end
 
         def setup

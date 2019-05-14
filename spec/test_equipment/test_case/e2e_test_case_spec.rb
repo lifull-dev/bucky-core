@@ -73,25 +73,6 @@ describe Bucky::TestEquipment::TestCase::E2eTestCase do
     end
   end
 
-  describe '#check_js_error' do
-    before do
-      this_class.class_variable_set :@@config, js_error_check: js_error_check?
-    end
-    context 'when use js error check' do
-      let(:js_error_check?) { true }
-      it 'call assert_no_js_error' do
-        expect(subject).to receive(:assert_no_js_error)
-        subject.check_js_error
-      end
-    end
-    context 'when not use js error check' do
-      let(:js_error_check?) { false }
-      it 'not call assert_no_js_error' do
-        expect(subject).not_to receive(:assert_no_js_error)
-        subject.check_js_error
-      end
-    end
-  end
   describe '#setup' do
     it 'call t_equip_setup' do
       expect(subject).to receive(:t_equip_setup)
