@@ -1,6 +1,7 @@
 :selenium_ip: localhost # Default selenium ip. please set ip or 'docker_host_ip'. ip route | awk 'NR==1 {print $3}'
 :selenium_port: '4444'     # Default selenium port
 :browser: :chrome          # Only chrome
+:headless: false
 :sp_device_name: :iphone
 :tablet_device_name: :ipad
 :device_name_on_chrome:

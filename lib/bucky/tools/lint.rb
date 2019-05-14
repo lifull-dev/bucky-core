@@ -8,7 +8,7 @@ module Bucky
       class << self
         include Bucky::Utils::YamlLoad
         @@config_dir = "#{$bucky_home_dir}/config/**/*yml"
-        @@rule_config_dir = "#{$bucky_home_dir}/.bucky-core/template/new/config/*yml"
+        @@rule_config_dir = File.expand_path('../../../template/new/config', __dir__) + '/*yml'
 
         def check(category)
           method = "check_#{category}".to_sym
@@ -18,9 +18,9 @@ module Bucky
         # If you want to add new category, please make new method
         def check_config
           data = merge_yaml_data(@@config_dir)
-          rule_data = merge_yaml_data(@@rule_config_dir)
+          @rule_data = merge_yaml_data(@@rule_config_dir)
           actual = make_key_chain(data)
-          expect = make_key_chain(rule_data)
+          expect = make_key_chain(@rule_data)
           diff = diff_arr(expect, actual)
           make_message(diff)
         end
@@ -41,9 +41,10 @@ module Bucky
           if diff.empty?
             puts "\e[32mok\e[0m"
           else
-            puts "\e[31m[ERROR] The following configures are undefined."
+            puts "\e[31m[ERROR] The following configures are undefined. Tests can still be executed with default value automatically."
             diff.each do |key|
-              puts "- #{key}\e[0m"
+              puts "- #{key}"
+              puts "{#{key}: #{@rule_data[:"#{key}"]}}\e[0m"
             end
           end
         end

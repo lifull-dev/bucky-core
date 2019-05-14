@@ -26,6 +26,7 @@ describe Bucky::TestEquipment::SeleniumHandler::WebdriverHandler do
     allow(config_double).to receive('[]').with(:driver_read_timeout).and_return(10)
     allow(config_double).to receive('[]').with(:user_agent).and_return(10)
     allow(config_double).to receive('[]').with(:find_element_timeout).and_return(10)
+    allow(config_double).to receive('[]').with(:headless).and_return(headless)
     allow(Selenium::WebDriver).to receive(:for).and_return(webdriver_double)
     allow(webdriver_double).to receive(:manage).and_return(webdriver_manage_double)
     allow(webdriver_manage_double).to receive(:window).and_return(webdriver_manage_window_double)
@@ -43,6 +44,7 @@ describe Bucky::TestEquipment::SeleniumHandler::WebdriverHandler do
     let(:sp_device_name) { :iphone6 }
     let(:sp_device_name) { :ipad }
     let(:bucky_error) { 'bucky error' }
+    let(:headless) { false }
 
     context 'pc' do
       let(:device_type) { 'pc' }

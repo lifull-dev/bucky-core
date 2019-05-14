@@ -8,7 +8,7 @@ describe Bucky::Utils::Config do
 
   before do
     Singleton.__init__(Bucky::Utils::Config)
-    Bucky::Utils::Config.class_variable_set(:@@dir, "#{__dir__}/config.yml")
+    Bucky::Utils::Config.class_variable_set(:@@dir, "#{__dir__}/*yml")
     allow_any_instance_of(described_class).to receive(:`).and_return(ssh_ip)
   end
 
