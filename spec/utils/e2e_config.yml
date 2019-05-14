@@ -1,0 +1,11 @@
+:selenium_ip: 'docker_host_ip'  # Default selenium ip. please set ip or 'my_ssh_ip'.
+:selenium_port: '4444'     # Default selenium port
+:selenium_mode: :remote    # Other selection: :local(only PC mode), :headless
+:browser: :chrome          # Other selection: :firefox (only PC mode)
+:headless: false
+:sp_device_name: :iphone6  # Other selection: nexus5
+:device_chrome_name:
+  :iphone6: 'Apple iPhone 6'
+  :nexus5: 'Google Nexus 5'
+:js_error_check: true
+:js_error_collector_path: '/ChromeJSErrorCollector-master/extension/' # https://github.com/dharrya/ChromeJSErrorCollector
