@@ -54,7 +54,20 @@ jobs:
       - run: bundle exec rubocop -f html --out report.html
       - store_artifacts:
           path: report.html
-
+  publish:
+    docker:
+      - image: circleci/ruby:2.4.1
+    steps:
+      - add_ssh_keys:
+          finerprints:
+            - "6a:f3:d3:b5:a5:da:ce:e0:9f:22:f8:4a:2f:51:67:2b"
+      - checkout
+      - run:
+          name: Setup Rubygems
+          command: bash .circleci/setup_rubygems.sh
+      - run:
+          name: Update vresion.rb and publish on RubyGems
+          command: bash .circleci/deploy_to_rubygems.sh
 workflows:
   version: 2
   test:
@@ -64,3 +77,11 @@ workflows:
   lint:
     jobs:
       - syntax_check
+  deploy:
+    jobs:
+      - publish:
+          filters:
+            tags:
+              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
+            branches:
+              ignore: /.*/
