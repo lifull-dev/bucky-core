@@ -18,7 +18,6 @@ module Bucky
             puts "  #{index}:#{procedure[:proc]}" if procedure.key?(:proc)
             method = procedure[:exec].key?(:operate) ? :operate : :verify
             send(method, procedure[:exec])
-            check_js_error
           end
         end
 

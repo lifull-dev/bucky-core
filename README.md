@@ -13,7 +13,7 @@ When working with [Bucky-management](https://github.com/lifull-dev/bucky-managem
 * Support test code in YAML
 * Multiple browser supported (currently only Chrome is supported)
 * Customizable test categories
-  * [Default] E2E: E2E (End to End) tests including JavaScript error check
+  * [Default] E2E: E2E (End to End) tests
   * [Default] Linkstatus: http status code check in web page
 * Making test report with [Bucky-management](https://github.com/lifull-dev/bucky-management)
 

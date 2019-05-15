@@ -7,5 +7,3 @@
 :device_chrome_name:
   :iphone6: 'Apple iPhone 6'
   :nexus5: 'Google Nexus 5'
-:js_error_check: true
-:js_error_collector_path: '/ChromeJSErrorCollector-master/extension/' # https://github.com/dharrya/ChromeJSErrorCollector

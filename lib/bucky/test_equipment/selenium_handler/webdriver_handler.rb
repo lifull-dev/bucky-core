@@ -55,7 +55,6 @@ module Bucky
             mobile_emulation = { 'deviceName' => @@config[:device_name_on_chrome][@@config[device_type]] }
             chrome_options['chromeOptions']['mobileEmulation'] = mobile_emulation
           end
-          chrome_options['chromeOptions'][:args] << "--load-extension=#{@@config[:js_error_collector_path]}" if @@config[:js_error_check]
           chrome_options['chromeOptions'][:args] << "--user-agent=#{@@config[:user_agent]}" if @@config[:user_agent]
           chrome_options['chromeOptions'][:args] << '--headless' if @@config[:headless]
 
