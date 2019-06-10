@@ -49,6 +49,11 @@ module Bucky
           @driver.switch_to.window(@driver.window_handles.first)
         end
 
+        def switch_the_window(args)
+          sleep 1
+          @driver.swich_to_window_by_name(args[:window_name])
+        end
+
         # Close window
         def close(_)
           @driver.close
