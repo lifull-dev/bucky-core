@@ -35,7 +35,6 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     end
   end
 
-
   describe '#switch_next_window' do
     let(:operation) { :switch_next_window }
     before do
@@ -62,13 +61,9 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
   describe '#switch_to_the_window' do
     let(:operation) { :switch_to_the_window }
     let(:args) { { window_name: 'new' } }
-    before do
-      allow(driver_double).to receive_message_chain(:window_handles)
-    end
-    it 'call driver.switch_to.window' do
-      allow(driver_double).to receive_message_chain(:switch_to, :frame)
-      expect(driver_double).to receive_message_chain(:switch_to, :window)
-      subject.send(operation, nil)
+    it 'call driver.swich_to_window_by_name' do
+      expect(driver_double).to receive_message_chain(:switch_to_window_by_name)
+      subject.send(operation, args)
     end
   end
 
