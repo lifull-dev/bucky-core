@@ -62,7 +62,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     let(:operation) { :switch_to_the_window }
     let(:args) { { window_name: 'new' } }
     it 'call driver.swich_to_window_by_name' do
-      expect(driver_double).to receive_message_chain(:switch_to_window_by_name)
+      expect(driver_double).to receive_message_chain(:switch_to, :window)
       subject.send(operation, args)
     end
   end

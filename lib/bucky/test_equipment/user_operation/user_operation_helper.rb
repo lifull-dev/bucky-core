@@ -51,7 +51,7 @@ module Bucky
 
         def switch_to_the_window(args)
           sleep 1
-          @driver.swich_to_window_by_name(args[:window_name])
+          @driver.switch_to.window(args[:window_name])
         end
 
         # Close window
