@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative '../../../lib/bucky/core/test_core/test_manager'
+require 'test/unit'
+Test::Unit::AutoRunner.need_auto_run = false
 
 describe Bucky::Core::TestCore::TestManager do
   # Class Double
@@ -62,6 +64,28 @@ describe Bucky::Core::TestCore::TestManager do
           expect(tm).to receive(:execute_test)
           tm.rerun
         end
+      end
+    end
+  end
+
+  describe '#parallel_helper' do
+    let(:tm) { Bucky::Core::TestCore::TestManager.new(re_test_count: 1) }
+    before do
+      $debug = true
+    end
+    after do
+      $debug = false
+    end
+    context 'run test in multiprocess' do
+      let(:ng_case_data) { {} }
+      let(:parallel_num) { 2 }
+      let(:test_suite_data) { [{:test_class_name=>"test", :test_suite_name=>"test", :test_category=>"e2e", :suite=>{:device=>"pc", :service=>"homes", :test_category=>"e2e", :cases=>[{:case_name=>"test_1"}]}}]}
+
+      it 'create test class instance in fork' do
+        allow(tm).to receive(:fork) do |&block|
+          expect(block.call).to eq(Bucky::Core::TestCore::TestClasses::TestHomesPcE2etest)
+        end
+        tm.send(:parallel_helper, test_suite_data, parallel_num)
       end
     end
   end
