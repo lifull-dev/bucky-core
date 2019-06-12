@@ -79,11 +79,11 @@ describe Bucky::Core::TestCore::TestManager do
     context 'run test in multiprocess' do
       let(:ng_case_data) { {} }
       let(:parallel_num) { 2 }
-      let(:test_suite_data) { [{:test_class_name=>"test", :test_suite_name=>"test", :test_category=>"e2e", :suite=>{:device=>"pc", :service=>"homes", :test_category=>"e2e", :cases=>[{:case_name=>"test_1"}]}}]}
+      let(:test_suite_data) { [{:test_class_name=>"test", :test_suite_name=>"test", :test_category=>"e2e", :suite=>{:device=>"pc", :service=>"spec", :test_category=>"e2e", :cases=>[{:case_name=>"test_1"}]}}]}
 
       it 'create test class instance in fork' do
         allow(tm).to receive(:fork) do |&block|
-          expect(block.call).to eq(Bucky::Core::TestCore::TestClasses::TestHomesPcE2etest)
+          expect(block.call).to eq(Bucky::Core::TestCore::TestClasses::TestSpecPcE2etest)
         end
         tm.send(:parallel_helper, test_suite_data, parallel_num)
       end
