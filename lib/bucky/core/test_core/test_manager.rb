@@ -65,19 +65,19 @@ module Bucky
           # Max parallel processed to run
           processes_counter = max_processes
           # For checking on linkstatus
-          link_status_url_log ={}
+          link_status_url_log = {}
           parent_pid = Process.pid
           tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
 
           # Check if child process dead
-          Signal.trap("CLD") { processes_counter += 1 }
+          Signal.trap('CLD') { processes_counter += 1 }
           # Terminate parent and child process when getting interrupt signal
-          Signal.trap("INT") do
-            Process.kill("TERM", -1*parent_pid)
+          Signal.trap('INT') do
+            Process.kill('TERM', -1 * parent_pid)
           end
 
           test_suite_data.each do |data|
-            Process.wait unless processes_counter > 0
+            Process.wait unless processes_counter.positive?
             processes_counter -= 1
             fork { tcg.generate_test_class(data, link_status_url_log) }
           end
