@@ -45,12 +45,8 @@ module Bucky
 
         # Generate and execute test
         def do_test_suites(test_suite_data)
-          # For checking on linkstatus
-          link_status_url_log = {}
-          tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
-          Parallel.each(test_suite_data, in_processes: Bucky::Utils::Config.instance[:parallel_num]) do |data|
-            tcg.generate_test_class(data, link_status_url_log)
-          end
+          parallel_num = Bucky::Utils::Config.instance[:parallel_num]
+          parallel_helper(test_suite_data, parallel_num)
         end
 
         def execute_test
@@ -63,6 +59,31 @@ module Bucky
             )
             break if @test_cond[:re_test_cond].empty?
           end
+        end
+
+        def parallel_helper(test_suite_data, max_processes)
+          # Max parallel workers number
+          available_workers = max_processes
+          # For checking on linkstatus
+          link_status_url_log = {}
+          parent_pid = Process.pid
+          tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
+
+          # If child process dead, available workers increase
+          Signal.trap('CLD') { available_workers += 1 }
+          # Terminate parent and child process when getting interrupt signal
+          Signal.trap('INT') do
+            Process.kill('TERM', -1 * parent_pid)
+          end
+
+          test_suite_data.each do |data|
+            # Wait until worker is available
+            Process.wait unless available_workers.positive?
+            # Workers decrease when start working
+            available_workers -= 1
+            fork { tcg.generate_test_class(data, link_status_url_log) }
+          end
+          Process.waitall
         end
       end
     end
