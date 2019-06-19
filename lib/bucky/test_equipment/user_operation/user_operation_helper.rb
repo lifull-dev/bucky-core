@@ -50,8 +50,14 @@ module Bucky
         end
 
         def switch_to_the_window(args)
-          sleep 1
-          @driver.switch_to.window(args[:window_name])
+          # change ignore condition, NoSuchElementError to NoSuchWindowError
+          wait = Selenium::WebDriver::Wait.new(:timeout => 1, :interval => 0.1, :ignore => [Selenium::WebDriver::Error::NoSuchWindowError])
+          begin
+            # when the window successfully switched, return of switch_to.window is nil.
+            wait.until{ @driver.switch_to.window(args[:window_name]).nil? }
+          rescue Selenium::WebDriver::Error::TimeoutError
+            raise Selenium::WebDriver::Error::TimeoutError, "Exceeded the limit for trying switch_to_the_window.\n    #{$ERROR_INFO.message}"
+          end
         end
 
         # Close window
