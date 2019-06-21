@@ -101,7 +101,7 @@ describe Bucky::Core::TestCore::TestManager do
         allow(parallel_helper).to receive(:fork) do |&block|
           expect(block.call).to eq('Block mock')
         end
-        parallel_helper.send(:parallel_new_worker_each, test_suite_data_e2e, e2e_parallel_num, block_mock)
+        parallel_helper.send(:parallel_new_worker_each, test_suite_data_e2e, e2e_parallel_num, &block_mock)
       end
     end
 
@@ -128,7 +128,7 @@ describe Bucky::Core::TestCore::TestManager do
             expect(block_each.call).to eq('Block mock')
           end
         end
-        parallel_helper.send(:parallel_distribute_into_workers, test_suite_data_linkstatus, linkstatus_parallel_num, block_mock)
+        parallel_helper.send(:parallel_distribute_into_workers, test_suite_data_linkstatus, linkstatus_parallel_num, &block_mock)
       end
     end
   end

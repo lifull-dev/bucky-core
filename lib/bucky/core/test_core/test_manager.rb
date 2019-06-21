@@ -18,7 +18,7 @@ module Bucky
 
         private
 
-        def parallel_new_worker_each(data_set, max_processes, block)
+        def parallel_new_worker_each(data_set, max_processes, &block)
           # Max parallel workers number
           available_workers = max_processes
 
@@ -35,7 +35,7 @@ module Bucky
           Process.waitall
         end
 
-        def parallel_distribute_into_workers(data_set, max_processes, block)
+        def parallel_distribute_into_workers(data_set, max_processes, &block)
           # For checking on linkstatus
           divisor_of_data = max_processes
           num_of_works_in_pre_worker = (data_set.length.to_f / divisor_of_data.to_f).ceil
@@ -94,10 +94,12 @@ module Bucky
           e2e_parallel_num = Bucky::Utils::Config.instance[:e2e_parallel_num]
           linkstatus_parallel_num = Bucky::Utils::Config.instance[:linkstatus_parallel_num]
           @tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
+          e2e_proc = proc { |data| @tcg.generate_test_class(data) }
+          linkstatus_proc = proc { |data| @tcg.generate_test_class(data, link_status_url_log) }
 
           case @test_cond[:test_category][0]
-          when 'e2e' then parallel_new_worker_each(test_suite_data, e2e_parallel_num, proc { |data| @tcg.generate_test_class(data) })
-          when 'linkstatus' then parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num, proc { |data| @tcg.generate_test_class(data, link_status_url_log) })
+          when 'e2e' then parallel_new_worker_each(test_suite_data, e2e_parallel_num, &e2e_proc)
+          when 'linkstatus' then parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num, &linkstatus_proc)
           end
         end
 
