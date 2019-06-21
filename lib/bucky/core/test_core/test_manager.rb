@@ -89,7 +89,7 @@ module Bucky
         def do_test_suites(test_suite_data)
           extend ParallelHelper
           # For checking on linkstatus
-          link_status_url_log ={}
+          link_status_url_log = {}
           e2e_parallel_num = Bucky::Utils::Config.instance[:e2e_parallel_num]
           linkstatus_parallel_num = Bucky::Utils::Config.instance[:linkstatus_parallel_num]
           @tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
