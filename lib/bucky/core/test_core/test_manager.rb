@@ -39,8 +39,7 @@ module Bucky
           # For checking on linkstatus
           link_status_url_log = {}
           divisor_of_data = max_processes
-          # Use 1 if only one suite is in data_set
-          num_of_works_in_pre_worker = (data_set.length == 1 ? 1 : (data_set.length.to_f / divisor_of_data.to_f).ceil)
+          num_of_works_in_pre_worker = (data_set.length.to_f / divisor_of_data.to_f).ceil
           # Slice data_set into few parts that depends on workers
           data_set.each_slice(num_of_works_in_pre_worker) do |data_for_pre_worker|
             # Number of child process is equal to max_processes
