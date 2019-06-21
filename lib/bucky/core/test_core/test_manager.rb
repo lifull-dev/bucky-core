@@ -93,13 +93,11 @@ module Bucky
           link_status_url_log = {}
           e2e_parallel_num = Bucky::Utils::Config.instance[:e2e_parallel_num]
           linkstatus_parallel_num = Bucky::Utils::Config.instance[:linkstatus_parallel_num]
-          @tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
-          e2e_proc = proc { |data| @tcg.generate_test_class(data) }
-          linkstatus_proc = proc { |data| @tcg.generate_test_class(data, link_status_url_log) }
+          tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
 
           case @test_cond[:test_category][0]
-          when 'e2e' then parallel_new_worker_each(test_suite_data, e2e_parallel_num, &e2e_proc)
-          when 'linkstatus' then parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num, &linkstatus_proc)
+          when 'e2e' then parallel_new_worker_each(test_suite_data, e2e_parallel_num) { |data| tcg.generate_test_class(data) }
+          when 'linkstatus' then parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num) { |data| tcg.generate_test_class(data, link_status_url_log) }
           end
         end
 
