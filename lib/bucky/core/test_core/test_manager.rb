@@ -51,6 +51,8 @@ module Bucky
       end
 
       class TestManager
+        include ParallelHelper
+
         # Keep test conditions and round number
         def initialize(test_cond)
           @test_cond = test_cond
@@ -87,7 +89,6 @@ module Bucky
 
         # Generate and execute test
         def do_test_suites(test_suite_data)
-          extend ParallelHelper
           # For checking on linkstatus
           link_status_url_log = {}
           e2e_parallel_num = Bucky::Utils::Config.instance[:e2e_parallel_num]
