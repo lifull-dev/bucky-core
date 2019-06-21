@@ -37,14 +37,13 @@ module Bucky
 
         def parallel_distribute_into_workers(data_set, max_processes, block)
           # For checking on linkstatus
-          link_status_url_log = {}
           divisor_of_data = max_processes
           num_of_works_in_pre_worker = (data_set.length.to_f / divisor_of_data.to_f).ceil
           # Slice data_set into few parts that depends on workers
           data_set.each_slice(num_of_works_in_pre_worker) do |data_for_pre_worker|
             # Number of child process is equal to max_processes
             fork do
-              data_for_pre_worker.each { |data| block.call(data, link_status_url_log) }
+              data_for_pre_worker.each { |data| block.call(data) }
             end
           end
           Process.waitall
@@ -89,13 +88,15 @@ module Bucky
         # Generate and execute test
         def do_test_suites(test_suite_data)
           extend ParallelHelper
+          # For checking on linkstatus
+          link_status_url_log ={}
           e2e_parallel_num = Bucky::Utils::Config.instance[:e2e_parallel_num]
           linkstatus_parallel_num = Bucky::Utils::Config.instance[:linkstatus_parallel_num]
           @tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
 
           case @test_cond[:test_category][0]
           when 'e2e' then parallel_new_worker_each(test_suite_data, e2e_parallel_num, proc { |data| @tcg.generate_test_class(data) })
-          when 'linkstatus' then parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num, proc { |data, linkstatus_check_hash| @tcg.generate_test_class(data, linkstatus_check_hash) })
+          when 'linkstatus' then parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num, proc { |data| @tcg.generate_test_class(data, link_status_url_log) })
           end
         end
 
