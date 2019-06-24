@@ -5,5 +5,5 @@
 #    - xpath
 #    - "//*[@id='freeword']"
 # photos:
-#    - xpaths
-#    - "//*[@class='photo']"
+#    - css
+#    - .photo

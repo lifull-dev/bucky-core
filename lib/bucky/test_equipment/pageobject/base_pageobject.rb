@@ -50,10 +50,12 @@ module Bucky
         # @param [String] Condition of search (xpath/id)
         # @return [Selenium::WebDriver::Element]
         def find_elem(method, value)
-          raise StandardError, "Invalid finder. #{method}" unless FIDERS.key? method.to_sym
+          method_name = method.downcase.to_sym
+          raise StandardError, "Invalid finder. #{method_name}" unless FINDERS.key? method_name
 
-          elem = @driver.find_elements(method.to_sym, value)
-          raise_if_element_empty(elem, method, value)
+          elem = @driver.find_elements(method_name, value)
+          raise_if_element_empty(elem, method_name, value)
+          elem
         rescue StandardError => e
           Bucky::Core::Exception::WebdriverException.handle(e)
         end
