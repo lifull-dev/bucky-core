@@ -36,12 +36,11 @@ module Bucky
         end
 
         def parallel_distribute_into_workers(data_set, max_processes, &block)
-          # For checking on linkstatus
-          divisor_of_data = max_processes
-          num_of_works_in_pre_worker = (data_set.length.to_f / divisor_of_data.to_f).ceil
-          # Slice data_set into few parts that depends on workers
-          data_set.each_slice(num_of_works_in_pre_worker) do |data_for_pre_worker|
-            # Number of child process is equal to max_processes
+          # Group the data by remainder of index
+          data_set_grouped = data_set.group_by.with_index { |elem,index| index%max_processes }
+          # Use 'values' method to get only hash's key into an array
+          data_set_grouped.values.each do |data_for_pre_worker|
+            # Number of child process is equal to max_processes (or equal to data_set length when data_set length is less than max_processes)
             fork do
               data_for_pre_worker.each { |data| block.call(data) }
             end
@@ -90,14 +89,15 @@ module Bucky
         # Generate and execute test
         def do_test_suites(test_suite_data)
           # For checking on linkstatus
-          link_status_url_log = {}
           e2e_parallel_num = Bucky::Utils::Config.instance[:e2e_parallel_num]
           linkstatus_parallel_num = Bucky::Utils::Config.instance[:linkstatus_parallel_num]
           tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
 
           case @test_cond[:test_category][0]
           when 'e2e' then parallel_new_worker_each(test_suite_data, e2e_parallel_num) { |data| tcg.generate_test_class(data) }
-          when 'linkstatus' then parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num) { |data| tcg.generate_test_class(data, link_status_url_log) }
+          when 'linkstatus' then
+            link_status_url_log = {}
+            parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num) { |data| tcg.generate_test_class(data, link_status_url_log) }
           end
         end
 
