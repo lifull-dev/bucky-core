@@ -37,7 +37,7 @@ module Bucky
 
         def parallel_distribute_into_workers(data_set, max_processes, &block)
           # Group the data by remainder of index
-          data_set_grouped = data_set.group_by.with_index { |elem,index| index%max_processes }
+          data_set_grouped = data_set.group_by.with_index { |_elem, index| index % max_processes }
           # Use 'values' method to get only hash's key into an array
           data_set_grouped.values.each do |data_for_pre_worker|
             # Number of child process is equal to max_processes (or equal to data_set length when data_set length is less than max_processes)
