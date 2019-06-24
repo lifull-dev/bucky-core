@@ -19,14 +19,14 @@ describe Bucky::TestEquipment::PageObject::Pages do
   end
 
   describe '#get_part' do
-    let(:pages_double) { double('pages double') }
+    let(:page_double) { double('page double') }
     let(:part_double) { double('part double') }
     context 'in case single part' do
       let(:operation_args) { { page: 'test_page', part: 'rosen_tokyo' } }
       it 'call send on partobject' do
-        allow(subject).to receive(:send).and_return(part_double)
-        expect(part_double).to receive(:send)
-        # subject.get_part(operation_args)
+        allow(subject).to receive(:send).and_return(page_double)
+        allow(page_double).to receive(:send).and_return(part_double)
+        expect(part_double).to receive(:first)
         subject.get_part(operation_args)
       end
     end

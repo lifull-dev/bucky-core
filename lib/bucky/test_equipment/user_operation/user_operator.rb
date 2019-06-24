@@ -52,7 +52,7 @@ module Bucky
             @pages.send(args[:page]).send(part_name)[num].send(@operation)
           # e.g.){page: 'top', part: 'rosen_tokyo', operate: 'click'}
           else
-            @pages.send(args[:page]).send(args[:part]).send(@operation)
+            @pages.send(args[:page]).send(args[:part]).first.send(@operation)
           end
         end
       end
