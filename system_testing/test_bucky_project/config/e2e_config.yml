@@ -2,6 +2,7 @@
 :selenium_port: '4444'     # Default selenium port
 :browser: :chrome          # Only chrome
 :headless: false
+:e2e_parallel_num: 1
 :sp_device_name: :iphone
 :tablet_device_name: :ipad
 :device_name_on_chrome:

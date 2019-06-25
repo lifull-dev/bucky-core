@@ -1,4 +1,3 @@
-:parallel_num: 4
 :log_path: './spec/utils/'
 :screen_shot_path: './system/screen_shots/'
 :bucky_error: 'bucky_error'
