@@ -1,9 +1,12 @@
 # add some parts for this page
 
-# sample ====================
+# Sample ====================
 # freewod_form:
 #    - xpath
 #    - "//*[@id='freeword']"
 # photos:
 #    - css
-#    - .photos
+#    - '.photos'
+# icon:
+#    - id
+#    - icon

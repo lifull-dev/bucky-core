@@ -6,4 +6,7 @@
 #    - "//*[@id='freeword']"
 # photos:
 #    - css
-#    - .photo
+#    - '.photos'
+# icon:
+#    - id
+#    - icon

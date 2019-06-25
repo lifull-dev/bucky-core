@@ -9,7 +9,7 @@ module Bucky
       class BasePageObject
         include Bucky::Utils::YamlLoad
 
-        # https://www.rubydoc.info/gems/selenium-webdriver/2.53.0/Selenium/WebDriver/SearchContext#find_elements-instance_method
+        # https://seleniumhq.github.io/selenium/docs/api/rb/Selenium/WebDriver/SearchContext.html#find_element-instance_method
         FINDERS = {
           class: 'class name',
           class_name: 'class name',
