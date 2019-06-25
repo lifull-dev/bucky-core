@@ -104,7 +104,7 @@ describe Bucky::TestEquipment::Verifications::StatusChecker do
       allow(response).to receive(:code).and_return(code)
       allow(response).to receive(:entity)
       allow(subject).to receive(:make_target_links).and_return(links)
-      allow(Bucky::Utils::Config).to receive(:instance).and_return(linkstatus_parallel_num: 4)
+      allow(Bucky::Utils::Config).to receive(:instance).and_return(linkstatus_thread_num: 4)
     end
     context 'no error base url, link url' do
       it 'not raise exception' do

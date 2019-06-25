@@ -90,7 +90,7 @@ module Bucky
           links = exclude(links, exclude_urls) unless exclude_urls.nil?
 
           errors = []
-          Parallel.each(links.uniq, in_threads: Bucky::Utils::Config.instance[:linkstatus_parallel_num]) do |link|
+          Parallel.each(links.uniq, in_threads: Bucky::Utils::Config.instance[:linkstatus_thread_num]) do |link|
             http_status_check_args[:url] = link
             http_status_check_args[:redirect_url_list] = []
             link_response = http_status_check(http_status_check_args)

@@ -1,4 +1,3 @@
-:parallel_num: 4
 :test_result_path: './system/test_results/'
 :log_path: './system/logs/'
 :screen_shot_path: './system/evidences/screen_shots/'
