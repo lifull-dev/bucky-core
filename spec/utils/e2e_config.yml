@@ -3,6 +3,7 @@
 :selenium_mode: :remote    # Other selection: :local(only PC mode), :headless
 :browser: :chrome          # Other selection: :firefox (only PC mode)
 :headless: false
+:e2e_parallel_num: 1
 :sp_device_name: :iphone6  # Other selection: nexus5
 :device_chrome_name:
   :iphone6: 'Apple iPhone 6'

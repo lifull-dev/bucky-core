@@ -58,6 +58,20 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     end
   end
 
+  describe '#switch_to_the_window' do
+    let(:operation) { :switch_to_the_window }
+    let(:args) { { window_name: 'new' } }
+    it 'call driver.swich_to_window_by_name' do
+      expect(driver_double).to receive_message_chain(:switch_to, :window)
+      subject.send(operation, args)
+    end
+    it 'when it exceeded the limit, raise timeout exception' do
+      # anytime switch_to.window returns Selenium::WebDriver::Error::NoSuchWindowException
+      allow(driver_double).to receive_message_chain(:switch_to, :window).and_raise(Selenium::WebDriver::Error::NoSuchWindowError.new)
+      expect { subject.send(operation, args) }.to raise_error(Selenium::WebDriver::Error::TimeoutError)
+    end
+  end
+
   describe '#close' do
     let(:operation) { :close }
     it 'call driver.close' do
