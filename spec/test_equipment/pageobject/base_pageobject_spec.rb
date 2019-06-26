@@ -23,9 +23,10 @@ describe Bucky::TestEquipment::PageObject::BasePageObject do
     end
     it '' do
     end
-    it 'If given method name is not includeed in FINDERS, raise error' do
+    it 'If given method name is not included in FINDERS, raise error' do
       method = 'invalid method name'
-      expect { subject.send(:find_elem, method, value) }.to raise_error StandardError
+      allow(Bucky::Core::Exception::BuckyException).to receive(:handle)
+      expect { subject.send(:find_elem, method, value) }.to raise_error(StandardError, "Invalid finder. #{method}")
     end
   end
 end
