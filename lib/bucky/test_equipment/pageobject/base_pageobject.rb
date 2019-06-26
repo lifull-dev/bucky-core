@@ -33,7 +33,7 @@ module Bucky
         # Load parts file and define parts method
         # @param [String] service
         # @param [String] device (pc, sp)
-        # @param [String] paga_name
+        # @param [String] page_name
         def generate_parts(service, device, page_name)
           Dir.glob("./services/#{service}/#{device}/parts/#{page_name}.yml").each do |file|
             parts_data = load_yaml(file)
