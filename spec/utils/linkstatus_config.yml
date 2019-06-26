@@ -1,3 +1,4 @@
 :linkstatus_open_timeout: 60
 :linkstatus_read_timeout: 60
-:linkstatus_parallel_num: 8
+:linkstatus_parallel_num: 1
+:linkstatus_thread_num: 4

@@ -70,16 +70,18 @@ describe Bucky::Core::TestCore::TestManager do
 
   describe '#parallel_helper' do
     let(:tm) { Bucky::Core::TestCore::TestManager.new(re_test_count: 1) }
+    let(:parallel_helper) { Class.new { extend Bucky::Core::TestCore::ParallelHelper } }
+    let(:block_mock) { proc { 'Block mock' } }
+    let(:ng_case_data) { {} }
     before do
       $debug = true
     end
     after do
       $debug = false
     end
-    context 'run test in multiprocess' do
-      let(:ng_case_data) { {} }
-      let(:parallel_num) { 2 }
-      let(:test_suite_data) do
+    context 'parallel_new_worker_each' do
+      let(:e2e_parallel_num) { 2 }
+      let(:test_suite_data_e2e) do
         [
           { test_class_name: 'test',
             test_suite_name: 'test',
@@ -95,11 +97,38 @@ describe Bucky::Core::TestCore::TestManager do
         ]
       end
 
-      it 'create test class instance in fork' do
-        allow(tm).to receive(:fork) do |&block|
-          expect(block.call).to eq(Bucky::Core::TestCore::TestClasses::TestSpecPcE2etest)
+      it 'call target block in fork' do
+        allow(parallel_helper).to receive(:fork) do |&block|
+          expect(block.call).to eq('Block mock')
         end
-        tm.send(:parallel_helper, test_suite_data, parallel_num)
+        parallel_helper.send(:parallel_new_worker_each, test_suite_data_e2e, e2e_parallel_num, &block_mock)
+      end
+    end
+
+    context 'parallel_distribute_into_workers' do
+      let(:linkstatus_parallel_num) { 2 }
+      let(:test_suite_data_linkstatus) do
+        [
+          { test_class_name: 'test',
+            test_suite_name: 'test',
+            test_category: 'linkstatus',
+            suite: {
+              device: 'pc',
+              service: 'spec',
+              test_category: 'linkstatus',
+              cases: [
+                { case_name: 'test_1' }
+              ]
+            } }
+        ]
+      end
+      it 'make workers in fork then call block in each' do
+        allow(parallel_helper).to receive(:fork) do |&block_fork|
+          allow(block_fork.call).to receive(:each) do |&block_each|
+            expect(block_each.call).to eq('Block mock')
+          end
+        end
+        parallel_helper.send(:parallel_distribute_into_workers, test_suite_data_linkstatus, linkstatus_parallel_num, &block_mock)
       end
     end
   end

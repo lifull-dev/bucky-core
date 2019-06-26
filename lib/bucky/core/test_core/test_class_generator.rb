@@ -45,7 +45,7 @@ module Bucky
         end
 
         # Genrate test class by test suite and test case data
-        def generate_test_class(data, link_status_url_log)
+        def generate_test_class(data, link_status_url_log = {})
           test_cond = @test_cond
           # Common proccessing
           # e.g.) TestSampleAppPcE2e1, TestSampleAppPcHttpstatus1
