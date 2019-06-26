@@ -10,7 +10,7 @@ services:
     tty: true
   chrome:
     container_name: bucky-chrome
-    image: selenium/standalone-chrome-debug:3.11.0
+    image: selenium/standalone-chrome-debug:3.141.59-oxygen
     ports:
       - '4444:4444'
       # For local debug

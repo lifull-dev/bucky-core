@@ -17,7 +17,7 @@ services:
     networks:
       - bucky-management_default
   chrome:
-    image: selenium/standalone-chrome-debug:3.11.0
+    image: selenium/standalone-chrome-debug:3.141.59-oxygen
     container_name: chrome
     ports:
       - '4444:4444'
