@@ -4,3 +4,6 @@ link:
 ua:
    - xpath
    - "//*[@id='user_agent']"
+links:
+   - css
+   - '.links'

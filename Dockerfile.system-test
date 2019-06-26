@@ -20,12 +20,13 @@ RUN apk update && \
     yaml \
     yaml-dev \
     zlib-dev \
-    curl
+    curl \
+    parallel
 
-ENV BATS_VER 1.1.0
-RUN curl -sL "https://github.com/bats-core/bats-core/archive/v${BATS_VER}.tar.gz" | tar zx -C /var/opt \
-    && cd "/var/opt/bats-core-${BATS_VER}/" && ./install.sh /usr/local \
-    && rm -rf "/var/opt/bats-core-${BATS_VER}/"
+RUN git clone https://github.com/bats-core/bats-core.git /tmp/bats-core \
+    && cd /tmp/bats-core \
+    && ./install.sh /usr/local \
+    && rm -rf /tmp/bats-core
 
 ENV BC_DIR /bucky-core/
 WORKDIR $BC_DIR

@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  system_test:
+  system_test_e2e:
     machine: true
     steps:
       - checkout
@@ -9,7 +9,33 @@ jobs:
           command: docker-compose -f docker-compose.system-test.yml up --build -d
       - run:
           name: execute system testing
-          command: docker exec bucky-core bats /bucky-core/system_testing/testing_code/
+          command: docker exec bucky-core bats /bucky-core/system_testing/testing_code/e2e.bats -j 4
+      - run:
+          name: docker down
+          command: docker-compose -f docker-compose.system-test.yml down
+  system_test_command:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: docker up
+          command: docker-compose -f docker-compose.system-test.yml up --build -d
+      - run:
+          name: execute system testing
+          command: docker exec bucky-core bats /bucky-core/system_testing/testing_code/command.bats
+      - run:
+          name: docker down
+          command: docker-compose -f docker-compose.system-test.yml down
+  system_test_linkstatus:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: docker up
+          command: docker-compose -f docker-compose.system-test.yml up --build -d
+      - run:
+          name: execute system testing
+          command: docker exec bucky-core bats /bucky-core/system_testing/testing_code/linkstatus.bats -j 4
       - run:
           name: docker down
           command: docker-compose -f docker-compose.system-test.yml down
@@ -73,7 +99,9 @@ workflows:
   test:
     jobs:
       - unit_test
-      - system_test
+      - system_test_e2e
+      - system_test_linkstatus
+      - system_test_command
   lint:
     jobs:
       - syntax_check

@@ -66,3 +66,18 @@ cases:
           page: index
           part: link
         when: <%= ENV['STAGE'] == 'development' %>
+  - case_name: pc_e2e_5
+    func: pc e2e 5 multi elements
+    desc: pc e2e 5 multi elements
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+      - proc: index
+        exec:
+          operate: click
+          page: index
+          part:
+            locate: links
+            num: 1
