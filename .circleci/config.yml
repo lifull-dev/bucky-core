@@ -2,8 +2,13 @@ version: 2
 jobs:
   system_test:
     machine: true
+    parallelism: 4
     steps:
       - checkout
+      - run:
+          name: Split test by timing
+          command: |
+            circleci tests glob "/bucky-core/system_testing/testing_code/*.bats" | circleci tests split --split-by=timings
       - run:
           name: docker up
           command: docker-compose -f docker-compose.system-test.yml up --build -d
@@ -39,7 +44,7 @@ jobs:
           ./cc-test-reporter before-build
           bundle exec rspec
           ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
-  syntax_check:
+  static_code_analysis:
     docker:
       - image: circleci/ruby:2.4.2-node
     steps:
@@ -72,11 +77,13 @@ workflows:
   version: 2
   test:
     jobs:
+      - static_code_analysis
       - unit_test
+          requires:
+            - static_code_analysis
       - system_test
-  lint:
-    jobs:
-      - syntax_check
+          requires:
+            - unit_test
   deploy:
     jobs:
       - publish:
