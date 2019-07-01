@@ -78,10 +78,10 @@ workflows:
   test:
     jobs:
       - static_code_analysis
-      - unit_test
+      - unit_test:
           requires:
             - static_code_analysis
-      - system_test
+      - system_test:
           requires:
             - unit_test
   deploy:
