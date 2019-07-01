@@ -2,7 +2,7 @@ version: 2
 jobs:
   system_test:
     machine: true
-    parallelism: 4
+    parallelism: 2
     steps:
       - checkout
       - run:
