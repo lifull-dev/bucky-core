@@ -9,7 +9,7 @@ jobs:
           command: docker-compose -f docker-compose.system-test.yml up --build -d
       - run:
           name: execute system testing
-          command: docker exec bucky-core bats /bucky-core/system_testing/testing_code/
+          command: docker exec bucky-core bats /bucky-core/system_testing/testing_code
       - run:
           name: docker down
           command: docker-compose -f docker-compose.system-test.yml down

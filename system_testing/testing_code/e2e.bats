@@ -73,3 +73,9 @@ setup() {
   [ $(expr "$output" : ".*click.*") -eq 0 ]
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
+
+@test "#21 When click second element, results have no failures nor errors" {
+  run bucky run -t e2e -d -D pc -c pc_e2e_5
+  [ $(expr "$output" : ".*click.*") -ne 0 ]
+  [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
+}

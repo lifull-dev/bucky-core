@@ -8,6 +8,21 @@ module Bucky
     module PageObject
       class BasePageObject
         include Bucky::Utils::YamlLoad
+
+        # https://seleniumhq.github.io/selenium/docs/api/rb/Selenium/WebDriver/SearchContext.html#find_element-instance_method
+        FINDERS = {
+          class: 'class name',
+          class_name: 'class name',
+          css: 'css selector',
+          id: 'id',
+          link: 'link text',
+          link_text: 'link text',
+          name: 'name',
+          partial_link_text: 'partial link text',
+          tag_name: 'tag name',
+          xpath: 'xpath'
+        }.freeze
+
         def initialize(service, device, page_name, driver)
           @driver = driver
           generate_parts(service, device, page_name)
@@ -18,7 +33,7 @@ module Bucky
         # Load parts file and define parts method
         # @param [String] service
         # @param [String] device (pc, sp)
-        # @param [String] paga_name
+        # @param [String] page_name
         def generate_parts(service, device, page_name)
           Dir.glob("./services/#{service}/#{device}/parts/#{page_name}.yml").each do |file|
             parts_data = load_yaml(file)
@@ -35,13 +50,12 @@ module Bucky
         # @param [String] Condition of search (xpath/id)
         # @return [Selenium::WebDriver::Element]
         def find_elem(method, value)
-          if method.end_with?('s')
-            elem = @driver.find_elements(method.sub(/s$/, '').to_sym, value)
-            raise_if_element_empty(elem, method, value)
-            return elem
-          end
+          method_name = method.downcase.to_sym
+          raise StandardError, "Invalid finder. #{method_name}" unless FINDERS.key? method_name
 
-          @driver.find_element(method.to_sym, value)
+          elem = @driver.find_elements(method_name, value)
+          raise_if_element_empty(elem, method_name, value)
+          elem
         rescue StandardError => e
           Bucky::Core::Exception::WebdriverException.handle(e)
         end
