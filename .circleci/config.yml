@@ -1,12 +1,30 @@
 version: 2
 jobs:
-  system_test:
+  generate_cache_for_system_test:
     machine: true
-    parallelism: 2
     steps:
       - checkout
       - restore_cache:
-          key: docker-{{ .Branch }}-{{ checksum "docker-compose.system-test.yml" }}
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
+          paths: ~/caches/images.tar
+      - run:
+          command: |
+            if [ ! -f ~/caches/images.tar ]; then
+              docker-compose pull chrome
+              docker-compose -f docker-compose.system-test.yml build
+              mkdir -p ~/caches
+              docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
+            fi
+      - save_cache:
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
+          paths: ~/caches/images.tar
+  system_test:
+    machine: true
+    parallelism: 1
+    steps:
+      - checkout
+      - restore_cache:
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
           paths: ~/caches/images.tar
       - run:
           command: |
@@ -14,14 +32,7 @@ jobs:
             docker load -i ~/caches/images.tar | true
       - run:
           name: docker up
-          command: docker-compose -f docker-compose.system-test.yml up --build -d
-      - run:
-          command: |
-            mkdir -p ~/caches
-            docker save $(docker images -q) -o ~/caches/images.tar
-      - save_cache:
-          key: docker-{{ .Branch }}-{{ checksum "docker-compose.system-test.yml" }}
-          paths: ~/caches/images.tar
+          command: docker-compose -f docker-compose.system-test.yml up -d
       - run:
           name: execute system testing
           command: 'circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 -I {} docker exec bucky-core bats "/bucky-core/"{} | circleci tests split'
@@ -91,9 +102,11 @@ workflows:
       - unit_test:
           requires:
             - static_code_analysis
+      - generate_cache_for_system_test
       - system_test:
           requires:
             - unit_test
+            - generate_cache_for_system_test
   deploy:
     jobs:
       - publish:
