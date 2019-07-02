@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  generate_cache_for_system_test:
+docker-compose pull chrome  generate_cache_for_system_test:
     machine: true
     steps:
       - checkout
@@ -10,7 +10,6 @@ jobs:
       - run:
           command: |
             if [ ! -f ~/caches/images.tar ]; then
-              docker-compose pull chrome
               docker-compose -f docker-compose.system-test.yml build
               mkdir -p ~/caches
               docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
