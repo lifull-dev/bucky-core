@@ -53,9 +53,13 @@ module Bucky
           method_name = method.downcase.to_sym
           raise StandardError, "Invalid finder. #{method_name}" unless FINDERS.key? method_name
 
-          elem = @driver.find_elements(method_name, value)
+          wait = Selenium::WebDriver::Wait.new(:timeout => 3, :interval => 0.1, :ignore => [Selenium::WebDriver::Error::NoSuchElementError])
+          # wait until driver find element
+          elem = wait.until{ @driver.find_elements(method_name, value) }
           raise_if_element_empty(elem, method_name, value)
           elem
+        rescue Selenium::WebDriver::Error::TimeoutError
+          raise Selenium::WebDriver::Error::NoSuchElementError, "Exceeded the limit times for find_elements.\n   #{$ERROR_INFO.message}"
         rescue StandardError => e
           Bucky::Core::Exception::WebdriverException.handle(e)
         end

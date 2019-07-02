@@ -122,6 +122,12 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
       expect(elem_double).to receive(:location_once_scrolled_into_view)
       subject.send(operation, args)
     end
+    it 'when it exceeded the limit, raise timeout exception' do
+      allow(pages_double).to receive(:get_part).and_return(elem_double)
+      allow(elem_double).to receive(:location_once_scrolled_into_view)
+      allow(elem_double).to receive(:click).and_raise(Selenium::WebDriver::Error::WebDriverError.new)
+      expect { subject.send(operation, args) }.to raise_error(Selenium::WebDriver::Error::TimeoutError)
+    end
   end
 
   describe '#choose' do

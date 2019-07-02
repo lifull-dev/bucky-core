@@ -33,8 +33,13 @@ module Bucky
         def click(args)
           elem = @pages.get_part(args)
           elem.location_once_scrolled_into_view
-          sleep 1
-          elem.click
+          wait = Selenium::WebDriver::Wait.new(:timeout => 5, :interval => 0.1, :ignore => [Selenium::WebDriver::Error::WebDriverError])
+          begin
+            # it will return nil if click successfully
+            wait.until{ elem.click.nil? }
+          rescue Selenium::WebDriver::Error::TimeoutError
+            raise Selenium::WebDriver::Error::TimeoutError, "Exceeded the limit for trying to click.\n    #{$ERROR_INFO.message}"
+          end
         end
 
         def refresh(_)
