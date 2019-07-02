@@ -31,7 +31,7 @@ jobs:
             docker load -i ~/caches/images.tar | true
       - run:
           name: docker up
-          command: docker-compose -f docker-compose.system-test.yml up -d
+          command: docker-compose -f docker-compose.system-test.yml up -d --no-build
       - run:
           name: execute system testing
           command: 'circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 -I {} docker exec bucky-core bats "/bucky-core/"{} | circleci tests split'
