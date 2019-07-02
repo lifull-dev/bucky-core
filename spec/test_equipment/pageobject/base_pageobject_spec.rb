@@ -2,6 +2,7 @@
 
 require_relative '../../../lib/bucky/test_equipment/pageobject/base_pageobject'
 require 'selenium-webdriver'
+require 'English'
 
 describe Bucky::TestEquipment::PageObject::BasePageObject do
   subject { Bucky::TestEquipment::PageObject::BasePageObject.new('a', 'b', 'c', driver) }

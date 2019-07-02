@@ -2,6 +2,7 @@
 
 require_relative '../../utils/yaml_load'
 require_relative '../../core/exception/bucky_exception'
+require 'English'
 
 module Bucky
   module TestEquipment
