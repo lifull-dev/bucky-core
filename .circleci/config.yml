@@ -1,6 +1,6 @@
 version: 2
 jobs:
-docker-compose pull chrome  generate_cache_for_system_test:
+  generate_cache_for_system_test:
     machine: true
     steps:
       - checkout
