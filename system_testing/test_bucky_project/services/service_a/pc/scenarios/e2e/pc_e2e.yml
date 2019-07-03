@@ -81,3 +81,51 @@ cases:
           part:
             locate: links
             num: 1
+  - case_name: pc_e2e_6
+    func: pc e2e 6 get element from PageObject
+    desc: pc e2e 6 get element from PageObject
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+      - proc: index
+        exec:
+          operate: click_single_element
+          page: index
+  - case_name: pc_e2e_7
+    func: pc e2e 7 get multiple element from PageObject
+    desc: pc e2e 7 get multiple element from PageObject
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+      - proc: index
+        exec:
+          operate: click_multiple_element
+          page: index
+  - case_name: pc_e2e_8
+    func: pc e2e 8 get element from Verifications
+    desc: pc e2e 8 get element from Verifications
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+      - proc: index
+        exec:
+          verify: click_single_element
+          page: index
+  - case_name: pc_e2e_9
+    func: pc e2e 9 get multiple element from Verifications
+    desc: pc e2e 9 get multiple element from Verifications
+    procs:
+      - proc: open index
+        exec:
+          operate: go
+          url: http://bucky.net
+      - proc: index
+        exec:
+          verify: click_multiple_element
+          page: index
