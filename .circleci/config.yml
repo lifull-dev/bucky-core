@@ -26,9 +26,7 @@ jobs:
           key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
           paths: ~/caches/images.tar
       - run:
-          command: |
-            set +o pipefail && \
-            docker load -i ~/caches/images.tar | true
+          command: docker load -i ~/caches/images.tar
       - run:
           name: docker up
           command: docker-compose -f docker-compose.system-test.yml up --no-build -d
