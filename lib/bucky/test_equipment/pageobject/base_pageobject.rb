@@ -55,7 +55,8 @@ module Bucky
 
           elem = @driver.find_elements(method_name, value)
           raise_if_element_empty(elem, method_name, value)
-          elem
+          Selenium::WebDriver::Element.class_eval { define_method('[]') { |num| elem[num]} }
+          elem.first
         rescue StandardError => e
           Bucky::Core::Exception::WebdriverException.handle(e)
         end
