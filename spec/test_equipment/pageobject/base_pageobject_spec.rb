@@ -21,8 +21,6 @@ describe Bucky::TestEquipment::PageObject::BasePageObject do
         end
       end
     end
-    it '' do
-    end
     it 'If given method name is not included in FINDERS, raise error' do
       method = 'invalid method name'
       allow(Bucky::Core::Exception::BuckyException).to receive(:handle)
