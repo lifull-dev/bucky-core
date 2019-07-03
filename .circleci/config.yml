@@ -27,7 +27,7 @@ jobs:
           paths: ~/caches/images.tar
       - run:
           command: |
-            set +o pipefaila && \
+            set +o pipefail && \
             docker load -i ~/caches/images.tar | true
       - run:
           name: docker up
