@@ -54,9 +54,9 @@ module Bucky
           method_name = method.downcase.to_sym
           raise StandardError, "Invalid finder. #{method_name}" unless FINDERS.key? method_name
 
-          wait = Selenium::WebDriver::Wait.new(:timeout => 3, :interval => 0.1, :ignore => [Selenium::WebDriver::Error::NoSuchElementError])
+          wait = Selenium::WebDriver::Wait.new(timeout: 3, interval: 0.1, ignore: [Selenium::WebDriver::Error::NoSuchElementError])
           # wait until driver find element
-          elem = wait.until{ @driver.find_elements(method_name, value) }
+          elem = wait.until { @driver.find_elements(method_name, value) }
           raise_if_element_empty(elem, method_name, value)
           elem
         rescue Selenium::WebDriver::Error::TimeoutError
