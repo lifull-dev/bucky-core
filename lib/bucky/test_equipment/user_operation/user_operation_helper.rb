@@ -40,7 +40,7 @@ module Bucky
             # it will return nil if click successfully
             wait.until{ elem.click.nil? }
           rescue Selenium::WebDriver::Error::TimeoutError
-            raise Selenium::WebDriver::Error::TimeoutError, "Exceeded the limit for trying to click.\n    #{$ERROR_INFO.message}"
+            raise Selenium::WebDriver::Error::WebDriverError, "Exceeded the limit for trying to click.\n    #{$ERROR_INFO.message}"
           end
         end
 
