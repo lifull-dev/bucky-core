@@ -37,7 +37,7 @@ module Bucky
         def get_part(args)
           return send(args[:page]).send(args[:part][:locate])[args[:part][:num]] if part_plural?(args)
 
-          send(args[:page]).send(args[:part]).first
+          send(args[:page]).send(args[:part])
         end
 
         # @param [Hash] args

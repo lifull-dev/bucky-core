@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../../../lib/bucky/test_equipment/pageobject/pages'
+require 'selenium-webdriver'
 
 describe Bucky::TestEquipment::PageObject::Pages do
   let(:service) { 'service_a' }
@@ -25,8 +26,7 @@ describe Bucky::TestEquipment::PageObject::Pages do
       let(:operation_args) { { page: 'test_page', part: 'rosen_tokyo' } }
       it 'call send on partobject' do
         allow(subject).to receive(:send).and_return(page_double)
-        allow(page_double).to receive(:send).and_return(part_double)
-        expect(part_double).to receive(:first)
+        expect(page_double).to receive(:send).with(operation_args[:part])
         subject.get_part(operation_args)
       end
     end

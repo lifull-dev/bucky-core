@@ -16,12 +16,10 @@ describe Bucky::TestEquipment::PageObject::BasePageObject do
     context 'If given method name is included in FINDERS' do
       %w[class class_name css id link link_text name partial_link_text tag_name xpath].each do |method|
         it "If #{method} is given, find_elements(:#{method}, value) is call" do
-          expect(driver).to receive(:find_elements).with(method.to_sym, value).and_return([:element_a])
+          expect(driver).to receive(:find_elements).with(method.to_sym, value).and_return([Object.new])
           subject.send(:find_elem, method, value)
         end
       end
-    end
-    it '' do
     end
     it 'If given method name is not included in FINDERS, raise error' do
       method = 'invalid method name'
