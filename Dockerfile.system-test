@@ -20,7 +20,8 @@ RUN apk update && \
     yaml \
     yaml-dev \
     zlib-dev \
-    curl
+    curl \
+    parallel
 
 RUN git clone https://github.com/bats-core/bats-core.git /tmp/bats-core \
     && cd /tmp/bats-core \
