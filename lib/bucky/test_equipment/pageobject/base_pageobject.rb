@@ -56,17 +56,18 @@ module Bucky
 
           wait = Selenium::WebDriver::Wait.new(timeout: 3, interval: 0.1, ignore: [Selenium::WebDriver::Error::NoSuchElementError])
           # wait until driver find element
-          elem = wait.until { @driver.find_elements(method_name, value) }
-          raise_if_element_empty(elem, method_name, value)
-          elem
+          elements = wait.until { @driver.find_elements(method_name, value) }
+          raise_if_elements_empty(elements, method_name, value)
+          elements.first.instance_eval { define_singleton_method('[]') { |num| elements[num] } }
+          elements.first
         rescue Selenium::WebDriver::Error::TimeoutError
           raise Selenium::WebDriver::Error::NoSuchElementError, "Exceeded the limit times for find_elements.\n   #{$ERROR_INFO.message}"
         rescue StandardError => e
           Bucky::Core::Exception::WebdriverException.handle(e)
         end
 
-        def raise_if_element_empty(elem, method, value)
-          raise Selenium::WebDriver::Error::NoSuchElementError, "#{method} #{value}" if elem.empty?
+        def raise_if_elements_empty(elements, method, value)
+          raise Selenium::WebDriver::Error::NoSuchElementError, "#{method} #{value}" if elements.empty?
         end
       end
     end
