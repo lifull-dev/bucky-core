@@ -2,7 +2,6 @@
 
 require_relative '../../utils/yaml_load'
 require_relative '../../core/exception/bucky_exception'
-
 module Bucky
   module TestEquipment
     module PageObject
@@ -53,16 +52,16 @@ module Bucky
           method_name = method.downcase.to_sym
           raise StandardError, "Invalid finder. #{method_name}" unless FINDERS.key? method_name
 
-          elem = @driver.find_elements(method_name, value)
-          raise_if_element_empty(elem, method_name, value)
-          Selenium::WebDriver::Element.class_eval { define_method('[]') { |num| elem[num] } }
-          elem.first
+          elements = @driver.find_elements(method_name, value)
+          raise_if_elements_empty(elements, method_name, value)
+          elements.first.instance_eval { define_singleton_method('[]') { |num| elements[num] } }
+          elements.first
         rescue StandardError => e
           Bucky::Core::Exception::WebdriverException.handle(e)
         end
 
-        def raise_if_element_empty(elem, method, value)
-          raise Selenium::WebDriver::Error::NoSuchElementError, "#{method} #{value}" if elem.empty?
+        def raise_if_elements_empty(elements, method, value)
+          raise Selenium::WebDriver::Error::NoSuchElementError, "#{method} #{value}" if elements.empty?
         end
       end
     end
