@@ -132,7 +132,7 @@ workflows:
   test:
     jobs:
       - static_code_analysis
-      - unit_test:
+      - unit_test
       - generate_cache_for_system_test
       - system_test_e2e:
           requires:
