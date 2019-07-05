@@ -2,13 +2,14 @@
 
 require_relative '../../utils/yaml_load'
 require_relative '../../core/exception/bucky_exception'
-require 'English'
+require_relative '../selenium_handler/wait_handler'
 
 module Bucky
   module TestEquipment
     module PageObject
       class BasePageObject
         include Bucky::Utils::YamlLoad
+        include Bucky::TestEquipment::SeleniumHandler::WaitHandler
 
         # https://seleniumhq.github.io/selenium/docs/api/rb/Selenium/WebDriver/SearchContext.html#find_element-instance_method
         FINDERS = {
@@ -54,14 +55,15 @@ module Bucky
           method_name = method.downcase.to_sym
           raise StandardError, "Invalid finder. #{method_name}" unless FINDERS.key? method_name
 
-          wait = Selenium::WebDriver::Wait.new(timeout: 3, interval: 0.1, ignore: [Selenium::WebDriver::Error::NoSuchElementError])
           # wait until driver find element
-          elements = wait.until { @driver.find_elements(method_name, value) }
+          elements = wait_until_helper(3, 0.1, Selenium::WebDriver::Error::NoSuchElementError) { @driver.find_elements(method_name, value) }
           raise_if_elements_empty(elements, method_name, value)
-          elements.first.instance_eval { define_singleton_method('[]') { |num| elements[num] } }
+          elements.first.instance_eval do
+            define_singleton_method('[]') { |num| elements[num] }
+            define_singleton_method('each') { elements.each }
+            define_singleton_method('length') { elements.length }
+          end
           elements.first
-        rescue Selenium::WebDriver::Error::TimeoutError
-          raise Selenium::WebDriver::Error::NoSuchElementError, "Exceeded the limit times for find_elements.\n   #{$ERROR_INFO.message}"
         rescue StandardError => e
           Bucky::Core::Exception::WebdriverException.handle(e)
         end
