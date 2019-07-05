@@ -54,7 +54,17 @@ module Bucky
 
           elements = @driver.find_elements(method_name, value)
           raise_if_elements_empty(elements, method_name, value)
-          elements.first.instance_eval { define_singleton_method('[]') { |num| elements[num] } }
+          elements.first.instance_eval do
+            define_singleton_method('[]') do |arg|
+              return elements[arg] if arg.is_a? Integer
+              return elements[arg] if [String, Symbol].include? args.class
+
+              raise StandardError, "Invalid argument type. Expected type is Integer/String/Symbol.\n\
+              | Got argument:#{arg}, type:#{arg.class}."
+            end
+            %w[each length].each { |m| define_singleton_method(m) { elements.send(m) } }
+          end
+
           elements.first
         rescue StandardError => e
           Bucky::Core::Exception::WebdriverException.handle(e)
