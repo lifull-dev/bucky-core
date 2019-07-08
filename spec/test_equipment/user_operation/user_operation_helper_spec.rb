@@ -66,10 +66,9 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
       expect(driver_double).to receive_message_chain(:switch_to, :window)
       subject.send(operation, args)
     end
-    it 'when it exceeded the limit, raise timeout exception' do
-      # anytime switch_to.window returns Selenium::WebDriver::Error::NoSuchWindowException
-      allow(driver_double).to receive_message_chain(:switch_to, :window).and_raise(Selenium::WebDriver::Error::NoSuchWindowError.new)
-      expect { subject.send(operation, args) }.to raise_error(Selenium::WebDriver::Error::NoSuchWindowError)
+    it 'call wait_until_helper' do
+      expect(subject).to receive(:wait_until_helper)
+      subject.send(operation, args)
     end
   end
 
@@ -123,11 +122,12 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
       expect(elem_double).to receive(:location_once_scrolled_into_view)
       subject.send(operation, args)
     end
-    it 'when it exceeded the limit, raise timeout exception' do
+    it 'call wait_until_helper' do
       allow(pages_double).to receive(:get_part).and_return(elem_double)
+      allow(elem_double).to receive(:click)
       allow(elem_double).to receive(:location_once_scrolled_into_view)
-      allow(elem_double).to receive(:click).and_raise(Selenium::WebDriver::Error::WebDriverError.new)
-      expect { subject.send(operation, args) }.to raise_error(Selenium::WebDriver::Error::WebDriverError)
+      expect(subject).to receive(:wait_until_helper)
+      subject.send(operation, args)
     end
   end
 
@@ -158,12 +158,24 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     it 'if there is undefined key, raise exception' do
       expect { subject.send(operation, args_error) }.to raise_error(StandardError, 'Included invalid key [:page, :part, :error]')
     end
+    it 'call wait_until_helper' do
+      allow(option_double).to receive(:select_by).with(:text, 'foo')
+      expect(subject).to receive(:wait_until_helper).and_return(option_double)
+      subject.send(operation, args_text)
+    end
   end
 
   describe '#accept_alert' do
     let(:operation) { :accept_alert }
+    let(:alert_double) { double('alert double') }
     it 'call driver.switch_to.alert.accept' do
       expect(driver_double).to receive_message_chain(:switch_to, :alert, :accept)
+      subject.send(operation, nil)
+    end
+    it 'call wait_until_helper' do
+      allow(driver_double).to receive_message_chain(:switch_to, :alert).and_return(alert_double)
+      allow(alert_double).to receive(:accept)
+      expect(subject).to receive(:wait_until_helper).and_return(alert_double)
       subject.send(operation, nil)
     end
   end
