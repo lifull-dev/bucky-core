@@ -69,7 +69,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     it 'when it exceeded the limit, raise timeout exception' do
       # anytime switch_to.window returns Selenium::WebDriver::Error::NoSuchWindowException
       allow(driver_double).to receive_message_chain(:switch_to, :window).and_raise(Selenium::WebDriver::Error::NoSuchWindowError.new)
-      expect { subject.send(operation, args) }.to raise_error(Selenium::WebDriver::Error::TimeoutError)
+      expect { subject.send(operation, args) }.to raise_error(Selenium::WebDriver::Error::NoSuchWindowError)
     end
   end
 

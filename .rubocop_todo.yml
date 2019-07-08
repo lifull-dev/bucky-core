@@ -26,7 +26,6 @@ Security/Eval:
 Style/AccessModifierDeclarations:
   Exclude:
     - 'lib/bucky/test_equipment/selenium_handler/webdriver_handler.rb'
-    - 'lib/bucky/test_equipment/selenium_handler/wait_handler.rb'
     - 'lib/bucky/utils/bucky_logger.rb'
 
 # Offense count: 2
