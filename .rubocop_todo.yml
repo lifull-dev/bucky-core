@@ -20,7 +20,7 @@ Security/Eval:
     - 'lib/bucky/test_equipment/pageobject/pages.rb'
     - 'lib/bucky/test_equipment/verifications/service_verifications.rb'
 
-# Offense count: 3
+# Offense count: 2
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: inline, group
 Style/AccessModifierDeclarations:

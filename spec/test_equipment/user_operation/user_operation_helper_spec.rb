@@ -2,7 +2,6 @@
 
 require_relative '../../../lib/bucky/test_equipment/user_operation/user_operation_helper'
 require 'selenium-webdriver'
-require 'English'
 
 describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
   let(:driver_double) { double('driver double') }
