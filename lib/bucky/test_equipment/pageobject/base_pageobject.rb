@@ -56,8 +56,10 @@ module Bucky
           raise_if_elements_empty(elements, method_name, value)
           elements.first.instance_eval do
             define_singleton_method('[]') do |arg|
+              # return WebElement
               return elements[arg] if arg.is_a? Integer
-              return elements[arg] if [String, Symbol].include? args.class
+              # return String(Value of WebElement`s attribute)
+              return elements.first.attribute(arg) if [String, Symbol].include? arg.class
 
               raise StandardError, "Invalid argument type. Expected type is Integer/String/Symbol.\n\
               | Got argument:#{arg}, type:#{arg.class}."
