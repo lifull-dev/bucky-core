@@ -26,10 +26,10 @@ jobs:
           key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
           paths: ~/caches/images.tar
       - run:
-          command: docker load -i ~/caches/images.tar
+          command: docker load -q -i ~/caches/images.tar
       - run:
           name: docker up
-          command: docker-compose -f docker-compose.system-test.yml up --no-build -d
+          command: docker-compose -f docker-compose.system-test.yml up --no-build -d --quiet-pull
       - run:
           name: execute system testing
           command: 'circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 -I {} docker exec bucky-core bats "/bucky-core/"{} | circleci tests split'
@@ -46,7 +46,7 @@ jobs:
       - checkout
       - type: cache-restore
         key: unit-test-{{ checksum "Gemfile.lock" }}
-      - run: bundle install --path vendor/bundle
+      - run: bundle install --path vendor/bundle --quiet
       - type: cache-save
         key: unit-test-{{ checksum "Gemfile.lock" }}
         paths:
@@ -69,7 +69,7 @@ jobs:
       - checkout
       - type: cache-restore
         key: syntax-check-{{ checksum "Gemfile.lock" }}
-      - run: bundle install --path vendor/bundle
+      - run: bundle install --path vendor/bundle --quiet
       - type: cache-save
         key: syntax-check-{{ checksum "Gemfile.lock" }}
         paths:
