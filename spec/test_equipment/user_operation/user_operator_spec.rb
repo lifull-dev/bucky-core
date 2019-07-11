@@ -52,7 +52,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
           it 'call send of part object' do
             allow(pages_double).to receive(:send).and_return(page_double)
             allow(page_double).to receive(:send).and_return(part_double)
-            expect(part_double).to receive(:send)
+            expect(part_double).to receive(:send).with(operation)
             subject.send(operation, 'test_method_name', operation_args)
           end
         end

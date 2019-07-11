@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bucky-core (0.9.7)
+    bucky-core (0.9.9)
       color_echo (~> 3.1)
       json (~> 2.1)
       nokogiri (~> 1.8)
@@ -73,8 +73,8 @@ GEM
       unicode-display_width (>= 1.4.0, < 1.6)
     ruby-mysql (2.9.14)
     ruby-progressbar (1.10.0)
-    rubyzip (1.2.2)
-    selenium-webdriver (3.142.2)
+    rubyzip (1.2.3)
+    selenium-webdriver (3.142.3)
       childprocess (>= 0.5, < 2.0)
       rubyzip (~> 1.2, >= 1.2.2)
     sequel (4.49.0)

@@ -73,3 +73,28 @@ setup() {
   [ $(expr "$output" : ".*click.*") -eq 0 ]
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
+
+@test "#21 When click second element from scenario, results have no failures nor errors" {
+  run bucky run -t e2e -d -D pc -c pc_e2e_5
+  [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
+}
+
+@test "#22 When click element from PageObject file, results have no failures nor errors" {
+  run bucky run -t e2e -d -D pc -c pc_e2e_6
+  [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
+}
+
+@test "#23 When click second element from PageObject file, results have no failures nor errors" {
+  run bucky run -t e2e -d -D pc -c pc_e2e_7
+  [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
+}
+
+@test "#24 When click element from Verification file, results have no failures nor errors" {
+  run bucky run -t e2e -d -D pc -c pc_e2e_8
+  [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
+}
+
+@test "#25 When click second element from Verification file, results have no failures nor errors" {
+  run bucky run -t e2e -d -D pc -c pc_e2e_9
+  [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
+}
