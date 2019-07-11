@@ -17,25 +17,7 @@ jobs:
       - save_cache:
           key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
           paths: ~/caches/images.tar
-  system_test_e2e:
-    machine: true
-    steps:
-      - checkout
-      - restore_cache:
-          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
-          paths: ~/caches/images.tar
-      - run:
-          command: docker load -i ~/caches/images.tar
-      - run:
-          name: docker up
-          command: docker-compose -f docker-compose.system-test.yml up --no-build -d
-      - run:
-          name: execute system testing
-          command: docker exec bucky-core bats /bucky-core/system_testing/testing_code/e2e.bats -j 4
-      - run:
-          name: docker down
-          command: docker-compose -f docker-compose.system-test.yml down
-  system_test_command:
+  system_test:
     machine: true
     parallelism: 4
     steps:
@@ -50,25 +32,7 @@ jobs:
           command: docker-compose -f docker-compose.system-test.yml up --no-build -d
       - run:
           name: execute system testing
-          command: 'docker exec bucky-core bats /bucky-core/system_testing/testing_code/command.bats | circleci tests split'
-      - run:
-          name: docker down
-          command: docker-compose -f docker-compose.system-test.yml down
-  system_test_linkstatus:
-    machine: true
-    steps:
-      - checkout
-      - restore_cache:
-          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
-          paths: ~/caches/images.tar
-      - run:
-          command: docker load -i ~/caches/images.tar
-      - run:
-          name: docker up
-          command: docker-compose -f docker-compose.system-test.yml up --no-build -d
-      - run:
-          name: execute system testing
-          command: docker exec bucky-core bats /bucky-core/system_testing/testing_code/linkstatus.bats -j 4
+          command: docker exec bucky-core bats /bucky-core/system_testing/testing_code/
       - run:
           name: docker down
           command: docker-compose -f docker-compose.system-test.yml down
@@ -134,13 +98,7 @@ workflows:
       - static_code_analysis
       - unit_test
       - generate_cache_for_system_test
-      - system_test_e2e:
-          requires:
-            - generate_cache_for_system_test
-      - system_test_command:
-          requires:
-            - generate_cache_for_system_test
-      - system_test_linkstatus:
+      - system_test:
           requires:
             - generate_cache_for_system_test
   deploy:
