@@ -19,7 +19,7 @@ jobs:
           paths: ~/caches/images.tar
   system_test:
     machine: true
-    parallelism: 4
+    parallelism: 1
     steps:
       - checkout
       - restore_cache:
