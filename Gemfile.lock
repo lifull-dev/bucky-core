@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bucky-core (0.9.9)
+    bucky-core (0.9.11)
       color_echo (~> 3.1)
       json (~> 2.1)
       nokogiri (~> 1.8)

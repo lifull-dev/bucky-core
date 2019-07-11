@@ -71,7 +71,7 @@ module Bucky
 
           elements.first.instance_eval do
             define_singleton_method('[]') { |arg| get_element_or_attribute.call(elements, arg) }
-            %w[each length].each { |m| define_singleton_method(m) { elements.send(m) } }
+            %w[each length].each { |m| define_singleton_method(m) { |&block| elements.send(m, &block) } }
           end
 
           elements.first
