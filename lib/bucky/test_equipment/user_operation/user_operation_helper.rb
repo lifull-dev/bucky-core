@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require_relative '../selenium_handler/wait_handler'
+
 module Bucky
   module TestEquipment
     module UserOperation
       class UserOperationHelper
+        include Bucky::TestEquipment::SeleniumHandler::WaitHandler
+
         def initialize(args)
           @app = args[:app]
           @device = args[:device]
@@ -33,8 +37,8 @@ module Bucky
         def click(args)
           elem = @pages.get_part(args)
           elem.location_once_scrolled_into_view
-          sleep 1
-          elem.click
+          # when click successfully, return of click is nil.
+          wait_until_helper(5, 0.1, Selenium::WebDriver::Error::WebDriverError) { elem.click.nil? }
         end
 
         def refresh(_)
@@ -50,14 +54,8 @@ module Bucky
         end
 
         def switch_to_the_window(args)
-          # change ignore condition, NoSuchElementError to NoSuchWindowError
-          wait = Selenium::WebDriver::Wait.new(:timeout => 1, :interval => 0.1, :ignore => [Selenium::WebDriver::Error::NoSuchWindowError])
-          begin
-            # when the window successfully switched, return of switch_to.window is nil.
-            wait.until{ @driver.switch_to.window(args[:window_name]).nil? }
-          rescue Selenium::WebDriver::Error::TimeoutError
-            raise Selenium::WebDriver::Error::TimeoutError, "Exceeded the limit for trying switch_to_the_window.\n    #{$ERROR_INFO.message}"
-          end
+          # when the window successfully switched, return of switch_to.window is nil.
+          wait_until_helper(5, 0.1, Selenium::WebDriver::Error::NoSuchWindowError) { @driver.switch_to.window(args[:window_name]).nil? }
         end
 
         # Close window
@@ -71,7 +69,7 @@ module Bucky
         end
 
         def choose(args)
-          option = Selenium::WebDriver::Support::Select.new(@pages.get_part(args))
+          option = wait_until_helper(5, 0.1, Selenium::WebDriver::Error::StaleElementReferenceError) { Selenium::WebDriver::Support::Select.new(@pages.get_part(args)) }
           if args.key?(:text)
             type = :text
             selected = args[type].to_s
@@ -89,8 +87,8 @@ module Bucky
 
         # Alert accept
         def accept_alert(_)
-          a = @driver.switch_to.alert
-          a.accept
+          alert = wait_until_helper(5, 0.1, Selenium::WebDriver::Error::NoAlertPresentError) { @driver.switch_to.alert }
+          alert.accept
         end
 
         def wait(args)

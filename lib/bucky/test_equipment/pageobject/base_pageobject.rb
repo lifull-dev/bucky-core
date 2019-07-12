@@ -2,11 +2,14 @@
 
 require_relative '../../utils/yaml_load'
 require_relative '../../core/exception/bucky_exception'
+require_relative '../selenium_handler/wait_handler'
+
 module Bucky
   module TestEquipment
     module PageObject
       class BasePageObject
         include Bucky::Utils::YamlLoad
+        include Bucky::TestEquipment::SeleniumHandler::WaitHandler
 
         # https://seleniumhq.github.io/selenium/docs/api/rb/Selenium/WebDriver/SearchContext.html#find_element-instance_method
         FINDERS = {
@@ -52,7 +55,8 @@ module Bucky
           method_name = method.downcase.to_sym
           raise StandardError, "Invalid finder. #{method_name}" unless FINDERS.key? method_name
 
-          elements = @driver.find_elements(method_name, value)
+          # wait until driver find element
+          elements = wait_until_helper(3, 0.1, Selenium::WebDriver::Error::NoSuchElementError) { @driver.find_elements(method_name, value) }
           raise_if_elements_empty(elements, method_name, value)
 
           get_element_or_attribute = lambda do |elems, arg|
@@ -67,7 +71,7 @@ module Bucky
 
           elements.first.instance_eval do
             define_singleton_method('[]') { |arg| get_element_or_attribute.call(elements, arg) }
-            %w[each length].each { |m| define_singleton_method(m) { elements.send(m) } }
+            %w[each length].each { |m| define_singleton_method(m) { |&block| elements.send(m, &block) } }
           end
 
           elements.first
