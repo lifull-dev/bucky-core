@@ -6,7 +6,6 @@ jobs:
       - checkout
       - restore_cache:
           key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
-          paths: ~/caches/images.tar
       - run:
           command: |
             if [ ! -f ~/caches/images.tar ]; then
@@ -24,7 +23,6 @@ jobs:
       - checkout
       - restore_cache:
           key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
-          paths: ~/caches/images.tar
       - run:
           command: docker load -q -i ~/caches/images.tar
       - run:
