@@ -1,15 +1,36 @@
 version: 2
 jobs:
-  system_test:
+  generate_cache_for_system_test:
     machine: true
     steps:
       - checkout
+      - restore_cache:
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
+      - run:
+          command: |
+            if [ ! -f ~/caches/images.tar ]; then
+              docker-compose -f docker-compose.system-test.yml build && \
+              mkdir -p ~/caches && \
+              docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
+            fi
+      - save_cache:
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
+          paths: ~/caches/images.tar
+  system_test:
+    machine: true
+    parallelism: 2
+    steps:
+      - checkout
+      - restore_cache:
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}
+      - run:
+          command: docker load -q -i ~/caches/images.tar
       - run:
           name: docker up
-          command: docker-compose -f docker-compose.system-test.yml up --build -d
+          command: docker-compose -f docker-compose.system-test.yml up --no-build -d
       - run:
           name: execute system testing
-          command: docker exec bucky-core bats /bucky-core/system_testing/testing_code
+          command: 'circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 -I {} docker exec bucky-core bats "/bucky-core/"{} | circleci tests split'
       - run:
           name: docker down
           command: docker-compose -f docker-compose.system-test.yml down
@@ -23,7 +44,7 @@ jobs:
       - checkout
       - type: cache-restore
         key: unit-test-{{ checksum "Gemfile.lock" }}
-      - run: bundle install --path vendor/bundle
+      - run: bundle install --path vendor/bundle --quiet
       - type: cache-save
         key: unit-test-{{ checksum "Gemfile.lock" }}
         paths:
@@ -39,14 +60,14 @@ jobs:
           ./cc-test-reporter before-build
           bundle exec rspec
           ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
-  syntax_check:
+  static_code_analysis:
     docker:
       - image: circleci/ruby:2.4.2-node
     steps:
       - checkout
       - type: cache-restore
         key: syntax-check-{{ checksum "Gemfile.lock" }}
-      - run: bundle install --path vendor/bundle
+      - run: bundle install --path vendor/bundle --quiet
       - type: cache-save
         key: syntax-check-{{ checksum "Gemfile.lock" }}
         paths:
@@ -72,11 +93,12 @@ workflows:
   version: 2
   test:
     jobs:
+      - static_code_analysis
       - unit_test
-      - system_test
-  lint:
-    jobs:
-      - syntax_check
+      - generate_cache_for_system_test
+      - system_test:
+          requires:
+            - generate_cache_for_system_test
   deploy:
     jobs:
       - publish:
