@@ -13,6 +13,8 @@ describe Bucky::TestEquipment::PageObject::BasePageObject do
   end
   describe '#find_elem' do
     let(:value) { 'content-1' }
+    let(:method_mock) { 'id' }
+    let(:config_double) { double('double of Config') }
     let(:element) do
       class Element end
       return Element.new
@@ -63,6 +65,12 @@ describe Bucky::TestEquipment::PageObject::BasePageObject do
       method = 'invalid method name'
       allow(Bucky::Core::Exception::BuckyException).to receive(:handle)
       expect { subject.send(:find_elem, method, value) }.to raise_error(StandardError, "Invalid finder. #{method}")
+    end
+    it 'raise StandardError when exception' do
+      allow(Bucky::Utils::Config).to receive(:instance).and_return(config_double)
+      allow(config_double).to receive('[]').and_return(bucky_error: 'test')
+      allow(driver).to receive(:find_elements).and_raise(Selenium::WebDriver::Error::NoSuchElementError.new)
+      expect { subject.send(:find_elem, method_mock, value) }.to raise_error(StandardError)
     end
   end
 end
