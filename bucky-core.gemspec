@@ -47,4 +47,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'selenium-webdriver', '~> 3.4'
   spec.add_runtime_dependency 'sequel',             '~> 4.48'
   spec.add_runtime_dependency 'test-unit',          '~> 3.2'
+  spec.add_runtime_dependency 'addressable', '~> 2.5'
+
 end

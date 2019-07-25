@@ -146,7 +146,7 @@ module Bucky
         def exclude_href?(href)
           return true if href.nil?
 
-          exclude_regexps = [/^javascript.+/, /^tel:\d.+/, /^mailto:.+/]
+          exclude_regexps = [/^javascript.+/i, /^tel:\d.+/i, /^mailto:.+/i]
           exclude_regexps.keep_if { |reg| reg.match?(href) }
           return true unless exclude_regexps.empty?
 
