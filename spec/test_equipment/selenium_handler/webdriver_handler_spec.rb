@@ -25,6 +25,7 @@ describe Bucky::TestEquipment::SeleniumHandler::WebdriverHandler do
     allow(config_double).to receive('[]').with(:user_agent).and_return(10)
     allow(config_double).to receive('[]').with(:find_element_timeout).and_return(10)
     allow(config_double).to receive('[]').with(:headless).and_return(headless)
+    allow(config_double).to receive('[]').with(:chromedriver_flags).and_return(chromedriver_flags)
     allow(Selenium::WebDriver).to receive(:for).and_return(webdriver_double)
     allow(webdriver_double).to receive(:manage).and_return(webdriver_manage_double)
     allow(webdriver_manage_double).to receive(:window).and_return(webdriver_manage_window_double)
@@ -41,6 +42,7 @@ describe Bucky::TestEquipment::SeleniumHandler::WebdriverHandler do
     let(:sp_device_name) { :ipad }
     let(:bucky_error) { 'bucky error' }
     let(:headless) { false }
+    let(:chromedriver_flags) { ['--foo', '--bar', '--baz'] }
 
     context 'pc' do
       let(:device_type) { 'pc' }
