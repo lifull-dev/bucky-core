@@ -56,7 +56,7 @@ module Bucky
             chrome_options['goog:chromeOptions']['mobileEmulation'] = mobile_emulation
           end
           chrome_options['goog:chromeOptions'][:args] << "--user-agent=#{@@config[:user_agent]}" if @@config[:user_agent]
-          chrome_options['goog:chromeOptions'][:args] << '--headless --disable-gpu' if @@config[:headless]
+          chrome_options['goog:chromeOptions'][:args] << '--headless' if @@config[:headless]
           chrome_options['goog:chromeOptions'][:args].push(@@config[:chromedriver_flags]).flatten! unless @@config[:chromedriver_flags].nil?
 
           Selenium::WebDriver::Remote::Capabilities.chrome(chrome_options)
