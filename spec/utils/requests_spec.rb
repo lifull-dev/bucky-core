@@ -22,7 +22,7 @@ describe Bucky::Utils::Requests do
         subject.get_response(uri, device, open_timeout, read_timeout)
       end
     end
-    context 'Invalid URI is given' do
+    context 'Unusual URI is given' do
       ['https://example.com/path/query[]=1/', 'http://例.com?query=[]'].each do |uri|
         it "#{uri} is given, call Net::HTTP.get" do
           allow(Net::HTTP).to receive(:start).and_yield(http)
