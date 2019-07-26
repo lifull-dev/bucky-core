@@ -59,15 +59,15 @@ describe Bucky::Tools::Lint do
 
   describe '#diff_arr' do
     it 'return diff array' do
-      arr1 = ['k1', 'k2-k3', 'k4-k5-k6', 'k4-k5-k7']
-      arr2 = ['k1', 'k2-k3']
-      expect(lint.send(:diff_arr, arr1, arr2)).to eq ['k4-k5-k6', 'k4-k5-k7']
+      arr1 = %w[k1 k2-k3 k4-k5-k6 k4-k5-k7]
+      arr2 = %w[k1 k2-k3]
+      expect(lint.send(:diff_arr, arr1, arr2)).to eq %w[k4-k5-k6 k4-k5-k7]
     end
   end
 
   describe '#make_key_chain' do
     it 'return array containing elements of chain case' do
-      expected_list = ['k1', 'k2-k3', 'k4-k5-k6', 'k4-k5-k7']
+      expected_list = %w[k1 k2-k3 k4-k5-k6 k4-k5-k7]
       expect(lint.send(:make_key_chain, data_double)).to eq expected_list
     end
   end
