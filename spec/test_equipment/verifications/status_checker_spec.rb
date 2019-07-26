@@ -119,29 +119,38 @@ describe Bucky::TestEquipment::Verifications::StatusChecker do
       let(:only_same_fqdn) { true }
       context 'there is javascript:void' do
         let(:entity) do
-          '<a href="https://example.com"></a>
-          <a href="javascript:void(0)"></a>'
+          '<a href="https://example.com">link</a>
+          <a href="javascript:void(0)">link</a>
+          <a href="JavaScript:void(0)">link</a>'
         end
-        it 'exclude javascript:void' do
-          expect(subject).not_to include('javascript:void(0)')
+        ['javascript:void(0)', 'JavaScript:void(0)'].each do |expression|
+          it "exclude #{expression}" do
+            expect(subject).not_to include(expression)
+          end
         end
       end
       context 'there is tel:(number)' do
         let(:entity) do
           '<a href="https://example.com"></a>
-          <a href="tel:03-2222-2222"></a>'
+          <a href="tel:03-2222-2222"></a>
+          <a href="Tel:03-2222-2222"></a>'
         end
-        it 'exclude tel:(number)' do
-          expect(subject).not_to include('tel:03-2222-2222')
+        ['tel:03-2222-2222', 'Tel:03-2222-2222'].each do |expression|
+          it "exclude #{expression}" do
+            expect(subject).not_to include(expression)
+          end
         end
       end
       context 'there is mailto:' do
         let(:entity) do
           '<a href="https://example.com"></a>
-          <a href="mailto:hoge@hoge.com"></a>'
+          <a href="mailto:hoge@hoge.com"></a>
+          <a href="Mailto:hoge@hoge.com"></a>'
         end
-        it 'exclude mailto:' do
-          expect(subject).not_to include('mailto:hoge@hoge.com')
+        ['mailto:hoge@hoge.com', 'Mailto:hoge@hoge.com'].each do |expression|
+          it "exclude #{expression}" do
+            expect(subject).not_to include(expression)
+          end
         end
       end
       context 'relative path' do

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'net/http'
-require 'uri'
+require 'addressable/uri'
 
 module Bucky
   module Utils
@@ -17,7 +17,7 @@ module Bucky
       # @param  [Integer/Float] read_timeout max wait time until recieve response
       # @return [Net::HTTP]         HttpStatusCode
       def get_response(uri, device, open_timeout, read_timeout)
-        parsed_uri = URI.parse(uri.to_str.strip)
+        parsed_uri = Addressable::URI.parse(uri.to_str.strip)
         query = parsed_uri.query ? "?#{parsed_uri.query}" : ''
         # If path is empty, add "/" e.g) http://example.com
         path = parsed_uri.path.empty? ? '/' : parsed_uri.path

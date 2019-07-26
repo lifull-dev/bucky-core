@@ -12,12 +12,26 @@ describe Bucky::Utils::Requests do
   let(:http) { Net::HTTP.new('test') }
 
   describe '#get_response' do
-    it 'call Net::HTTP.get' do
-      allow(Net::HTTP).to receive(:start).and_yield(http)
-      Net::HTTP.start do |http|
-        expect(http).to receive(:get)
+    context 'Valid URL is given' do
+      let(:uri) { 'http://example.com' }
+      it 'call Net::HTTP.get' do
+        allow(Net::HTTP).to receive(:start).and_yield(http)
+        Net::HTTP.start do |http|
+          expect(http).to receive(:get)
+        end
+        subject.get_response(uri, device, open_timeout, read_timeout)
       end
-      subject.get_response(uri, device, open_timeout, read_timeout)
+    end
+    context 'Unusual URI is given' do
+      ['https://example.com/path/query[]=1/', 'http://例.com?query=[]'].each do |uri|
+        it "#{uri} is given, call Net::HTTP.get" do
+          allow(Net::HTTP).to receive(:start).and_yield(http)
+          Net::HTTP.start do |http|
+            expect(http).to receive(:get)
+          end
+          subject.get_response(uri, device, open_timeout, read_timeout)
+        end
+      end
     end
   end
 end
