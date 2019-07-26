@@ -8,3 +8,5 @@
 :device_chrome_name:
   :iphone6: 'Apple iPhone 6'
   :nexus5: 'Google Nexus 5'
+:chromedriver_flags: # If you want to use chromedriver options, please add like below
+  # - '--disable-dev-shm-usage'

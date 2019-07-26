@@ -9,6 +9,8 @@
   :iphone: 'iPhone X'
   :android: 'Galaxy S5'
   :ipad: 'iPad'
+:chromedriver_flags: # If you want to use chromedriver options, please add like below
+  # - '--disable-dev-shm-usage'
 :user_agent: 'E2ETest (X11; Linux x86_64)'
 :driver_read_timeout: 60 # sec
 :driver_open_timeout: 60 # sec
