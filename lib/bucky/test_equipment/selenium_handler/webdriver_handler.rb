@@ -57,7 +57,7 @@ module Bucky
           end
           chrome_options['goog:chromeOptions'][:args] << "--user-agent=#{@@config[:user_agent]}" if @@config[:user_agent]
           chrome_options['goog:chromeOptions'][:args] << '--headless' if @@config[:headless]
-          chrome_options['goog:chromeOptions'][:args].push(@@config[:chromedriver_flags]).flatten! unless @@config[:chromedriver_flags].nil?
+          chrome_options['goog:chromeOptions'][:args].concat(@@config[:chromedriver_flags]) unless @@config[:chromedriver_flags].nil?
 
           Selenium::WebDriver::Remote::Capabilities.chrome(chrome_options)
         end
