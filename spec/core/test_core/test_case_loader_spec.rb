@@ -23,7 +23,7 @@ describe Bucky::Core::TestCore::TestCaseLoader do
         let(:test_cond) { { suite_name: [expect_scenario] } }
         let(:expect_scenario) { 'scenario_a' }
         it 'return test code object' do
-          expect(subject).not_to be_empty
+          expect(subject).to be_empty
         end
         it 'return test code specified by test id' do
           subject.each do |code|
