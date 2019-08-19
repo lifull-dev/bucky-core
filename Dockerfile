@@ -34,5 +34,3 @@ RUN \
   bundle config --global jobs 4 && \
   bundle install && \
   rm -rf ~/.gem
-
-WORKDIR /app

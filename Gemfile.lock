@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    bucky-core (0.9.11)
+    bucky-core (0.9.15)
+      addressable (~> 2.5)
       color_echo (~> 3.1)
       json (~> 2.1)
       nokogiri (~> 1.8)
@@ -14,6 +15,8 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.6.0)
+      public_suffix (>= 2.0.2, < 4.0)
     ansi (1.5.0)
     ast (2.4.0)
     awesome_print (1.8.0)
@@ -32,12 +35,12 @@ GEM
     json (2.1.0)
     method_source (0.9.0)
     mini_portile2 (2.4.0)
-    nokogiri (1.10.3)
+    nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     parallel (1.12.1)
     parser (2.6.3.0)
       ast (~> 2.4.0)
-    power_assert (1.1.4)
+    power_assert (1.1.5)
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -47,6 +50,7 @@ GEM
     pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
+    public_suffix (3.1.1)
     rainbow (3.0.0)
     rake (12.3.0)
     rspec (3.7.0)
