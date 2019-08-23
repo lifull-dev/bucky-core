@@ -126,7 +126,7 @@ service: service_name
 priority: high
 test_category: e2e
 labels: test_label_foo
-setup_each: # Thess procedures will be executed before every case
+setup_each: # These procedures will be executed before every case
   procs:
     - proc: login
       exec:
