@@ -42,7 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'addressable', '~> 2.5'
   spec.add_runtime_dependency 'color_echo',         '~> 3.1'
   spec.add_runtime_dependency 'json',               '~> 2.1'
-  spec.add_runtime_dependency 'nokogiri',           '~> 1.8'
+  spec.add_runtime_dependency 'nokogiri',           '~> 1.10.4'
   spec.add_runtime_dependency 'parallel',           '~> 1.11'
   spec.add_runtime_dependency 'ruby-mysql',         '~> 2.9'
   spec.add_runtime_dependency 'selenium-webdriver', '~> 3.4'
