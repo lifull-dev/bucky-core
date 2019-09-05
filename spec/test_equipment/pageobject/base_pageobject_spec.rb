@@ -32,7 +32,7 @@ describe Bucky::TestEquipment::PageObject::BasePageObject do
         before do
           allow(driver).to receive(:find_elements).with(method, value).and_return(elem_objects)
         end
-        %w[[] each length].each do |redefined_method|
+        %w[[] each map length].each do |redefined_method|
           it "#{redefined_method} method is redefined in WebElement instance" do
             elem = subject.send(:find_elem, method, value)
             expect(elem).to respond_to(redefined_method.to_sym)
