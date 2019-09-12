@@ -36,3 +36,5 @@ RUN \
   rm -rf ~/.gem
 
 WORKDIR /app
+RUN adduser -S bucky
+USER bucky
