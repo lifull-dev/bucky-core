@@ -6,6 +6,7 @@ require 'optparse'
 require 'color_echo'
 require 'fileutils'
 require_relative '../lib/bucky/version'
+require_relative '../lib/bucky/core/test_core/exit_handler'
 
 # Color Settings
 CE.fg(:cyan)
@@ -135,6 +136,7 @@ if ARGV == RUN_COMMAND
   test_cond.each { |k, v| test_cond[k] = v.split(',') if v.instance_of?(String) }
   require_relative '../lib/bucky/core/test_core/test_manager'
   Bucky::Core::TestCore::TestManager.new(test_cond).run
+  Bucky::Core::TestCore::ExitHandler.bucky_exit
 
 elsif ARGV == RERUN_COMMAND
   $bucky_home_dir = Dir.pwd

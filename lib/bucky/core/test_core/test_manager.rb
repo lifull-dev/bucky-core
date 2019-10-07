@@ -4,6 +4,7 @@ require 'parallel'
 require_relative '../test_core/test_case_loader'
 require_relative '../../utils/config'
 require_relative './test_class_generator'
+require_relative '../test_core/exit_handler'
 
 module Bucky
   module Core
@@ -103,6 +104,9 @@ module Bucky
 
         def execute_test
           @re_test_count.times do |i|
+            Bucky::Core::TestCore::ExitHandler.reset
+            Bucky::Core::TestCore::ExitHandler.raise
+            Bucky::Core::TestCore::ExitHandler.bucky_exit
             $round = i + 1
             test_suite_data = load_test_suites
             do_test_suites(test_suite_data)
