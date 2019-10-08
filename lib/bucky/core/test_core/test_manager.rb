@@ -93,20 +93,18 @@ module Bucky
           e2e_parallel_num = Bucky::Utils::Config.instance[:e2e_parallel_num]
           linkstatus_parallel_num = Bucky::Utils::Config.instance[:linkstatus_parallel_num]
           tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
-
           case @test_cond[:test_category][0]
           when 'e2e' then parallel_new_worker_each(test_suite_data, e2e_parallel_num) { |data| tcg.generate_test_class(data) }
           when 'linkstatus' then
             link_status_url_log = {}
             parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num) { |data| tcg.generate_test_class(data, link_status_url_log) }
           end
+          Bucky::Core::TestCore::ExitHandler.instance.exit_code = $?.exitstatus
         end
 
         def execute_test
           @re_test_count.times do |i|
-            Bucky::Core::TestCore::ExitHandler.reset
-            Bucky::Core::TestCore::ExitHandler.raise
-            Bucky::Core::TestCore::ExitHandler.bucky_exit
+            Bucky::Core::TestCore::ExitHandler.instance.reset
             $round = i + 1
             test_suite_data = load_test_suites
             do_test_suites(test_suite_data)
