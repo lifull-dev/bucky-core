@@ -148,6 +148,7 @@ elsif ARGV == RERUN_COMMAND
   test_cond.each { |k, v| test_cond[k] = v.split(',') if v.instance_of?(String) }
   require_relative '../lib/bucky/core/test_core/test_manager'
   Bucky::Core::TestCore::TestManager.new(test_cond).rerun
+  Bucky::Core::TestCore::ExitHandler.instance.bucky_exit
 
 elsif ARGV == LINT_COMMAND
   $bucky_home_dir = Dir.pwd

@@ -49,7 +49,7 @@ module Bucky
         def cleanup; end
 
         Test::Unit.at_exit do
-          exit 1 if @@test_fail = true
+          exit 1 if @@test_fail == true
         end
       end
     end

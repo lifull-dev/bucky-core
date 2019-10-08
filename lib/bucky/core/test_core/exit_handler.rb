@@ -7,7 +7,6 @@ module Bucky
     module TestCore
       class ExitHandler
         include Singleton
-        attr_accessor :exit_code
 
         def initialize
           @exit_code = 0
@@ -15,6 +14,11 @@ module Bucky
 
         def reset
           @exit_code = 0
+        end
+
+        def raise
+          p 'raised'
+          @exit_code = 1
         end
 
         def bucky_exit

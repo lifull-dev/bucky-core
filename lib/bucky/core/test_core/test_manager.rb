@@ -28,12 +28,18 @@ module Bucky
 
           data_set.each do |data|
             # Wait until worker is available
-            Process.wait unless available_workers.positive?
+            unless available_workers.positive? then
+              Process.wait
+              Bucky::Core::TestCore::ExitHandler.instance.raise unless $?.exitstatus == 0
+            end
             # Workers decrease when start working
             available_workers -= 1
-            fork { block.call(data) }
+            p pid = fork { block.call(data) }
           end
-          Process.waitall
+          status = Process.waitall
+          status.each do |s|
+            Bucky::Core::TestCore::ExitHandler.instance.raise unless s[1].exitstatus == 0
+          end
         end
 
         def parallel_distribute_into_workers(data_set, max_processes, &block)
@@ -99,7 +105,6 @@ module Bucky
             link_status_url_log = {}
             parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num) { |data| tcg.generate_test_class(data, link_status_url_log) }
           end
-          Bucky::Core::TestCore::ExitHandler.instance.exit_code = $?.exitstatus
         end
 
         def execute_test
