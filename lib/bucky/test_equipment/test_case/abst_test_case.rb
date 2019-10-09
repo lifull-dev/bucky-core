@@ -9,7 +9,7 @@ module Bucky
       class AbstTestCase < Test::Unit::TestCase
         class << self
 
-          @@test_fail = false
+          @@test_case_fail = false
 
           def startup
             return if $debug
@@ -36,7 +36,7 @@ module Bucky
         end
 
         def teardown
-          @@test_fail = true unless passed?
+          @@test_case_fail = true unless passed?
           return if $debug
 
           @@added_result_info[method_name.to_sym] = {
@@ -49,7 +49,7 @@ module Bucky
         def cleanup; end
 
         Test::Unit.at_exit do
-          exit 1 if @@test_fail == true
+          exit 1 if @@test_case_fail == true
         end
       end
     end

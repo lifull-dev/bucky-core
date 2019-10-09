@@ -27,18 +27,18 @@ module Bucky
           Signal.trap('CLD') { available_workers += 1 }
 
           data_set.each do |data|
-            # Wait until worker is available
+            # Wait until worker is available and handle exit code from previous process
             unless available_workers.positive? then
               Process.wait
               Bucky::Core::TestCore::ExitHandler.instance.raise unless $?.exitstatus == 0
             end
             # Workers decrease when start working
             available_workers -= 1
-            p pid = fork { block.call(data) }
+            fork { block.call(data) }
           end
-          status = Process.waitall
-          status.each do |s|
-            Bucky::Core::TestCore::ExitHandler.instance.raise unless s[1].exitstatus == 0
+          # Handle all exit code in waitall
+          Process.waitall.each do |statuse|
+            Bucky::Core::TestCore::ExitHandler.instance.raise unless statuse[1].exitstatus == 0
           end
         end
 
@@ -52,7 +52,10 @@ module Bucky
               data_for_pre_worker.each { |data| block.call(data) }
             end
           end
-          Process.waitall
+          # Handle all exit code in waitall
+          Process.waitall.each do |statuse|
+            Bucky::Core::TestCore::ExitHandler.instance.raise unless statuse[1].exitstatus == 0
+          end
         end
       end
 

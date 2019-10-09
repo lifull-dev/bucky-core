@@ -17,13 +17,11 @@ module Bucky
         end
 
         def raise
-          p 'raised'
           @exit_code = 1
         end
 
         def bucky_exit
-          p @exit_code
-          # exit @exit_code
+          exit @exit_code
         end
       end
     end
