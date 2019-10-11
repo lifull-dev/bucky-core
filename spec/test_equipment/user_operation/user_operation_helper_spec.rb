@@ -90,8 +90,14 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
   describe '#input' do
     let(:operation) { :input }
     let(:args) { { page: 'top', part: 'form', word: 'hogehoge' } }
+    let(:elem_double) { double('elem double') }
     it 'call part#send_keys' do
       expect(pages_double).to receive_message_chain(:get_part, :send_keys)
+      subject.send(operation, args)
+    end
+    it 'call wait_until_helper' do
+      allow(pages_double).to receive_message_chain(:get_part, :send_keys).and_return(elem_double)
+      expect(subject).to receive(:wait_until_helper)
       subject.send(operation, args)
     end
   end

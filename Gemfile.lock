@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bucky-core (0.9.15)
+    bucky-core (0.9.17)
       addressable (~> 2.5)
       color_echo (~> 3.1)
       json (~> 2.1)
@@ -15,16 +15,15 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.6.0)
-      public_suffix (>= 2.0.2, < 4.0)
+    addressable (2.7.0)
+      public_suffix (>= 2.0.2, < 5.0)
     ansi (1.5.0)
     ast (2.4.0)
     awesome_print (1.8.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
     byebug (9.1.0)
-    childprocess (1.0.1)
-      rake (< 13.0)
+    childprocess (3.0.0)
     coderay (1.1.2)
     color_echo (3.1.1)
     debug_inspector (0.0.3)
@@ -50,7 +49,7 @@ GEM
     pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
-    public_suffix (3.1.1)
+    public_suffix (4.0.1)
     rainbow (3.0.0)
     rake (12.3.0)
     rspec (3.7.0)
@@ -77,10 +76,10 @@ GEM
       unicode-display_width (>= 1.4.0, < 1.6)
     ruby-mysql (2.9.14)
     ruby-progressbar (1.10.0)
-    rubyzip (1.2.3)
-    selenium-webdriver (3.142.3)
-      childprocess (>= 0.5, < 2.0)
-      rubyzip (~> 1.2, >= 1.2.2)
+    rubyzip (2.0.0)
+    selenium-webdriver (3.142.6)
+      childprocess (>= 0.5, < 4.0)
+      rubyzip (>= 1.2.2)
     sequel (4.49.0)
     simplecov (0.15.1)
       docile (~> 1.1.0)
@@ -91,7 +90,7 @@ GEM
       hirb
       simplecov
     simplecov-html (0.10.2)
-    test-unit (3.3.3)
+    test-unit (3.3.4)
       power_assert
     unicode-display_width (1.5.0)
 
