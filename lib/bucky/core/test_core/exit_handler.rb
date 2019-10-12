@@ -8,18 +8,20 @@ module Bucky
       class ExitHandler
         include Singleton
 
-        @@exit_code = 0
-
-        def self.reset
-            @@exit_code = 0
+        def initialize
+          @exit_code = 0
         end
 
-        def self.raise
-            @@exit_code = 1
+        def reset
+          @exit_code = 0
         end
 
-        def self.bucky_exit
-            p @@exit_code
+        def raise
+          @exit_code = 1
+        end
+
+        def bucky_exit
+          exit @exit_code
         end
       end
     end
