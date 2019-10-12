@@ -27,7 +27,7 @@ describe Bucky::Core::TestCore::ExitHandler do
   end
 
   describe '#bucky_exit' do
-    it 'the exit value should be 1' do
+    it 'the exit code should be 1' do
       begin
         instance.instance_variable_set(:@exit_code, 1)
         instance.bucky_exit
@@ -36,7 +36,7 @@ describe Bucky::Core::TestCore::ExitHandler do
       end
     end
 
-    it 'the exit value should be 0' do
+    it 'the exit code should be 0' do
       begin
         instance.instance_variable_set(:@exit_code, 0)
         instance.bucky_exit
