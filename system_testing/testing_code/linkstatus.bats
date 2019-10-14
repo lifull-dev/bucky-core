@@ -18,7 +18,7 @@ setup() {
 }
 
 @test "#13 After executing linkstatus failed test, exit code is 1" {
-  run bucky run -t linkstatus -d -D pc -c pc_link_1
+  run bucky run -t linkstatus -d -D pc -c pc_link_2
   [ $status -eq 1 ]
 }
 
