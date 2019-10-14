@@ -4,6 +4,7 @@ require 'parallel'
 require_relative '../test_core/test_case_loader'
 require_relative '../../utils/config'
 require_relative './test_class_generator'
+require_relative '../test_core/exit_handler'
 
 module Bucky
   module Core
@@ -26,13 +27,19 @@ module Bucky
           Signal.trap('CLD') { available_workers += 1 }
 
           data_set.each do |data|
-            # Wait until worker is available
-            Process.wait unless available_workers.positive?
+            # Wait until worker is available and handle exit code from previous process
+            unless available_workers.positive?
+              Process.wait
+              Bucky::Core::TestCore::ExitHandler.instance.raise unless $CHILD_STATUS.exitstatus.zero?
+            end
             # Workers decrease when start working
             available_workers -= 1
             fork { block.call(data) }
           end
-          Process.waitall
+          # Handle all exit code in waitall
+          Process.waitall.each do |child|
+            Bucky::Core::TestCore::ExitHandler.instance.raise unless child[1].exitstatus.zero?
+          end
         end
 
         def parallel_distribute_into_workers(data_set, max_processes, &block)
@@ -45,7 +52,10 @@ module Bucky
               data_for_pre_worker.each { |data| block.call(data) }
             end
           end
-          Process.waitall
+          # Handle all exit code in waitall
+          Process.waitall.each do |child|
+            Bucky::Core::TestCore::ExitHandler.instance.raise unless child[1].exitstatus.zero?
+          end
         end
       end
 
@@ -92,7 +102,6 @@ module Bucky
           e2e_parallel_num = Bucky::Utils::Config.instance[:e2e_parallel_num]
           linkstatus_parallel_num = Bucky::Utils::Config.instance[:linkstatus_parallel_num]
           tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
-
           case @test_cond[:test_category][0]
           when 'e2e' then parallel_new_worker_each(test_suite_data, e2e_parallel_num) { |data| tcg.generate_test_class(data) }
           when 'linkstatus' then
@@ -103,6 +112,7 @@ module Bucky
 
         def execute_test
           @re_test_count.times do |i|
+            Bucky::Core::TestCore::ExitHandler.instance.reset
             $round = i + 1
             test_suite_data = load_test_suites
             do_test_suites(test_suite_data)

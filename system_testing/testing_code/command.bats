@@ -13,19 +13,19 @@ teardown() {
   rm -rf /tmp/$BUCKY_PROJECT_NAME
 }
 
-@test "#14 After executing 'new' command, expected files and directories are created" {
+@test "#15 After executing 'new' command, expected files and directories are created" {
   run diff /bucky-core/template/new/ /tmp/$BUCKY_PROJECT_NAME
   [ $status -eq 0 ]
 }
 
-@test "#15 After executing 'make service' command, expected directory is created" {
+@test "#16 After executing 'make service' command, expected directory is created" {
   cd /tmp/$BUCKY_PROJECT_NAME
   bucky make service $TEST_SERVICE
   run ls /tmp/$BUCKY_PROJECT_NAME/services/$TEST_SERVICE
   [ $status -eq 0 ]
 }
 
-@test "#16 After executing 'make page' command, expected page and parts file are created" {
+@test "#17 After executing 'make page' command, expected page and parts file are created" {
   cd /tmp/$BUCKY_PROJECT_NAME
   bucky make service $TEST_SERVICE
   bucky make page test_page --service $TEST_SERVICE --device pc
@@ -35,7 +35,7 @@ teardown() {
   [ $status -eq 0 ]
 }
 
-@test "#17 After executing undefined command, show error message and exit" {
+@test "#18 After executing undefined command, show error message and exit" {
   cd /tmp/$BUCKY_PROJECT_NAME
   run bucky hoge fuga
   [ $(expr "$output" : ".*Invalid command error.*") -ne 0 ]
