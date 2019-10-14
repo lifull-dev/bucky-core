@@ -37,8 +37,8 @@ module Bucky
             fork { block.call(data) }
           end
           # Handle all exit code in waitall
-          Process.waitall.each do |statuse|
-            Bucky::Core::TestCore::ExitHandler.instance.raise unless statuse[1].exitstatus.zero?
+          Process.waitall.each do |child|
+            Bucky::Core::TestCore::ExitHandler.instance.raise unless child[1].exitstatus.zero?
           end
         end
 
@@ -53,8 +53,8 @@ module Bucky
             end
           end
           # Handle all exit code in waitall
-          Process.waitall.each do |statuse|
-            Bucky::Core::TestCore::ExitHandler.instance.raise unless statuse[1].exitstatus.zero?
+          Process.waitall.each do |child|
+            Bucky::Core::TestCore::ExitHandler.instance.raise unless child[1].exitstatus.zero?
           end
         end
       end
