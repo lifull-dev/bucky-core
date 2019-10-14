@@ -43,7 +43,6 @@ module Bucky
         end
 
         def cleanup; end
-
       end
     end
   end
