@@ -9,16 +9,18 @@ setup() {
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "#02 After executing e2e verify assert_title, results contain verify words and no failures/errors" {
+@test "#02 After executing e2e verify assert_title, results contain verify words, no failures/errors and exit code is 0" {
   run bucky run -t e2e -d -D pc -c pc_e2e_1
   [ $(expr "$output" : ".*:verify.*assert_title.*") -ne 0 ]
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
+  [ $status -eq 0 ]
 }
 
-@test "#03 After executing e2e verify assert_title, results contain verify words and 1 failure" {
+@test "#03 After executing e2e verify assert_title, results contain verify words and 1 failure and exit code is 1" {
   run bucky run -t e2e -d -D pc -c pc_e2e_2
   [ $(expr "$output" : ".*:verify.*assert_title.*") -ne 0 ]
   [ $(expr "$output" : ".*1 failures.*") -ne 0 ]
+  [ $status -eq 1 ]
 }
 
 @test "#04 After executing e2e on pc , results contain 'Linux' and no failures/errors." {
