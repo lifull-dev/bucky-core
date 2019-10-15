@@ -8,3 +8,7 @@ cases:
     desc: pc linkstatus test 1
     urls:
       - http://bucky.net
+  - case_name: pc_link_2
+    desc: pc linkstatus test 2
+    urls:
+      - http://bucky-error.net
