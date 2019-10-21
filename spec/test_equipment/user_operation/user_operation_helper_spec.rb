@@ -50,7 +50,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
 
     it 'switch to next window index' do
       allow(driver_double).to receive_message_chain(:switch_to, :window)
-      expect(driver_double).to receive_message_chain(:window_handles, :[]).with(window_index+1)
+      expect(driver_double).to receive_message_chain(:window_handles, :[]).with(window_index + 1)
       subject.send(operation, nil)
     end
   end
@@ -70,7 +70,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
 
     it 'switch to last window index' do
       allow(driver_double).to receive_message_chain(:switch_to, :window)
-      expect(driver_double).to receive_message_chain(:window_handles, :[]).with(window_index-1)
+      expect(driver_double).to receive_message_chain(:window_handles, :[]).with(window_index - 1)
       subject.send(operation, nil)
     end
   end
@@ -105,7 +105,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     it 'switch to last window index' do
       allow(driver_double).to receive(:close)
       allow(driver_double).to receive_message_chain(:switch_to, :window)
-      expect(driver_double).to receive_message_chain(:window_handles, :[]).with(window_index-1)
+      expect(driver_double).to receive_message_chain(:window_handles, :[]).with(window_index - 1)
       subject.send(operation, nil)
     end
   end
