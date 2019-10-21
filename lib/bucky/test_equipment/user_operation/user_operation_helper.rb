@@ -46,12 +46,14 @@ module Bucky
           @driver.navigate.refresh
         end
 
-        def switch_next_window(_)
-          @driver.switch_to.window(@driver.window_handles.last)
+        def switch_to_next_window(_)
+          window_index = @driver.window_handles.index(@driver.window_handle)
+          @driver.switch_to.window(@driver.window_handles[window_index+1])
         end
 
-        def back_to_window(_)
-          @driver.switch_to.window(@driver.window_handles.first)
+        def switch_to_last_window(_)
+          window_index = @driver.window_handles.index(@driver.window_handle)
+          @driver.switch_to.window(@driver.window_handles[window_index-1])
         end
 
         def switch_to_the_window(args)
@@ -61,7 +63,9 @@ module Bucky
 
         # Close window
         def close(_)
+          window_index = @driver.window_handles.index(@driver.window_handle)
           @driver.close
+          @driver.switch_to.window(@driver.window_handles[window_index-1])
         end
 
         def stop(_)
