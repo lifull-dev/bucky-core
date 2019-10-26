@@ -37,10 +37,13 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
 
   describe '#switch_to_next_window' do
     let(:operation) { :switch_to_next_window }
+    let(:window_handles_double) { double('window_handles double') }
     let(:window_index) { 2 }
+    let(:winddows_number) { 4 }
     before do
       allow(driver_double).to receive(:window_handle)
       allow(driver_double).to receive_message_chain(:window_handles, :index).and_return(window_index)
+      allow(driver_double).to receive_message_chain(:window_handles, :size).and_return(winddows_number)
     end
     it 'call driver.switch_to.window' do
       allow(driver_double).to receive_message_chain(:window_handles, :[])
@@ -55,8 +58,8 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     end
   end
 
-  describe '#switch_to_last_window' do
-    let(:operation) { :switch_to_last_window }
+  describe '#switch_to_previous_window' do
+    let(:operation) { :switch_to_previous_window }
     let(:window_index) { 2 }
     before do
       allow(driver_double).to receive(:window_handle)
