@@ -39,7 +39,10 @@ module Bucky
         def generate_parts(service, device, page_name)
           Dir.glob("./services/#{service}/#{device}/parts/#{page_name}.yml").each do |file|
             parts_data = load_yaml(file)
-
+            if parts_data.nil?
+              warn("Warning: #{file} is empty")
+              next
+            end
             # Define part method e.g.) page.parts
             parts_data.each do |part_name, value|
               self.class.class_eval { define_method(part_name) { find_elem(value[0], value[1]) } }
