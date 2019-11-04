@@ -71,9 +71,31 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
       subject.send(operation, nil)
     end
 
-    it 'switch to last window index' do
+    it 'switch to previous window index' do
       allow(driver_double).to receive_message_chain(:switch_to, :window)
       expect(driver_double).to receive_message_chain(:window_handles, :[]).with(window_index - 1)
+      subject.send(operation, nil)
+    end
+  end
+
+  describe '#switch_to_newest_window' do
+    let(:operation) { :switch_to_newest_window }
+    before do
+      allow(driver_double).to receive_message_chain(:window_handles, :last)
+    end
+    it 'call driver.switch_to.window' do
+      expect(driver_double).to receive_message_chain(:switch_to, :window)
+      subject.send(operation, nil)
+    end
+  end
+
+  describe '#switch_to_oldest_window' do
+    let(:operation) { :switch_to_oldest_window }
+    before do
+      allow(driver_double).to receive_message_chain(:window_handles, :first)
+    end
+    it 'call driver.switch_to.window' do
+      expect(driver_double).to receive_message_chain(:switch_to, :window)
       subject.send(operation, nil)
     end
   end
