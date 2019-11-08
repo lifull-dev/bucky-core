@@ -113,7 +113,7 @@ module Bucky
 
             # Add fqdn if href doesn't include fqdn
             unless url_reg.match?(href)
-              href.insert(0, "/") unless href.match(/^\/|^#/)
+              href.insert(0, '/') unless href.match(%r{^/|^#})
               links << base_url + href
               next
             end
