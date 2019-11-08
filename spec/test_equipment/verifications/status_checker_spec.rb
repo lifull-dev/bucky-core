@@ -166,7 +166,7 @@ describe Bucky::TestEquipment::Verifications::StatusChecker do
         end
       end
       context 'relative path start without /' do
-        let(:entity) { '<a href="/hoge/fuga/"></a>' }
+        let(:entity) { '<a href="hoge/fuga/"></a>' }
         it 'connect with base_url' do
           expect(subject[0]).to eq "#{args[:base_url]}/hoge/fuga/"
         end
