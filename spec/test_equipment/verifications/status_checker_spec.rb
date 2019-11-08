@@ -159,6 +159,18 @@ describe Bucky::TestEquipment::Verifications::StatusChecker do
           expect(subject[0]).to eq "#{args[:base_url]}/hoge/fuga/"
         end
       end
+      context 'relative path start by #' do
+        let(:entity) { '<a href="#hoge"></a>' }
+        it 'connect with base_url' do
+          expect(subject[0]).to eq "#{args[:base_url]}#hoge"
+        end
+      end
+      context 'relative path start without /' do
+        let(:entity) { '<a href="/hoge/fuga/"></a>' }
+        it 'connect with base_url' do
+          expect(subject[0]).to eq "#{args[:base_url]}/hoge/fuga/"
+        end
+      end
       context 'When different from base URL' do
         let(:entity) { '<a href="https://not.same.fqdn.com"></a>' }
         it 'exclude the link' do
