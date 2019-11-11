@@ -178,12 +178,14 @@ describe Bucky::TestEquipment::Verifications::StatusChecker do
         end
       end
     end
-    context 'only_same_fqdn is false' do
-      let(:only_same_fqdn) { false }
-      let(:entity) { '<a href="https://not.same.fqdn.com"></a>' }
-      it 'not exclude the link' do
-        expect(subject).not_to be_empty
-      end
-    end
+    # only_same_fqdn will only be ture.
+    # TODO: Enable this test after only_same_fqdn can be handle
+    # context 'only_same_fqdn is false' do
+    #   let(:only_same_fqdn) { false }
+    #   let(:entity) { '<a href="https://not.same.fqdn.com"></a>' }
+    #   it 'not exclude the link' do
+    #     expect(subject).not_to be_empty
+    #   end
+    # end
   end
 end
