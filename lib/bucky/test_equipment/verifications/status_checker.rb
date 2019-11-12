@@ -103,7 +103,8 @@ module Bucky
           base_url = args[:base_url]
           base_fqdn = args[:base_fqdn]
           url_reg = args[:url_reg]
-          only_same_fqdn = args[:only_same_fqdn]
+          # TODO: Add an option that can handle the check if href's fqdn is not same with base fqdn
+          # only_same_fqdn = args[:only_same_fqdn]
           entity = args[:entity]
           doc = Nokogiri::HTML.parse(entity)
           links = []
@@ -113,16 +114,14 @@ module Bucky
 
             # Add fqdn if href doesn't include fqdn
             unless url_reg.match?(href)
-              links << base_url + href
+              links << format_href(base_url, href)
               next
             end
 
             href_fqdn = href.match(url_reg)[2]
-            if only_same_fqdn == false
-              links << href
-            elsif base_fqdn == href_fqdn
-              links << href
-            end
+            # TODO: Enable after only_same_fqdn can be handle
+            # links << href if only_same_fqdn == false || base_fqdn == href_fqdn
+            links << href if base_fqdn == href_fqdn
           end
           links
         end
@@ -173,6 +172,11 @@ module Bucky
             url_log[url][:count] += 1
             return { response: response }
           end
+        end
+
+        def format_href(base_url, href)
+          href.insert(0, '/') unless href.match(%r{^/|^#})
+          base_url + href
         end
       end
     end

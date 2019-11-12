@@ -159,6 +159,18 @@ describe Bucky::TestEquipment::Verifications::StatusChecker do
           expect(subject[0]).to eq "#{args[:base_url]}/hoge/fuga/"
         end
       end
+      context 'relative path start by #' do
+        let(:entity) { '<a href="#hoge"></a>' }
+        it 'connect with base_url' do
+          expect(subject[0]).to eq "#{args[:base_url]}#hoge"
+        end
+      end
+      context 'relative path start without /' do
+        let(:entity) { '<a href="hoge/fuga/"></a>' }
+        it 'connect with base_url' do
+          expect(subject[0]).to eq "#{args[:base_url]}/hoge/fuga/"
+        end
+      end
       context 'When different from base URL' do
         let(:entity) { '<a href="https://not.same.fqdn.com"></a>' }
         it 'exclude the link' do
@@ -166,12 +178,14 @@ describe Bucky::TestEquipment::Verifications::StatusChecker do
         end
       end
     end
-    context 'only_same_fqdn is false' do
-      let(:only_same_fqdn) { false }
-      let(:entity) { '<a href="https://not.same.fqdn.com"></a>' }
-      it 'not exclude the link' do
-        expect(subject).not_to be_empty
-      end
-    end
+    # only_same_fqdn will only be ture.
+    # TODO: Enable this test after only_same_fqdn can be handle
+    # context 'only_same_fqdn is false' do
+    #   let(:only_same_fqdn) { false }
+    #   let(:entity) { '<a href="https://not.same.fqdn.com"></a>' }
+    #   it 'not exclude the link' do
+    #     expect(subject).not_to be_empty
+    #   end
+    # end
   end
 end
