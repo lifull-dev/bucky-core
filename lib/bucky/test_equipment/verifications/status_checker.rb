@@ -119,6 +119,8 @@ module Bucky
             end
 
             href_fqdn = href.match(url_reg)[2]
+            # TODO: Enable after only_same_fqdn can be handle
+            # links << href if only_same_fqdn == false || base_fqdn == href_fqdn
             links << href if base_fqdn == href_fqdn
           end
           links
