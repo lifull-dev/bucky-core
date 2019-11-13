@@ -48,8 +48,8 @@ module Bucky
 
         def switch_to_next_window(_)
           window_index = @driver.window_handles.index(@driver.window_handle)
-          winddows_number = @driver.window_handles.size
-          unless window_index+1 == winddows_number
+          windows_number = @driver.window_handles.size
+          unless window_index+1 == windows_number
             @driver.switch_to.window(@driver.window_handles[window_index+1])
           end
         end

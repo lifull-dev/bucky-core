@@ -39,11 +39,11 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     let(:operation) { :switch_to_next_window }
     let(:window_handles_double) { double('window_handles double') }
     let(:window_index) { 2 }
-    let(:winddows_number) { 4 }
+    let(:windows_number) { 4 }
     before do
       allow(driver_double).to receive(:window_handle)
       allow(driver_double).to receive_message_chain(:window_handles, :index).and_return(window_index)
-      allow(driver_double).to receive_message_chain(:window_handles, :size).and_return(winddows_number)
+      allow(driver_double).to receive_message_chain(:window_handles, :size).and_return(windows_number)
     end
     it 'call driver.switch_to.window' do
       allow(driver_double).to receive_message_chain(:window_handles, :[])
