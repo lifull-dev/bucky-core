@@ -35,20 +35,62 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     end
   end
 
-  describe '#switch_next_window' do
-    let(:operation) { :switch_next_window }
+  describe '#switch_to_next_window' do
+    let(:operation) { :switch_to_next_window }
+    let(:window_handles_double) { double('window_handles double') }
+    let(:window_index) { 2 }
+    let(:windows_number) { 4 }
+    before do
+      allow(driver_double).to receive(:window_handle)
+      allow(driver_double).to receive_message_chain(:window_handles, :index).and_return(window_index)
+      allow(driver_double).to receive_message_chain(:window_handles, :size).and_return(windows_number)
+    end
+    it 'call driver.switch_to.window' do
+      allow(driver_double).to receive_message_chain(:window_handles, :[])
+      expect(driver_double).to receive_message_chain(:switch_to, :window)
+      subject.send(operation, nil)
+    end
+
+    it 'switch to next window index' do
+      allow(driver_double).to receive_message_chain(:switch_to, :window)
+      expect(driver_double).to receive_message_chain(:window_handles, :[]).with(window_index + 1)
+      subject.send(operation, nil)
+    end
+  end
+
+  describe '#switch_to_previous_window' do
+    let(:operation) { :switch_to_previous_window }
+    let(:window_index) { 2 }
+    before do
+      allow(driver_double).to receive(:window_handle)
+      allow(driver_double).to receive_message_chain(:window_handles, :index).and_return(window_index)
+    end
+    it 'call driver.switch_to.window' do
+      allow(driver_double).to receive_message_chain(:window_handles, :[])
+      expect(driver_double).to receive_message_chain(:switch_to, :window)
+      subject.send(operation, nil)
+    end
+
+    it 'switch to previous window index' do
+      allow(driver_double).to receive_message_chain(:switch_to, :window)
+      expect(driver_double).to receive_message_chain(:window_handles, :[]).with(window_index - 1)
+      subject.send(operation, nil)
+    end
+  end
+
+  describe '#switch_to_newest_window' do
+    let(:operation) { :switch_to_newest_window }
     before do
       allow(driver_double).to receive_message_chain(:window_handles, :last)
     end
     it 'call driver.switch_to.window' do
-      allow(driver_double).to receive_message_chain(:switch_to, :frame)
       expect(driver_double).to receive_message_chain(:switch_to, :window)
       subject.send(operation, nil)
     end
   end
 
-  describe '#back_to_window' do
-    let(:operation) { :back_to_window }
+  describe '#switch_to_oldest_window' do
+    let(:operation) { :switch_to_oldest_window }
     before do
       allow(driver_double).to receive_message_chain(:window_handles, :first)
     end
@@ -73,8 +115,22 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
 
   describe '#close' do
     let(:operation) { :close }
+    let(:window_index) { 2 }
+    before do
+      allow(driver_double).to receive(:window_handle)
+      allow(driver_double).to receive_message_chain(:window_handles, :index).and_return(window_index)
+    end
     it 'call driver.close' do
-      expect(driver_double).to receive_message_chain(:close)
+      allow(driver_double).to receive_message_chain(:window_handles, :[])
+      allow(driver_double).to receive_message_chain(:switch_to, :window)
+      expect(driver_double).to receive(:close)
+      subject.send(operation, nil)
+    end
+
+    it 'switch to last window index' do
+      allow(driver_double).to receive(:close)
+      allow(driver_double).to receive_message_chain(:switch_to, :window)
+      expect(driver_double).to receive_message_chain(:window_handles, :[]).with(window_index - 1)
       subject.send(operation, nil)
     end
   end

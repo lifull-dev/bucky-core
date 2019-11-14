@@ -46,11 +46,24 @@ module Bucky
           @driver.navigate.refresh
         end
 
-        def switch_next_window(_)
+        def switch_to_next_window(_)
+          window_index = @driver.window_handles.index(@driver.window_handle)
+          windows_number = @driver.window_handles.size
+          unless window_index+1 == windows_number
+            @driver.switch_to.window(@driver.window_handles[window_index+1])
+          end
+        end
+
+        def switch_to_previous_window(_)
+          window_index = @driver.window_handles.index(@driver.window_handle)
+          @driver.switch_to.window(@driver.window_handles[window_index-1])
+        end
+
+        def switch_to_newest_window(_)
           @driver.switch_to.window(@driver.window_handles.last)
         end
 
-        def back_to_window(_)
+        def switch_to_oldest_window(_)
           @driver.switch_to.window(@driver.window_handles.first)
         end
 
@@ -61,11 +74,13 @@ module Bucky
 
         # Close window
         def close(_)
+          window_index = @driver.window_handles.index(@driver.window_handle)
           @driver.close
+          @driver.switch_to.window(@driver.window_handles[window_index-1])
         end
 
         def stop(_)
-          puts 'stop. please enter to continue'
+          puts 'stop. press enter to continue'
           gets
         end
 
