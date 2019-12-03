@@ -13,6 +13,7 @@ docker-compose*
 # test
 spec/
 .rspec
+system-testing/
 
 # log
 *.log
@@ -27,5 +28,4 @@ coverage/
 doc
 tags
 tmp
-example/
 .sample/
