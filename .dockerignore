@@ -8,13 +8,13 @@
 .rubocop*
 
 # Docker
-docker-compose*
-!docker-compose.system-test.yml
+#docker-compose*
+#!docker-compose.system-test.yml
 
 # test
 spec/
 .rspec
-system-testing/
+# system-testing/
 
 # log
 *.log
