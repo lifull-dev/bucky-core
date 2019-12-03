@@ -1,5 +1,4 @@
 # Git
-.git/
 .gitignore
 
 # CI
@@ -8,18 +7,17 @@
 .rubocop*
 
 # Docker
-#docker-compose*
-#!docker-compose.system-test.yml
+docker-compose*
 
-# test
+# Test
 spec/
 .rspec
-# system-testing/
+system-testing/
 
-# log
+# Log
 *.log
 
-# Other
+# Others
 .DS_Store
 .bundle
 .vscode
@@ -29,4 +27,5 @@ coverage/
 doc
 tags
 tmp
+template/
 .sample/
