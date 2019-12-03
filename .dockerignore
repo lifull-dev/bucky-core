@@ -3,7 +3,7 @@
 
 # CI
 .codeclimate.yml
-# .circleci
+.circleci
 .rubocop*
 
 # Docker
@@ -12,7 +12,7 @@
 # Test
 spec/
 .rspec
-# system-testing/
+system-testing/
 
 # Log
 *.log
@@ -27,5 +27,5 @@ coverage/
 doc
 tags
 tmp
-# template/
+template/
 .sample/
