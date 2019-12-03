@@ -9,6 +9,7 @@
 
 # Docker
 docker-compose*
+!docker-compose.system-test.yml
 
 # test
 spec/
