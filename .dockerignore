@@ -1,5 +1,23 @@
+# Git
+.gitignore
 
+# CI
+.codeclimate.yml
+.circleci
+.rubocop*
+
+# Docker
+# docker-compose*
+
+# Test
+spec/
+.rspec
+system-testing/
+
+# Log
 *.log
+
+# Others
 .DS_Store
 .bundle
 .vscode
@@ -9,3 +27,5 @@ coverage/
 doc
 tags
 tmp
+template/
+.sample/
