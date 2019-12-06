@@ -89,6 +89,16 @@ jobs:
       - run:
           name: Update vresion.rb and publish on RubyGems
           command: bash .circleci/deploy_to_rubygems.sh
+  publish_to_docker_hub:
+    machine: true
+    environment:
+      DOCKER_REPO: rhikimochi/bucky-core
+    steps:
+      - checkout
+      - run:
+          name: build image
+          command: |
+            docker build -t "$DOCKER_REPO":"$CIRCLE_TAG" .
 workflows:
   version: 2
   test:
@@ -96,6 +106,7 @@ workflows:
       - static_code_analysis
       - unit_test
       - generate_cache_for_system_test
+      - publish_to_docker_hub
       - system_test:
           requires:
             - generate_cache_for_system_test
