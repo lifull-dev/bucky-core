@@ -99,6 +99,7 @@ jobs:
           name: build image
           command: |
             docker build -t "$DOCKER_REPO":0.0.0 .
+            docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_TOKEN"
 workflows:
   version: 2
   test:
