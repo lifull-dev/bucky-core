@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    bucky-core (0.9.19)
+    bucky-core (0.9.20)
       addressable (~> 2.5)
       color_echo (~> 3.1)
       json (~> 2.1)
       nokogiri (~> 1.10.4)
       parallel (~> 1.11)
       ruby-mysql (~> 2.9)
-      selenium-webdriver (~> 3.4)
+      selenium-webdriver (~> 3.142)
       sequel (~> 4.48)
       test-unit (~> 3.2)
 
@@ -34,7 +34,7 @@ GEM
     json (2.1.0)
     method_source (0.9.0)
     mini_portile2 (2.4.0)
-    nokogiri (1.10.5)
+    nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
     parallel (1.12.1)
     parser (2.6.3.0)
