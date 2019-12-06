@@ -98,7 +98,7 @@ jobs:
       - run:
           name: build image
           command: |
-            docker build -t "$DOCKER_REPO":"$CIRCLE_TAG" .
+            docker build -t "$DOCKER_REPO":0.0.0 .
 workflows:
   version: 2
   test:
