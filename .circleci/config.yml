@@ -75,7 +75,7 @@ jobs:
       - run: bundle exec rubocop -f html --out report.html
       - store_artifacts:
           path: report.html
-  publish:
+  publish_to_rubygems:
     docker:
       - image: circleci/ruby:2.4.1
     steps:
@@ -89,6 +89,22 @@ jobs:
       - run:
           name: Update vresion.rb and publish on RubyGems
           command: bash .circleci/deploy_to_rubygems.sh
+  publish_to_docker_hub:
+    machine: true
+    environment:
+      DOCKER_REPO: lifullsetg/bucky-core
+    steps:
+      - checkout
+      - run:
+          name: Build image
+          command: |
+            docker build -t "$DOCKER_REPO":"${CIRCLE_TAG/v/}" .
+      - run:
+          name: Login and push image
+          command: |
+            docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_TOKEN"
+            docker push "$DOCKER_REPO":"${CIRCLE_TAG/v/}"
+            docker logout
 workflows:
   version: 2
   test:
@@ -101,7 +117,13 @@ workflows:
             - generate_cache_for_system_test
   deploy:
     jobs:
-      - publish:
+      - publish_to_rubygems:
+          filters:
+            tags:
+              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
+            branches:
+              ignore: /.*/
+      - publish_to_docker_hub:
           filters:
             tags:
               only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
