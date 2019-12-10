@@ -55,6 +55,7 @@ module Bucky
 
         def teardown
           @driver.quit
+        ensure
           super
         end
       end
