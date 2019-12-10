@@ -55,8 +55,6 @@ module Bucky
 
         def teardown
           @driver.quit
-        rescue StandardError => e
-          puts e
         ensure
           super
         end
