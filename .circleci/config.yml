@@ -96,10 +96,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build image
+          name: Build and tagged image
           command: |
             docker build -t "$DOCKER_REPO":"${CIRCLE_TAG/v/}" .
-            docker build -t "$DOCKER_REPO":latest .
+            docker tag "$DOCKER_REPO":"${CIRCLE_TAG/v/}" "$DOCKER_REPO":latest
       - run:
           name: Login and push image
           command: |
