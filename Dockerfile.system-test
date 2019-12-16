@@ -42,6 +42,6 @@ RUN \
   bundle install && \
   rm -rf ~/.gem
 
-WORKDIR /app
-RUN chown -R nobody:nobody /app
+WORKDIR /bucky-core
+RUN chown -R nobody:nobody /bucky-core
 USER nobody
