@@ -87,7 +87,7 @@ jobs:
           name: Setup Rubygems
           command: bash .circleci/setup_rubygems.sh
       - run:
-          name: Update vresion.rb and publish on RubyGems
+          name: Update version.rb and publish on RubyGems
           command: bash .circleci/deploy_to_rubygems.sh
   publish_to_docker_hub:
     machine: true
