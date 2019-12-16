@@ -43,5 +43,3 @@ RUN \
   rm -rf ~/.gem
 
 WORKDIR /app
-RUN chown -R nobody:nobody /bucky-core && chown -R nobody:nobody /app
-USER nobody

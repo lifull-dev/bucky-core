@@ -30,7 +30,7 @@ jobs:
           command: docker-compose -f docker-compose.system-test.yml up --no-build -d
       - run:
           name: execute system testing
-          command: 'circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 -I {} docker exec --user nobody bucky-core bats "/bucky-core/"{} | circleci tests split'
+          command: 'circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 -I {} docker exec bucky-core bats "/bucky-core/"{} | circleci tests split'
       - run:
           name: docker down
           command: docker-compose -f docker-compose.system-test.yml down
@@ -87,7 +87,7 @@ jobs:
           name: Setup Rubygems
           command: bash .circleci/setup_rubygems.sh
       - run:
-          name: Update vresion.rb and publish on RubyGems
+          name: Update version.rb and publish on RubyGems
           command: bash .circleci/deploy_to_rubygems.sh
   publish_to_docker_hub:
     machine: true
