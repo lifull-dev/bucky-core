@@ -30,9 +30,7 @@ jobs:
           command: docker-compose -f docker-compose.system-test.yml up --no-build -d
       - run:
           name: execute system testing
-          command: |
-            who
-            'circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 -I {} docker exec bucky-core bats "/bucky-core/"{} | circleci tests split'
+          command: 'circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 -I {} docker exec --user nobody bucky-core bats "/bucky-core/"{} | circleci tests split'
       - run:
           name: docker down
           command: docker-compose -f docker-compose.system-test.yml down
