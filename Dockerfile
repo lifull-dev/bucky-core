@@ -36,5 +36,5 @@ RUN \
   rm -rf ~/.gem
 
 WORKDIR /app
-RUN adduser -S bucky
-USER bucky
+RUN chown -R nobody:nobody /app
+USER nobody
