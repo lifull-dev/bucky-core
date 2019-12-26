@@ -1,7 +1,7 @@
 # Bucky-Core
 [![Gem Version](https://badge.fury.io/rb/bucky-core.svg)](https://badge.fury.io/rb/bucky-core) [![CircleCI](https://circleci.com/gh/lifull-dev/bucky-core/tree/master.svg?style=svg)](https://circleci.com/gh/lifull-dev/bucky-core/tree/master) [![Maintainability](https://api.codeclimate.com/v1/badges/adf9599d98a55ac87a2e/maintainability)](https://codeclimate.com/github/lifull-dev/bucky-core/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/adf9599d98a55ac87a2e/test_coverage)](https://codeclimate.com/github/lifull-dev/bucky-core/test_coverage)
 
-## Overview  
+## Overview
 Bucky-core can run test code which is written in YAML. End-to-End test (working with Selenium) and Linkstatus test (HTTP status check) are supported in default. Page object model pattern and page based element management is the main concept in Bucky-core.  You can create scenarios and execute it easily by using Bucky-core.
 
 When working with [Bucky-management](https://github.com/lifull-dev/bucky-management), Bucky-core can also record test results. You can make test results visualization by using Bucky-management.
