@@ -59,7 +59,7 @@ describe Bucky::TestEquipment::TestCase::E2eTestCase do
 
   describe '#operate' do
     let(:user_operator_double) { double('user_operator double') }
-    let(:op_args) { {proc: "proc discretion", exec: {page: 'top', part: { locate: 'rosen_tokyo', num: 1 }}} }
+    let(:op_args) { { proc: 'proc discretion', exec: { page: 'top', part: { locate: 'rosen_tokyo', num: 1 } } } }
     before do
       allow(subject).to receive(:create_webdriver)
       allow(Bucky::TestEquipment::Verifications::ServiceVerifications).to receive(:new)
