@@ -12,10 +12,11 @@ describe Bucky::Core::Exception do
 
   describe Bucky::Core::Exception::BuckyException do
     let(:klass) { Bucky::Core::Exception::BuckyException }
+    let(:proc_name) { 'proc_name' }
     describe '.handle' do
       it 'call BuckyLogger.write' do
         expect(Bucky::Utils::BuckyLogger).to receive(:write)
-        klass.handle(error)
+        klass.handle(error, proc_name)
       end
     end
   end
@@ -33,9 +34,16 @@ describe Bucky::Core::Exception do
   describe Bucky::Core::Exception::WebdriverException do
     let(:klass) { Bucky::Core::Exception::WebdriverException }
     describe '.handle' do
+      let(:proc_name) { nil }
       it 'raise error' do
         allow(Bucky::Core::Exception::BuckyException).to receive(:handle)
-        expect { klass.handle(error) }.to raise_error(error)
+        expect { klass.handle(error, proc_name) }.to raise_error(error)
+      end
+
+      let(:proc_name) { 'proc_name' }
+      it 'raise error with proc_name' do
+        allow(Bucky::Core::Exception::BuckyException).to receive(:handle)
+        expect { klass.handle(error, proc_name) }.to raise_error(error)
       end
     end
   end
