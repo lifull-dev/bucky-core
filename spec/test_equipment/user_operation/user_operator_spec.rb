@@ -41,7 +41,6 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
       context 'when call method of pageobject' do
         let(:operation) { :input_inquire_info }
         let(:operation_args) { { proc: 'proc discretion', exec: { page: 'top', operate: 'input_inquire_info' } } }
-        ############
         it 'call pageobject.send' do
           allow(pages_double).to receive(:send).and_return(page_double)
           expect(page_double).to receive(:send)
