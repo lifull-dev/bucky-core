@@ -13,6 +13,7 @@
 spec/
 .rspec
 system-testing/
+docker/
 
 # Log
 *.log
@@ -22,8 +23,8 @@ system-testing/
 .bundle
 .vscode
 .yardoc
-_docker
 coverage/
+example/
 doc
 tags
 tmp
