@@ -43,9 +43,9 @@ module Bucky
         end
 
         # Call method of user operation
-        # @param [Hash] op_args e.g.){page: 'top', part: 'rosen_tokyo', operation: 'click'}
+        # @param [Hash] op_args e.g.){:proc=>"proc discretion", :exec=>{page: 'top_page', part: 'fizz_button', operation: 'click'}}
         def operate(**op_args)
-          @user_operator.send(op_args[:operate], method_name, op_args)
+          @user_operator.send(op_args[:exec][:operate], method_name, op_args)
         end
 
         def setup
