@@ -3,7 +3,7 @@
 require_relative '../../../lib/bucky/core/exception/bucky_exception'
 
 describe Bucky::Core::Exception do
-  let(:error) { StandardError }
+  let(:error) { StandardError.new('error test') }
   let(:config_double) { double('double of Config') }
   before do
     allow(Bucky::Utils::Config).to receive(:instance).and_return(config_double)
@@ -34,16 +34,15 @@ describe Bucky::Core::Exception do
   describe Bucky::Core::Exception::WebdriverException do
     let(:klass) { Bucky::Core::Exception::WebdriverException }
     describe '.handle' do
-      let(:proc_name) { nil }
       it 'raise error' do
         allow(Bucky::Core::Exception::BuckyException).to receive(:handle)
-        expect { klass.handle(error, proc_name) }.to raise_error(error)
+        expect { klass.handle(error) }.to raise_error(error)
       end
 
-      let(:proc_name) { 'proc_name' }
+      let(:proc_name) { '  1:test proc' }
       it 'raise error with proc_name' do
         allow(Bucky::Core::Exception::BuckyException).to receive(:handle)
-        expect { klass.handle(error, proc_name) }.to raise_error(error)
+        expect { klass.handle(error, proc_name) }.to raise_error(StandardError, 'error test. Fail in proc: #  1:test proc')
       end
     end
   end
