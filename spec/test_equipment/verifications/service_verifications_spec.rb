@@ -28,7 +28,7 @@ describe Bucky::TestEquipment::Verifications::ServiceVerifications do
 
   describe '#method_missing' do
     let(:verify_args) { { verify: 'assert_title', expect: 'page title' } }
-    let(:verify_page_args) { { page: page_name, verify: 'assert_sample', expect: 'page title' } }
+    let(:verify_page_args) { { proc: 'proc discretion', exec: { page: page_name, verify: 'assert_sample', expect: 'page title' } } }
     let(:dummy_verify_args) { { verify: 'hoge', expect: 'hoge' } }
     let(:page_method_double) { double('page method') }
     before do
