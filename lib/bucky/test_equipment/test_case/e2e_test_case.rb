@@ -37,9 +37,9 @@ module Bucky
         end
 
         # Call mothod of verification
-        # @param [Hash] verify_args e.g.) {verify: "assert_title", expect: "page title"}
+        # @param [Hash] verify_args e.g.) {:proc=>"proc discretion", :exec=>{verify: "assert_title", expect: "page title"}}
         def verify(**verify_args)
-          @service_verifications.send(verify_args[:verify], verify_args)
+          @service_verifications.send(verify_args[:exec][:verify], verify_args)
         end
 
         # Call method of user operation

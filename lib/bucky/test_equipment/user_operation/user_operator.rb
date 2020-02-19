@@ -29,7 +29,7 @@ module Bucky
 
           # Call method of page object
           # e.g) {page: 'top', operation: 'input_freeword', word: 'testing word'}
-          return page_method(args) if args[:exec].key?(:page) && !args[:exec].key?(:part)
+          return page_method(args[:exec]) if args[:exec].key?(:page) && !args[:exec].key?(:part)
 
           # Call method of part
           part_mothod(args[:exec]) if args[:exec].key?(:part)
