@@ -13,7 +13,6 @@
 spec/
 .rspec
 system-testing/
-docker/
 
 # Log
 *.log
