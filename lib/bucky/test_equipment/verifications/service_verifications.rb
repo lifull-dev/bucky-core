@@ -32,8 +32,6 @@ module Bucky
           else
             raise StandardError, "Undefined verification method or invalid arguments. #{verification},#{args[:exec]}"
           end
-        rescue StandardError => e
-          raise e
         end
 
         private

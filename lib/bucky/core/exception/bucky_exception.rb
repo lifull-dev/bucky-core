@@ -33,7 +33,7 @@ module Bucky
             super
             raise err if proc_name.nil?
 
-            raise(err.class, "#{err.message}. Fail in proc: ##{proc_name}")
+            raise(err.class, "#{err.message}\nFail in proc: ##{proc_name}")
           end
         end
       end
