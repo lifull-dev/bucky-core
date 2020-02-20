@@ -32,6 +32,8 @@ module Bucky
           else
             raise StandardError, "Undefined verification method or invalid arguments. #{verification},#{args[:exec]}"
           end
+        rescue StandardError => e
+          Bucky::Core::Exception::WebdriverException.handle(e, args[:proc].strip)
         end
 
         private
