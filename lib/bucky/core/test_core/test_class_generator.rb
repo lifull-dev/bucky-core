@@ -15,6 +15,7 @@ module Bucky
 
         def add_test_procedure(procedures)
           procedures.each.with_index(1) do |procedure, index|
+            procedure[:proc] ||= ''.dup
             puts procedure[:proc].insert(0, "  #{index}:") if procedure.key?(:proc)
             method = procedure[:exec].key?(:operate) ? :operate : :verify
             send(method, procedure)
