@@ -19,7 +19,7 @@ cd {test project name}
 
 ## 2. Sets connect information to DB
 - Use default value as following if you didn't change anything in Bucky-management's docker-compose.yml
-- Database name is according to what you set in RAILS_ENV when startup Bcuky-management
+- Database name is according to what you set in RAILS_ENV when startup Bucky-management
 ```
 ## config/test_db_config.yml ##
 
