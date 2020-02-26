@@ -16,7 +16,7 @@ module Bucky
         def add_test_procedure(procedures)
           procedures.each.with_index(1) do |procedure, index|
             procedure[:proc] ||= ''.dup
-            if procedure[:proc].match(/^[0-9]{,2}:/) then
+            if procedure[:proc].match(/^[0-9]{,2}:/)
               puts "  #{procedure[:proc]}"
             else
               puts procedure[:proc].insert(0, "  #{index}:")
