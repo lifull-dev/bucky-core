@@ -12,11 +12,10 @@ describe Bucky::Core::Exception do
 
   describe Bucky::Core::Exception::BuckyException do
     let(:klass) { Bucky::Core::Exception::BuckyException }
-    let(:proc_name) { 'proc_name' }
     describe '.handle' do
       it 'call BuckyLogger.write' do
         expect(Bucky::Utils::BuckyLogger).to receive(:write)
-        klass.handle(error, proc_name)
+        klass.handle(error)
       end
     end
   end
