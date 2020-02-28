@@ -22,19 +22,20 @@ module Bucky
         def method_missing(operation, test_case_name, **args)
           @operation = operation
           @test_case_name = test_case_name
-          Bucky::Utils::BuckyLogger.write(test_case_name, args[:exec])
+          Bucky::Utils::BuckyLogger.write(test_case_name, args[:procedure])
 
           # Call method of UserOperationHelper
-          return @operation_helper.send(@operation, args[:exec]) if @operation_helper.methods.include?(@operation)
+          return @operation_helper.send(@operation, args[:procedure]) if @operation_helper.methods.include?(@operation)
 
           # Call method of page object
           # e.g) {page: 'top', operation: 'input_freeword', word: 'testing word'}
-          return page_method(args[:exec]) if args[:exec].key?(:page) && !args[:exec].key?(:part)
+          return page_method(args[:procedure]) if args[:procedure].key?(:page) && !args[:procedure].key?(:part)
 
           # Call method of part
-          part_mothod(args[:exec]) if args[:exec].key?(:part)
+          part_mothod(args[:procedure]) if args[:procedure].key?(:part)
         rescue StandardError => e
-          Bucky::Core::Exception::WebdriverException.handle(e, args[:proc].strip)
+          proc_name = "#{args[:index]}:#{args[:procedure][:proc]}"
+          Bucky::Core::Exception::WebdriverException.handle(e, proc_name)
         end
 
         private

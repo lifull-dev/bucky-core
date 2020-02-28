@@ -39,13 +39,13 @@ module Bucky
         # Call mothod of verification
         # @param [Hash] verify_args e.g.) {:proc=>"proc discretion", :exec=>{verify: "assert_title", expect: "page title"}}
         def verify(**verify_args)
-          @service_verifications.send(verify_args[:exec][:verify], verify_args)
+          @service_verifications.send(verify_args[:procedure][:verify], verify_args)
         end
 
         # Call method of user operation
         # @param [Hash] op_args e.g.){:proc=>"proc discretion", :exec=>{page: 'top_page', part: 'fizz_button', operation: 'click'}}
         def operate(**op_args)
-          @user_operator.send(op_args[:exec][:operate], method_name, op_args)
+          @user_operator.send(op_args[:procedure][:operate], method_name, op_args)
         end
 
         def setup
