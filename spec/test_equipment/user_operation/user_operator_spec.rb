@@ -31,7 +31,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
       let(:part_double) { double('part double') }
       let(:operation_helper_methods?) { false }
       let(:operation) { :go }
-      let(:operation_args) { { proc: 'proc discretion', exec: { operation: 'go' } } }
+      let(:operation_args) { { procedure: { operation: 'go' } } }
 
       it 'not call operation_helper.send' do
         expect(user_operation_helper_double).not_to receive(:send)
@@ -40,7 +40,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
 
       context 'when call method of pageobject' do
         let(:operation) { :input_inquire_info }
-        let(:operation_args) { { proc: 'proc discretion', exec: { page: 'top', operate: 'input_inquire_info' } } }
+        let(:operation_args) { { procedure: { page: 'top', operate: 'input_inquire_info' } } }
         it 'call pageobject.send' do
           allow(pages_double).to receive(:send).and_return(page_double)
           expect(page_double).to receive(:send)
@@ -50,7 +50,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
       context 'when call method of part' do
         let(:operation) { :click }
         context 'in case single part' do
-          let(:operation_args) { { proc: 'proc discretion', exec: { page: 'top', part: 'rosen_tokyo' } } }
+          let(:operation_args) { { procedure: { page: 'top', part: 'rosen_tokyo' } } }
           it 'call send of part object' do
             allow(pages_double).to receive(:send).and_return(page_double)
             allow(page_double).to receive(:send).and_return(part_double)
@@ -59,7 +59,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
           end
         end
         context 'in case operate one part of multiple parts' do
-          let(:operation_args) { { proc: 'proc discretion', exec: { page: 'top', part: { locate: 'rosen_tokyo', num: 1 } } } }
+          let(:operation_args) { { procedure: { page: 'top', part: { locate: 'rosen_tokyo', num: 1 } } } }
           let(:parts_double) { double('parts double') }
           it 'call send of part object' do
             allow(pages_double).to receive(:send).and_return(page_double)

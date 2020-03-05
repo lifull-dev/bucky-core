@@ -44,7 +44,7 @@ describe Bucky::TestEquipment::TestCase::E2eTestCase do
 
   describe '#verify' do
     let(:verification_double) { double('verification double') }
-    let(:verify_args) { { proc: 'proc discretion', exec: { verify: 'assert_title', expect: 'page title' } } }
+    let(:verify_args) { { procedure: { verify: 'assert_title', expect: 'page title' }, index: 1 } }
     before do
       allow(subject).to receive(:create_webdriver)
       allow(Bucky::TestEquipment::Verifications::ServiceVerifications).to receive(:new).and_return(verification_double)
@@ -60,7 +60,7 @@ describe Bucky::TestEquipment::TestCase::E2eTestCase do
 
   describe '#operate' do
     let(:user_operator_double) { double('user_operator double') }
-    let(:op_args) { { proc: 'proc discretion', exec: { page: 'top', part: { locate: 'rosen_tokyo', num: 1 } } } }
+    let(:op_args) { { procedure: { operate: 'click', page: 'top', part: { locate: 'rosen_tokyo', num: 1 } }, index: 1 } }
     before do
       allow(subject).to receive(:create_webdriver)
       allow(Bucky::TestEquipment::Verifications::ServiceVerifications).to receive(:new)
