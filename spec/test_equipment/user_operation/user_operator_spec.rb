@@ -20,7 +20,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
     context 'when call method of operation helper' do
       let(:operation_helper_methods?) { true }
       let(:operation) { :go }
-      let(:operation_args) { { proc: 'proc discretion', exec: { operation: 'go' } } }
+      let(:operation_args) { { procedure: { operation: 'go' } } }
       it 'call operation_helper.send' do
         expect(user_operation_helper_double).to receive(:send)
         subject.send(operation, 'test_method_name', operation_args)
@@ -74,10 +74,11 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
     context 'when raise exception' do
       let(:operation_helper_methods?) { true }
       let(:operation) { :go }
+      let(:operation_args) { { procedure: { operation: 'go' }, index: 1 } }
       let(:exception) { StandardError }
       it 'call WebdrverException.handle' do
         allow(user_operation_helper_double).to receive(:send).and_raise(exception)
-        expect { subject.send(operation, 'test_method_name') }.to raise_error(exception)
+        expect { subject.send(operation, 'test_method_name', operation_args) }.to raise_error(exception)
       end
     end
   end
