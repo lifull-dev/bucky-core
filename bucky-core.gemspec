@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry',            '~> 0.10'
   spec.add_development_dependency 'pry-byebug',     '~> 3.4'
   spec.add_development_dependency 'pry-stack_explorer', '~> 0.4'
-  spec.add_development_dependency 'rake',           '~> 12'
+  spec.add_development_dependency 'rake',           '~> 13'
   spec.add_development_dependency 'rspec',          '~> 3.6'
   spec.add_development_dependency 'rspec_junit_formatter', '~> 0.3'
   spec.add_development_dependency 'rubocop',        '~> 0.63'
