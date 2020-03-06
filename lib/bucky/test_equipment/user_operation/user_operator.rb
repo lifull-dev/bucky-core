@@ -34,8 +34,7 @@ module Bucky
           # Call method of part
           part_mothod(args[:exec]) if args[:exec].key?(:part)
         rescue StandardError => e
-          proc_name = "#{args[:index]}:#{args[:exec][:proc]}"
-          Bucky::Core::Exception::WebdriverException.handle(e, proc_name)
+          Bucky::Core::Exception::WebdriverException.handle(e, "#{args[:index]}:#{args[:exec][:proc]}")
         end
 
         private
