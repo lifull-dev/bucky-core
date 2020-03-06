@@ -26,14 +26,14 @@ module Bucky
         def method_missing(verification, **args)
           if e2e_verification.respond_to? verification
             puts "    #{verification} is defined in E2eVerificationClass."
-            e2e_verification.send(verification, args[:procedure])
-          elsif args[:procedure].key?(:page)
-            send(args[:procedure][:page]).send(verification, args[:procedure])
+            e2e_verification.send(verification, args[:exec])
+          elsif args[:exec].key?(:page)
+            send(args[:exec][:page]).send(verification, args[:exec])
           else
-            raise StandardError, "Undefined verification method or invalid arguments. #{verification},#{args[:procedure]}"
+            raise StandardError, "Undefined verification method or invalid arguments. #{verification},#{args[:exec]}"
           end
         rescue StandardError => e
-          proc_name = "#{args[:index]}:#{args[:procedure][:proc]}"
+          proc_name = "#{args[:index]}:#{args[:exec][:proc]}"
           Bucky::Core::Exception::WebdriverException.handle(e, proc_name)
         end
 
