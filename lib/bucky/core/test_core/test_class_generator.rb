@@ -14,11 +14,11 @@ module Bucky
         private
 
         def add_test_procedure(procedures)
-          procedures.each.with_index(1) do |procedure, index|
+          procedures.each.with_index(1) do |procedure, step_number|
             procedure[:proc] ||= ''.dup
-            puts "  #{index}:#{procedure[:proc]}"
+            puts "  #{step_number}:#{procedure[:proc]}"
             method = procedure[:exec].key?(:operate) ? :operate : :verify
-            send(method, exec: procedure[:exec], step_number: index)
+            send(method, exec: procedure[:exec], step_number: step_number)
           end
         end
 
