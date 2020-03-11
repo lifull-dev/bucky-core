@@ -18,7 +18,7 @@ module Bucky
             procedure[:proc] ||= ''.dup
             puts "  #{index}:#{procedure[:proc]}"
             method = procedure[:exec].key?(:operate) ? :operate : :verify
-            send(method, exec: procedure[:exec], index: index)
+            send(method, exec: procedure[:exec], step_number: index)
           end
         end
 
