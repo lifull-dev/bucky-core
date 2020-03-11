@@ -11,8 +11,7 @@ module Bucky
         class << self
           # Error handling on bucky framework
           # @param [Object] err exception object
-          # @param [String] proc_name
-          def handle(err, _proc_name)
+          def handle(err)
             Bucky::Utils::BuckyLogger.write(Bucky::Utils::Config.instance[:bucky_error], err)
           end
         end
@@ -20,17 +19,20 @@ module Bucky
 
       class DbConnectorException < Bucky::Core::Exception::BuckyException
         class << self
-          def handle(err, proc_name = nil)
+          def handle(err)
             super
             raise err
           end
         end
       end
 
+      # Error handling on webdriver
+      # @param [Object] err exception object
+      # @param [String] proc_name
       class WebdriverException < Bucky::Core::Exception::BuckyException
         class << self
           def handle(err, proc_name = nil)
-            super
+            super(err)
             raise err if proc_name.nil?
 
             raise(err.class, "#{err.message}\nFail in proc: ##{proc_name}")
