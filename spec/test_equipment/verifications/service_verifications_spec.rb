@@ -27,9 +27,9 @@ describe Bucky::TestEquipment::Verifications::ServiceVerifications do
   end
 
   describe '#method_missing' do
-    let(:verify_args) { { exec: { verify: 'assert_title', expect: 'page title' }, step_number: 1 } }
-    let(:verify_page_args) { { exec: { page: page_name, verify: 'assert_sample', expect: 'page title' }, step_number: 1 } }
-    let(:dummy_verify_args) { { exec: { verify: 'hoge', expect: 'hoge' }, step_number: 1 } }
+    let(:verify_args) { { exec: { verify: 'assert_title', expect: 'page title' }, step_number: 1, proc_name: 'test proc' } }
+    let(:verify_page_args) { { exec: { page: page_name, verify: 'assert_sample', expect: 'page title' }, step_number: 1, proc_name: 'test proc' } }
+    let(:dummy_verify_args) { { exec: { verify: 'hoge', expect: 'hoge' }, step_number: 1, proc_name: 'test proc' } }
     let(:page_method_double) { double('page method') }
     before do
       allow(Bucky::TestEquipment::Verifications::E2eVerification).to receive(:new).and_return(e2e_verification)

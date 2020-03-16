@@ -18,7 +18,7 @@ module Bucky
             procedure[:proc] ||= ''.dup
             puts "  #{step_number}:#{procedure[:proc]}"
             method = procedure[:exec].key?(:operate) ? :operate : :verify
-            send(method, exec: procedure[:exec], step_number: step_number)
+            send(method, exec: procedure[:exec], step_number: step_number, proc_name: procedure[:proc])
           end
         end
 
