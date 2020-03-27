@@ -109,7 +109,7 @@ module Bucky
           doc = Nokogiri::HTML.parse(entity)
           links = []
           doc.xpath('//a').each do |node|
-            href = node.attr('href')
+            href = node.attr('href').split(' ')[0] # Patch for nokogiri's bug
             next if exclude_href?(href)
 
             # Add fqdn if href doesn't include fqdn
