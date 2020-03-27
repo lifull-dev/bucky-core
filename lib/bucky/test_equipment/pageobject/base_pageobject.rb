@@ -78,8 +78,6 @@ module Bucky
           end
 
           elements.first
-        rescue StandardError => e
-          Bucky::Core::Exception::WebdriverException.handle(e)
         end
 
         def raise_if_elements_empty(elements, method, value)

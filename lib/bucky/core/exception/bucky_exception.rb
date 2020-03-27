@@ -26,11 +26,16 @@ module Bucky
         end
       end
 
+      # Error handling on webdriver
+      # @param [Object] err exception object
+      # @param [String] proc_name
       class WebdriverException < Bucky::Core::Exception::BuckyException
         class << self
-          def handle(err)
-            super
-            raise err
+          def handle(err, proc_name = nil)
+            super(err)
+            raise err if proc_name.nil?
+
+            raise(err.class, "#{err.message}\nFail in proc: ##{proc_name}")
           end
         end
       end

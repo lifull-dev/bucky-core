@@ -10,7 +10,7 @@ cases:
   # You should create test case name as {test suite name + _ + number}
   - case_name: search_and_assert_1
     func: transition
-    desc: Should able to search bucky-core in github, and move to bucky-core page.
+    desc: Should be able to search bucky-core in github, and move to bucky-core page.
     # Procedures to do in this case
     procs:
       - proc: Open github top page

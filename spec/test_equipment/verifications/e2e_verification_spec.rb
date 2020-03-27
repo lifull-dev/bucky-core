@@ -30,17 +30,9 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
     end
   end
 
-  describe '#method_missing' do
-    let(:page_verify_method) { :check_page }
-    let(:args) { { page: 'hoge' } }
-    before do
-      allow(service_verifications).to receive(:send).and_return(page_double)
-    end
-  end
-
   describe '#assert_title' do
     let(:actual_title) { 'title' }
-    let(:args) { { expect: 'title' } }
+    let(:args) { { verify: 'assert_title', page: :top, part: :rosen, expect: 'title' } }
     before do
       allow(driver).to receive(:title).and_return(actual_title)
     end
@@ -61,7 +53,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       allow(pages_double).to receive(:get_part).and_return(web_elem)
     end
     context 'in case single part' do
-      let(:args) { { page: :top, part: :rosen, expect: 'text' } }
+      let(:args) { { verify: 'assert_text', page: :top, part: :rosen, expect: 'text' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_text(args)
@@ -72,7 +64,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       end
     end
     context 'in case operate one part of multiple parts' do
-      let(:args) { { page: :top, part: { locate: :rosen, num: 1 }, expect: 'text' } }
+      let(:args) { { verify: 'assert_text', page: :top, part: { locate: :rosen, num: 1 }, expect: 'text' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_text(args)
@@ -90,7 +82,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       allow(pages_double).to receive(:get_part).and_return(web_elem)
     end
     context 'in case single part' do
-      let(:args) { { page: :top, part: :rosen, expect: 'hoge' } }
+      let(:args) { { verify: 'assert_contained_text', page: :top, part: :rosen, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_contained_text(args)
@@ -101,7 +93,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       end
     end
     context 'in case operate one part of multiple parts' do
-      let(:args) { { page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
+      let(:args) { { verify: 'assert_contained_text', page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_contained_text(args)
@@ -114,7 +106,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
   end
   describe '#assert_contained_url' do
     let(:actual_url) { 'http://example.com' }
-    let(:args) { { expect: 'example.com' } }
+    let(:args) { { verify: 'assert_contained_url', expect: 'example.com' } }
     before do
       allow(driver).to receive(:current_url).and_return(actual_url)
     end
@@ -134,7 +126,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       allow(pages_double).to receive(:get_part).and_return(web_elem)
     end
     context 'in case single part' do
-      let(:args) { { page: :top, part: :rosen, attribute: 'href', expect: 'hoge' } }
+      let(:args) { { verify: 'assert_contained_attribute', page: :top, part: :rosen, attribute: 'href', expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_contained_attribute(args)
@@ -145,7 +137,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       end
     end
     context 'in case operate one part of multiple parts' do
-      let(:args) { { page: :top, part: { locate: :rosen, num: 1 }, attribute: 'href', expect: 'hoge' } }
+      let(:args) { { verify: 'assert_contained_attribute', page: :top, part: { locate: :rosen, num: 1 }, attribute: 'href', expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_contained_attribute(args)
@@ -164,7 +156,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       allow(pages_double).to receive(:get_part).and_return(text_double)
     end
     context 'in case single part' do
-      let(:args) { { page: :top, part: :rosen, expect: 'hoge' } }
+      let(:args) { { verify: 'assert_is_number', page: :top, part: :rosen, expect: '123' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_is_number(args)
@@ -175,7 +167,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       end
     end
     context 'in case operate one part of multiple parts' do
-      let(:args) { { page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
+      let(:args) { { verify: 'assert_is_number', page: :top, part: { locate: :rosen, num: 1 }, expect: '123' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_is_number(args)
@@ -194,7 +186,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       allow(pages_double).to receive(:get_part).and_return(part_double)
     end
     context 'in case single part' do
-      let(:args) { { page: :top, part: :rosen, expect: 'hoge' } }
+      let(:args) { { verify: 'assert_display', page: :top, part: :rosen, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_display(args)
@@ -205,7 +197,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       end
     end
     context 'in case operate one part of multiple parts' do
-      let(:args) { { page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
+      let(:args) { { verify: 'assert_display', page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_display(args)
@@ -223,7 +215,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       allow(pages_double).to receive(:part_exist?).and_return(actual)
     end
     context 'in case single part' do
-      let(:args) { { page: :top, part: :rosen, expect: 'hoge' } }
+      let(:args) { { verify: 'assert_exist_part', page: :top, part: :rosen, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_exist_part(args)
@@ -234,7 +226,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       end
     end
     context 'in case operate one part of multiple parts' do
-      let(:args) { { page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
+      let(:args) { { verify: 'assert_exist_part', page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_exist_part(args)
@@ -253,7 +245,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       allow(pages_double).to receive(:part_exist?).and_return(actual)
     end
     context 'in case single part' do
-      let(:args) { { page: :top, part: :rosen, expect: 'hoge' } }
+      let(:args) { { verify: 'assert_not_exist_part', page: :top, part: :rosen, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_not_exist_part(args)
@@ -264,8 +256,7 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       end
     end
     context 'in case operate one part of multiple parts' do
-      let(:args) { { page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
-      let(:args) { { page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
+      let(:args) { { verify: 'assert_not_exist_part', page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
         subject.assert_not_exist_part(args)

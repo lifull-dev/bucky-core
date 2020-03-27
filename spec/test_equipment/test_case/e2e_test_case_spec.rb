@@ -44,6 +44,7 @@ describe Bucky::TestEquipment::TestCase::E2eTestCase do
 
   describe '#verify' do
     let(:verification_double) { double('verification double') }
+    let(:verify_args) { { exec: { verify: 'assert_title', expect: 'page title' }, step_number: 1, proc_name: 'test proc' } }
     before do
       allow(subject).to receive(:create_webdriver)
       allow(Bucky::TestEquipment::Verifications::ServiceVerifications).to receive(:new).and_return(verification_double)
@@ -53,12 +54,13 @@ describe Bucky::TestEquipment::TestCase::E2eTestCase do
     end
     it 'call service_verifications.send' do
       expect(verification_double).to receive(:send)
-      subject.verify
+      subject.verify(verify_args)
     end
   end
 
   describe '#operate' do
     let(:user_operator_double) { double('user_operator double') }
+    let(:op_args) { { exec: { operate: 'click', page: 'top', part: { locate: 'rosen_tokyo', num: 1 } }, step_number: 1, proc_name: 'test proc' } }
     before do
       allow(subject).to receive(:create_webdriver)
       allow(Bucky::TestEquipment::Verifications::ServiceVerifications).to receive(:new)
@@ -69,7 +71,7 @@ describe Bucky::TestEquipment::TestCase::E2eTestCase do
     end
     it 'call user_operator.send' do
       expect(user_operator_double).to receive(:send)
-      subject.operate
+      subject.operate(op_args)
     end
   end
 

@@ -37,15 +37,15 @@ module Bucky
         end
 
         # Call mothod of verification
-        # @param [Hash] verify_args e.g.) {verify: "assert_title", expect: "page title"}
+        # @param [Hash] verify_args e.g.) {:exec=>{verify: "assert_title", expect: "page title"}, :step_number=> 1, :proc_name=> "test proc"}
         def verify(**verify_args)
-          @service_verifications.send(verify_args[:verify], verify_args)
+          @service_verifications.send(verify_args[:exec][:verify], verify_args)
         end
 
         # Call method of user operation
-        # @param [Hash] op_args e.g.){page: 'top', part: 'rosen_tokyo', operation: 'click'}
+        # @param [Hash] op_args e.g.) {:exec=>{:operate=>"click", :page=>"top_page", :part=>"fizz_button"}, :step_number=> 1, :proc_name=> "test proc"}
         def operate(**op_args)
-          @user_operator.send(op_args[:operate], method_name, op_args)
+          @user_operator.send(op_args[:exec][:operate], method_name, op_args)
         end
 
         def setup
