@@ -33,8 +33,12 @@ module Bucky
 
           # If number of requests is over redirect limit
           return { error_message: "\n[Redirect Error] #{url} is redirected more than #{REDIRECT_LIMIT}" } if redirect_count > REDIRECT_LIMIT
-
-          check_result = check_log_and_get_response(url, device, link_check_max_times, url_log)
+          begin
+            check_result = check_log_and_get_response(url, device, link_check_max_times, url_log)
+          rescue Net::ReadTimeout => e
+            puts "  #{url} ... ReadTimeout"
+            return { error_message: "#{e.message} Please check this url: #{url}" }
+          end
           # If result include response continue to check, else return result
           !check_result.key?(:response) ? (return check_result) : response = check_result[:response]
 
@@ -82,7 +86,7 @@ module Bucky
           # Check base url
           http_status_check_args = { url: url, device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: 0, redirect_url_list: [] }
           base_response = http_status_check(http_status_check_args)
-          assert_nil(base_response[:error_message], "Response of base URL is incorrect.\n#{base_response[:error_message]}")
+          raise Test::Unit::AssertionFailedError.new("Response of base URL is incorrect.\n#{base_response[:error_message]}") unless base_response[:error_message].nil?
 
           # Collect links
           links_args = { base_url: base_url, base_fqdn: base_fqdn, url_reg: url_reg, only_same_fqdn: only_same_fqdn, entity: base_response[:entity] }
@@ -96,7 +100,7 @@ module Bucky
             link_response = http_status_check(http_status_check_args)
             errors << link_response[:error_message] if link_response[:error_message]
           end
-          assert_empty(errors, errors.join("\n"))
+          raise Test::Unit::AssertionFailedError.new(errors.join("\n")) unless errors.empty?
         end
 
         def make_target_links(args)
