@@ -33,6 +33,7 @@ module Bucky
 
           # If number of requests is over redirect limit
           return { error_message: "\n[Redirect Error] #{url} is redirected more than #{REDIRECT_LIMIT}" } if redirect_count > REDIRECT_LIMIT
+
           begin
             check_result = check_log_and_get_response(url, device, link_check_max_times, url_log)
           rescue Net::ReadTimeout => e
@@ -50,7 +51,7 @@ module Bucky
             puts "  #{url} ...  [#{response.code}:OK]"
             { entity: response.entity }
           when /3[0-9]{2}/
-            http_status_check_args = { url: url, device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: redirect_count +1, redirect_url_list: redirect_url_list }
+            http_status_check_args = { url: url, device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: redirect_count + 1, redirect_url_list: redirect_url_list }
             redirect_and_http_status_check(response, http_status_check_args)
           when /(4|5)[0-9]{2}/
             url_log[url][:error_message] = "[Status Error] http status returned #{response.code}.\ncheck this url: #{redirect_url_list.join(' -> ')}"
@@ -81,7 +82,7 @@ module Bucky
           # Check base url
           http_status_check_args = { url: url, device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: 0, redirect_url_list: [] }
           base_response = http_status_check(http_status_check_args)
-          raise Test::Unit::AssertionFailedError.new("Response of base URL is incorrect.\n#{base_response[:error_message]}") unless base_response[:error_message].nil?
+          raise Test::Unit::AssertionFailedError, "Response of base URL is incorrect.\n#{base_response[:error_message]}" unless base_response[:error_message].nil?
 
           # Collect links
           links_args = { base_url: base_url, base_fqdn: base_fqdn, url_reg: url_reg, only_same_fqdn: only_same_fqdn, entity: base_response[:entity] }
@@ -95,7 +96,7 @@ module Bucky
             link_response = http_status_check(http_status_check_args)
             errors << link_response[:error_message] if link_response[:error_message]
           end
-          raise Test::Unit::AssertionFailedError.new(errors.join("\n")) unless errors.empty?
+          raise Test::Unit::AssertionFailedError, errors.join("\n") unless errors.empty?
         end
 
         def make_target_links(args)
@@ -128,6 +129,7 @@ module Bucky
         # Exclude non test target url
         def exclude(links, exclude_urls)
           return links if exclude_urls.nil?
+
           excluded_links = links - exclude_urls
 
           # Exclude url if it has "*" in the last of it
