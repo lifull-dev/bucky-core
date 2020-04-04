@@ -49,7 +49,7 @@ module Bucky
           when /2[0-9]{2}/
             url_log[url][:entity] = response.entity
             puts "  #{url} ...  [#{response.code}:OK]"
-            { entity: response.entity }
+            return { entity: response.entity }
           when /3[0-9]{2}/
             http_status_check_args = { url: url, device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: redirect_count + 1, redirect_url_list: redirect_url_list }
             redirect_and_http_status_check(response, http_status_check_args)
