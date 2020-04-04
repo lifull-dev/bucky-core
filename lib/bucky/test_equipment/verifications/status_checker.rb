@@ -56,11 +56,10 @@ module Bucky
           when /(4|5)[0-9]{2}/
             url_log[url][:error_message] = "[Status Error] http status returned #{response.code}.\ncheck this url: #{redirect_url_list.join(' -> ')}"
             puts "  #{url} ...  [#{response.code}:NG]"
-            { error_message: url_log[url][:error_message] }
           else
             url_log[url][:error_message] = "[Status Code Invalid Error] Status Code is Invalid. \n Status:#{response.code}"
-            { error_message: url_log[url][:error_message] }
           end
+          { error_message: url_log[url][:error_message] }
         end
 
         def link_status_check(args)
