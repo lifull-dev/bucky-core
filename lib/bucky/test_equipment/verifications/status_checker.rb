@@ -49,17 +49,18 @@ module Bucky
           when /2[0-9]{2}/
             url_log[url][:entity] = response.entity
             puts "  #{url} ...  [#{response.code}:OK]"
-            return { entity: response.entity }
+            { entity: response.entity }
           when /3[0-9]{2}/
             http_status_check_args = { url: url, device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: redirect_count + 1, redirect_url_list: redirect_url_list }
             redirect_and_http_status_check(response, http_status_check_args)
           when /(4|5)[0-9]{2}/
             url_log[url][:error_message] = "[Status Error] http status returned #{response.code}.\ncheck this url: #{redirect_url_list.join(' -> ')}"
             puts "  #{url} ...  [#{response.code}:NG]"
+            { error_message: url_log[url][:error_message] }
           else
             url_log[url][:error_message] = "[Status Code Invalid Error] Status Code is Invalid. \n Status:#{response.code}"
+            { error_message: url_log[url][:error_message] }
           end
-          { error_message: url_log[url][:error_message] }
         end
 
         def link_status_check(args)
