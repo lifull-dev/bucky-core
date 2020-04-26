@@ -37,7 +37,6 @@ module Bucky
           begin
             check_result = check_log_and_get_response(url, device, link_check_max_times, url_log)
           rescue Net::ReadTimeout => e
-            puts "  #{url} ... ReadTimeout"
             return { error_message: "#{e.message} Please check this url: #{url}" }
           end
           # If result include response continue to check, else return result
@@ -188,7 +187,6 @@ module Bucky
           redirect_url = fqdn << redirect_url unless redirect_url.include?('http')
           puts "  #{http_status_check_args[:url]} ... redirect to #{redirect_url} [#{response.code}:RD]"
           http_status_check_args[:url] = redirect_url
-          http_status_check_args = http_status_check_args
           http_status_check(http_status_check_args)
         end
       end
