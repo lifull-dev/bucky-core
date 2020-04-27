@@ -36,6 +36,20 @@ describe Bucky::TestEquipment::Verifications::StatusChecker do
     }
   end
 
+  describe 'http_status_check for timeout' do
+    subject { test_class.new }
+    let(:args) { { url: 'https://example.com/', device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: 0, redirect_url_list: [] } }
+    before do
+      allow(subject).to receive(:check_log_and_get_response).and_raise(Net::ReadTimeout)
+    end
+    context 'timeout when checking status' do
+      let(:args) { { url: 'http://timeout.test'.to_sym, device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: 0, redirect_url_list: [] } }
+      it 'include error message in result' do
+        expect(subject.http_status_check(args).keys).to include :error_message
+      end
+    end
+  end
+
   describe 'http_status_check' do
     subject { test_class.new }
     let(:args) { { url: 'https://example.com/', device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: 0, redirect_url_list: [] } }

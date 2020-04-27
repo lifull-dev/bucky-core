@@ -61,7 +61,7 @@ MethodLength:
   Enabled: false
 
 ModuleLength:
-  Max: 120
+  Max: 130
   Exclude:
     - 'spec/**/*.rb'
 

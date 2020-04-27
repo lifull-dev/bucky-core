@@ -34,7 +34,11 @@ module Bucky
           # If number of requests is over redirect limit
           return { error_message: "\n[Redirect Error] #{url} is redirected more than #{REDIRECT_LIMIT}" } if redirect_count > REDIRECT_LIMIT
 
-          check_result = check_log_and_get_response(url, device, link_check_max_times, url_log)
+          begin
+            check_result = check_log_and_get_response(url, device, link_check_max_times, url_log)
+          rescue Net::ReadTimeout => e
+            return { error_message: "#{e.message} Please check this url: #{url}" }
+          end
           # If result include response continue to check, else return result
           !check_result.key?(:response) ? (return check_result) : response = check_result[:response]
 
@@ -46,13 +50,8 @@ module Bucky
             puts "  #{url} ...  [#{response.code}:OK]"
             { entity: response.entity }
           when /3[0-9]{2}/
-            fqdn = url[%r{^(https?:\/\/([a-zA-Z0-9\-_.]+))}]
-            redirect_url = response['location']
-            # Add fqdn if location doesn't include fqdn
-            redirect_url = fqdn << redirect_url unless redirect_url.include?('http')
-            puts "  #{url} ... redirect to #{redirect_url} [#{response.code}:RD]"
-            http_status_check_args = { url: redirect_url, device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: redirect_count + 1, redirect_url_list: redirect_url_list }
-            http_status_check(http_status_check_args)
+            http_status_check_args = { url: url, device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: redirect_count + 1, redirect_url_list: redirect_url_list }
+            redirect_and_http_status_check(response, http_status_check_args)
           when /(4|5)[0-9]{2}/
             url_log[url][:error_message] = "[Status Error] http status returned #{response.code}.\ncheck this url: #{redirect_url_list.join(' -> ')}"
             puts "  #{url} ...  [#{response.code}:NG]"
@@ -82,12 +81,12 @@ module Bucky
           # Check base url
           http_status_check_args = { url: url, device: device, link_check_max_times: link_check_max_times, url_log: url_log, redirect_count: 0, redirect_url_list: [] }
           base_response = http_status_check(http_status_check_args)
-          assert_nil(base_response[:error_message], "Response of base URL is incorrect.\n#{base_response[:error_message]}")
+          raise Test::Unit::AssertionFailedError, "Response of base URL is incorrect.\n#{base_response[:error_message]}" unless base_response[:error_message].nil?
 
           # Collect links
           links_args = { base_url: base_url, base_fqdn: base_fqdn, url_reg: url_reg, only_same_fqdn: only_same_fqdn, entity: base_response[:entity] }
           links = make_target_links(links_args)
-          links = exclude(links, exclude_urls) unless exclude_urls.nil?
+          links = exclude(links, exclude_urls)
 
           errors = []
           Parallel.each(links.uniq, in_threads: Bucky::Utils::Config.instance[:linkstatus_thread_num]) do |link|
@@ -96,7 +95,7 @@ module Bucky
             link_response = http_status_check(http_status_check_args)
             errors << link_response[:error_message] if link_response[:error_message]
           end
-          assert_empty(errors, errors.join("\n"))
+          raise Test::Unit::AssertionFailedError, errors.join("\n") unless errors.empty?
         end
 
         def make_target_links(args)
@@ -128,6 +127,8 @@ module Bucky
 
         # Exclude non test target url
         def exclude(links, exclude_urls)
+          return links if exclude_urls.nil?
+
           excluded_links = links - exclude_urls
 
           # Exclude url if it has "*" in the last of it
@@ -177,6 +178,16 @@ module Bucky
         def format_href(base_url, href)
           href.insert(0, '/') unless href.match(%r{^/|^#})
           base_url + href
+        end
+
+        def redirect_and_http_status_check(response, http_status_check_args)
+          fqdn = http_status_check_args[:url][%r{^(https?:\/\/([a-zA-Z0-9\-_.]+))}]
+          redirect_url = response['location']
+          # Add fqdn if location doesn't include fqdn
+          redirect_url = fqdn << redirect_url unless redirect_url.include?('http')
+          puts "  #{http_status_check_args[:url]} ... redirect to #{redirect_url} [#{response.code}:RD]"
+          http_status_check_args[:url] = redirect_url
+          http_status_check(http_status_check_args)
         end
       end
     end
