@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   When working with Bucky-management, Bucky-core can also record test results. You can make test results visualization by using Bucky-management.
   DESCRIPTION
-  spec.required_ruby_version = '>= 2.4.2'
+  spec.required_ruby_version = '>= 2.5'
   spec.homepage      = 'https://github.com/lifull-dev/bucky-core'
   spec.license       = 'Apache License 2.0'
 
@@ -41,8 +41,8 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'addressable', '~> 2.5'
   spec.add_runtime_dependency 'color_echo',         '~> 3.1'
-  spec.add_runtime_dependency 'json',               '~> 2.1'
-  spec.add_runtime_dependency 'nokogiri',           '~> 1.10.4'
+  spec.add_runtime_dependency 'json',               '~> 2.3.0'
+  spec.add_runtime_dependency 'nokogiri',           '~> 1.11.1'
   spec.add_runtime_dependency 'parallel',           '~> 1.11'
   spec.add_runtime_dependency 'ruby-mysql',         '~> 2.9'
   spec.add_runtime_dependency 'selenium-webdriver', '~> 3.142'

@@ -1,4 +1,4 @@
-FROM ruby:2.4.2-alpine
+FROM ruby:2.5.8-alpine
 ENV LANG ja_JP.UTF-8
 ENV PAGER busybox less
 
