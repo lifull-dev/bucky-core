@@ -8,6 +8,9 @@ services:
     volumes:
       - .:/bucky-core
     tty: true
+    depends_on:
+      - chrome
+      - web
   chrome:
     container_name: bucky-chrome
     image: selenium/standalone-chrome-debug:3.141.59-oxygen
