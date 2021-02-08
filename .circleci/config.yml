@@ -37,7 +37,7 @@ jobs:
   unit_test:
     working_directory: ~/bucky-core
     docker:
-      - image: circleci/ruby:2.4.2-node
+      - image: circleci/ruby:2.5.8
         environment:
           CC_TEST_REPORTER_ID: fd7bd9d517bdf8953c4d4803ca4ad7539d12d5c760048b8daf80cbc7d54fb262
     steps:
@@ -62,7 +62,7 @@ jobs:
           ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
   static_code_analysis:
     docker:
-      - image: circleci/ruby:2.4.2-node
+      - image: circleci/ruby:2.5.8
     steps:
       - checkout
       - type: cache-restore
@@ -77,7 +77,7 @@ jobs:
           path: report.html
   publish_to_rubygems:
     docker:
-      - image: circleci/ruby:2.4.1
+      - image: circleci/ruby:2.5.8
     steps:
       - add_ssh_keys:
           finerprints:

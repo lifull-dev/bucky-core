@@ -148,6 +148,11 @@ module Bucky
               suite[:cases].delete_if { |c| c[:labels].nil? }
               suite[:cases].delete_if { |c| !(test_cond[:label].sort - [c[:labels]].flatten.sort).empty? }
             end
+            # Exclude by label
+            if test_cond.key? :xlabel
+              # Delete test case that have specify label
+              suite[:cases].delete_if { |c| (test_cond[:xlabel].sort - [c[:labels]].flatten.sort).empty? }
+            end
             # If there is no option, do nothing.
             return suite unless test_cond.key? :case
 

@@ -28,21 +28,17 @@ describe Bucky::Core::TestCore::ExitHandler do
 
   describe '#bucky_exit' do
     it 'the exit code should be 1' do
-      begin
-        instance.instance_variable_set(:@exit_code, 1)
-        instance.bucky_exit
-      rescue SystemExit => e
-        expect(e.status).to eq(1)
-      end
+      instance.instance_variable_set(:@exit_code, 1)
+      instance.bucky_exit
+    rescue SystemExit => e
+      expect(e.status).to eq(1)
     end
 
     it 'the exit code should be 0' do
-      begin
-        instance.instance_variable_set(:@exit_code, 0)
-        instance.bucky_exit
-      rescue SystemExit => e
-        expect(e.status).to eq(0)
-      end
+      instance.instance_variable_set(:@exit_code, 0)
+      instance.bucky_exit
+    rescue SystemExit => e
+      expect(e.status).to eq(0)
     end
   end
 end

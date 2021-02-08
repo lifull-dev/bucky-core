@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'bucky/test_equipment/pageobject/base_pageobject'
+require '/bucky-core/lib/bucky/test_equipment/pageobject/base_pageobject'
 module Services
   module ServiceA
     module Pc

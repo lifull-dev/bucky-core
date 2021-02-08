@@ -83,6 +83,9 @@ end
 opts.on('-l', '--label LABEL_NAME') do |v|
   test_cond[:label] = v
 end
+opts.on('--xl', '--exclude_label EXCLUDE_LABEL_NAME') do |v|
+  test_cond[:xlabel] = v
+end
 opts.on('-m', '--link_check_max_times') do |v|
   test_cond[:link_check_max_times] = v.to_i
 end
