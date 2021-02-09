@@ -131,3 +131,5 @@ workflows:
               only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
             branches:
               ignore: /.*/
+          requires:
+            - publish_to_rubygems
