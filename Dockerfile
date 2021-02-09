@@ -22,6 +22,7 @@ RUN apk update && \
     zlib-dev
 
 ENV BC_DIR /bucky-core/
+ENV PATH /bucky-core/exe/:$PATH
 WORKDIR $BC_DIR
 COPY . $BC_DIR
 
