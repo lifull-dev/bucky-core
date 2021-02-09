@@ -5,7 +5,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}-{{ checksum "Gemfile.lock" }}
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
       - run:
           command: |
             if [ ! -f ~/caches/images.tar ]; then
@@ -14,7 +14,7 @@ jobs:
               docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
             fi
       - save_cache:
-          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}-{{ checksum "Gemfile.lock" }}
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
           paths: ~/caches/images.tar
   system_test:
     machine: true
@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}-{{ checksum "Gemfile.lock" }}
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
       - run:
           command: docker load -q -i ~/caches/images.tar
       - run:
