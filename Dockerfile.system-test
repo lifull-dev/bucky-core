@@ -33,14 +33,16 @@ ENV PATH /bucky-core/exe/:$PATH
 WORKDIR $BC_DIR
 COPY . $BC_DIR
 
-RUN \
-  gem install bundler -v 1.17.3 && \
-  echo 'gem: --no-document' >> ~/.gemrc && \
-  cp ~/.gemrc /etc/gemrc && \
-  chmod uog+r /etc/gemrc && \
-  bundle config --global build.nokogiri --use-system-libraries && \
-  bundle config --global jobs 4 && \
-  bundle install && \
-  rm -rf ~/.gem
+RUN gem build bucky-core.gemspec
+RUN gem install bucky-core
+# RUN \
+#   gem install bundler -v 1.17.3 && \
+#   echo 'gem: --no-document' >> ~/.gemrc && \
+#   cp ~/.gemrc /etc/gemrc && \
+#   chmod uog+r /etc/gemrc && \
+#   bundle config --global build.nokogiri --use-system-libraries && \
+#   bundle config --global jobs 4 && \
+#   bundle install && \
+#   rm -rf ~/.gem
 
 WORKDIR /app
