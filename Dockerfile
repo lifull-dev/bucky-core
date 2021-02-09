@@ -21,20 +21,7 @@ RUN apk update && \
     yaml-dev \
     zlib-dev
 
-ENV BC_DIR /bucky-core/
-ENV PATH /bucky-core/exe/:$PATH
-WORKDIR $BC_DIR
-COPY . $BC_DIR
-
-RUN \
-  gem install bundler -v 1.17.3 && \
-  echo 'gem: --no-document' >> ~/.gemrc && \
-  cp ~/.gemrc /etc/gemrc && \
-  chmod uog+r /etc/gemrc && \
-  bundle config --global build.nokogiri --use-system-libraries && \
-  bundle config --global jobs 4 && \
-  bundle install && \
-  rm -rf ~/.gem
+RUN gem install bucky-core
 
 WORKDIR /app
 RUN chown -R nobody:nobody /app
