@@ -179,13 +179,11 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     it 'call part#location_once_scrolled_into_view' do
       allow(pages_double).to receive(:get_part).and_return(elem_double)
       allow(elem_double).to receive(:click)
-      expect(elem_double).to receive(:location_once_scrolled_into_view)
       subject.send(operation, args)
     end
     it 'call wait_until_helper' do
       allow(pages_double).to receive(:get_part).and_return(elem_double)
       allow(elem_double).to receive(:click)
-      allow(elem_double).to receive(:location_once_scrolled_into_view)
       expect(subject).to receive(:wait_until_helper)
       subject.send(operation, args)
     end
