@@ -1,4 +1,4 @@
-VERSION=$(git describe --tags | sed -e 's/^v//')
+VERSION=$(git describe --tags | grep -o -E "([0-9]+\.){1}[0-9]+(\.[0-9]+)?" | head -n1)
 git config user.email "bucky-operator@users.noreply.github.com"
 git config user.name "bucky-operator"
 # Update version.rb
