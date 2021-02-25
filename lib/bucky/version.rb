@@ -2,6 +2,6 @@
 
 module Bucky
   module Version
-    VERSION = '0.10.10-1-g63e44cf'
+    VERSION = '0.10.12'
   end
 end
