@@ -173,20 +173,17 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     let(:elem_double) { double('elem double') }
     it 'call part#click' do
       allow(pages_double).to receive(:get_part).and_return(elem_double)
-      allow(driver_double).to receive(:execute_script)
       expect(elem_double).to receive(:click)
       subject.send(operation, args)
     end
     it 'call part#location_once_scrolled_into_view' do
       allow(pages_double).to receive(:get_part).and_return(elem_double)
       allow(elem_double).to receive(:click)
-      allow(driver_double).to receive(:execute_script)
       subject.send(operation, args)
     end
     it 'call wait_until_helper' do
       allow(pages_double).to receive(:get_part).and_return(elem_double)
       allow(elem_double).to receive(:click)
-      allow(driver_double).to receive(:execute_script)
       expect(subject).to receive(:wait_until_helper)
       subject.send(operation, args)
     end

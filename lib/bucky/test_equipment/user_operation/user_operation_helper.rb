@@ -37,7 +37,6 @@ module Bucky
 
         def click(args)
           elem = @pages.get_part(args)
-          @driver.execute_script("arguments[0].scrollIntoView();", elem)
           # when click successfully, return of click is nil.
           wait_until_helper(5, 0.1, Selenium::WebDriver::Error::WebDriverError) { elem.click.nil? }
         end
