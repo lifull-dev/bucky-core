@@ -3,30 +3,31 @@ ENV LANG ja_JP.UTF-8
 ENV PAGER busybox less
 
 RUN apk update && \
-    apk upgrade && \
-    apk add --update\
-    bash \
-    build-base \
-    curl-dev \
-    git \
-    libxml2-dev \
-    libxslt-dev \
-    linux-headers \
-    mysql-dev \
-    openssh \
-    ruby-dev \
-    ruby-json \
-    tzdata \
-    yaml \
-    yaml-dev \
-    zlib-dev \
-    curl \
-    parallel
+  apk upgrade && \
+  apk add --update\
+  bash \
+  build-base \
+  curl-dev \
+  git \
+  iproute2-minimal \
+  libxml2-dev \
+  libxslt-dev \
+  linux-headers \
+  mysql-dev \
+  openssh \
+  ruby-dev \
+  ruby-json \
+  tzdata \
+  yaml \
+  yaml-dev \
+  zlib-dev \
+  curl \
+  parallel
 
 RUN git clone https://github.com/bats-core/bats-core.git /tmp/bats-core \
-    && cd /tmp/bats-core \
-    && ./install.sh /usr/local \
-    && rm -rf /tmp/bats-core
+  && cd /tmp/bats-core \
+  && ./install.sh /usr/local \
+  && rm -rf /tmp/bats-core
 
 ENV BC_DIR /bucky-core/
 ENV PATH /bucky-core/exe/:$PATH

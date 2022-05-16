@@ -9,6 +9,7 @@ RUN apk update && \
     build-base \
     curl-dev \
     git \
+    iproute2-minimal \
     libxml2-dev \
     libxslt-dev \
     linux-headers \
