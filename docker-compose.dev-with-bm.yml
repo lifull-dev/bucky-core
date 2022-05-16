@@ -3,7 +3,7 @@ services:
   bucky-core:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: bucky-core
     volumes:
       - .:/bucky-core
