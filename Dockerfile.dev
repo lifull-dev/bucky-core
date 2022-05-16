@@ -8,6 +8,7 @@ RUN apk update && \
     bash \
     build-base \
     curl-dev \
+    iproute2-minimal \
     git \
     libxml2-dev \
     libxslt-dev \
