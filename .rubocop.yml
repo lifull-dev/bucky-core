@@ -2,12 +2,12 @@ inherit_from: .rubocop_todo.yml
 
 AllCops:
   Exclude:
-    - 'lib/bucky/test_equipment/user_operation/user_operation_helper.rb'
-    - 'spec/fixtures/**/*'
-    - 'spec/test_code/**/*'
-    - 'template/**/*'
-    - 'tmp/**/*'
-    - 'vendor/**/*'
+    - "lib/bucky/test_equipment/user_operation/user_operation_helper.rb"
+    - "spec/fixtures/**/*"
+    - "spec/test_code/**/*"
+    - "template/**/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
   TargetRubyVersion: 2.5
 
 AbcSize:
@@ -19,19 +19,19 @@ AccessorMethodName:
 
 BlockLength:
   Exclude:
-    - 'Rakefile'
-    - '**/*.rake'
-    - 'spec/**/*.rb'
-    - 'bucky-core.gemspec'
-    - 'lib/bucky/core/database/test_data_operator.rb'
-    - 'lib/bucky/core/test_core/test_class_generator.rb'
+    - "Rakefile"
+    - "**/*.rake"
+    - "spec/**/*.rb"
+    - "bucky-core.gemspec"
+    - "lib/bucky/core/database/test_data_operator.rb"
+    - "lib/bucky/core/test_core/test_class_generator.rb"
 
 ClassVars:
   Exclude:
-    - 'lib/bucky/test_equipment/selenium_handler/webdriver_handler.rb'
-    - 'lib/bucky/test_equipment/test_case/abst_test_case.rb'
-    - 'lib/bucky/utils/config.rb'
-    - 'lib/bucky/tools/lint.rb'
+    - "lib/bucky/test_equipment/selenium_handler/webdriver_handler.rb"
+    - "lib/bucky/test_equipment/test_case/abst_test_case.rb"
+    - "lib/bucky/utils/config.rb"
+    - "lib/bucky/tools/lint.rb"
 
 CyclomaticComplexity:
   Enabled: false
@@ -55,26 +55,26 @@ LineLength:
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
-    - 'spec/**/*.rb'
+    - "spec/**/*.rb"
 
 MethodLength:
   Enabled: false
 
 ModuleLength:
-  Max: 130
+  Max: 140
   Exclude:
-    - 'spec/**/*.rb'
+    - "spec/**/*.rb"
 
 PerceivedComplexity:
   Enabled: false
 
 UselessAssignment:
   Exclude:
-    - 'lib/bucky/core/test_core/test_result.rb'
+    - "lib/bucky/core/test_core/test_result.rb"
 
 ClassLength:
   Max: 110
 
 Lint/UselessAccessModifier:
   Exclude:
-    - 'example/**/*'
+    - "example/**/*"
