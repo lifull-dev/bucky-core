@@ -128,7 +128,7 @@ module Bucky
         # Exclude non test target url
         def exclude(links, exclude_urls)
           return links if exclude_urls.nil?
-          
+
           excluded_links = links - exclude_urls
 
           # Exclude url if it has "*" in the last of it
