@@ -129,16 +129,12 @@ module Bucky
         def exclude(links, exclude_urls)
           return links if exclude_urls.nil?
 
-          excluded_links = links - exclude_urls
-
           # Exclude url if it has "*" in the last of it
           exclude_urls.each do |ex_url|
-            next unless ex_url.end_with?('*')
-
-            excluded_links.delete_if { |l| l.start_with?(ex_url.delete('*')) }
+            links.delete_if { |l| l.match(/#{ex_url}/) }
           end
 
-          excluded_links
+          links
         end
 
         private
