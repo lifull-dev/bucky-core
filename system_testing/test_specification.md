@@ -11,8 +11,12 @@ docker-compose -f docker-compose.system-test.yml down
 ```
 
 # Test case specification
+
 ※ Only Japanese now.
+
 ※ テストケースNo.はbatsのケース説明部分に記載し、対応づけを行う
+
+## E2Eテスト実行機能
 
 | テスト条件 | テスト観点 | テストケース<br/>No. | テストケース | テスト手順 | 期待結果 |
 |:--|:--|--:|:--|:--|:--|
@@ -33,11 +37,21 @@ docker-compose -f docker-compose.system-test.yml down
 |  |  | 15 | PageObjectファイルからパーツ名[数字]でWebElementが取得できること | 1. bucky run -t e2e -d -D pc -c pc_e2e_7<br/>- 以下シナリオファイル内の処理 -<br/>2. goメソッド実行 (http://bucky.net)<br/>2. PageObjectメソッド click_multiple_element | 終了後のステータスが0であること<br/>→ 「0 failures, 0 errors」 と表示されること |
 | VerificationでのWebElement取得 | Verificationファイルからパーツ（WebElement）が取得できること | 16 | Verificationファイルからパーツ名でWebElementが取得できること | 1. bucky run -t e2e -d -D pc -c pc_e2e_8<br/>- 以下シナリオファイル内の処理 -<br/>2. goメソッド実行 (http://bucky.net)<br/>2. Verificationメソッド click_single_element | 終了後のステータスが0であること<br/>→ 「0 failures, 0 errors」 と表示されること |
 |  |  | 17 | Verificationファイルからパーツ名[数字]でWebElementが取得できること | 1. bucky run -t e2e -d -D pc -c pc_e2e_9<br/>- 以下シナリオファイル内の処理 -<br/>2. goメソッド実行 (http://bucky.net)<br/>2. Verificationメソッド click_multiple_element | 終了後のステータスが0であること<br/>→ 「0 failures, 0 errors」 と表示されること |
+
+## Linkstatusテスト実行機能
+
+| テスト条件 | テスト観点 | テストケース<br/>No. | テストケース | テスト手順 | 期待結果 |
+|:--|:--|--:|:--|:--|:--|
 | LinkStatusテスト実行機能 | 起点URLの検証が正しく実施できるか | 1 | linkstatusを実行し、起点URLが検証されること | 1. bucky run -t linkstatus -d -D pc -c pc_link_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行 | 出力に http://bucky.net が含まれること |
 |  | ページ内のリンクの検証が正しく実施できるか | 2 | linkstatusを実行し、起点ページ内のリンクが検証されること | 1. bucky run -t linkstatus -d -D pc -c pc_link_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行<br/>3. http://bucky.net/test_page.html に対してLinkチェック実行 | 出力に http://bucky.net/test_page.htmlが含まれること |
 |  | 各デバイス(PC/SP)のUAで正常に実行できるか | 3 | デバイスPCでlinkstatusを実行し、正常に動作すること | 1. bucky run -t linkstatus -d -D pc -c pc_link_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行<br/>3. http://bucky.net/test_page.html に対してLinkチェック実行 | 終了後のステータスが0であること<br/>→ 「0 failures, 0 errors」 と表示されること |
 |  |  | 4 | linkstatusNGテストを実行し、正常に動作すること | 1. bucky run -t linkstatus -d -D pc -c pc_link_2<br/>2. http://bucky-error.net に対してhttpリクエストチェック実行 | 終了後のステータスが1であること |
 |  |  | 5 | デバイスSPでlinkstatusを実行し、正常に動作すること | 1. bucky run -t linkstatus -d -D sp -c sp_link_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行<br/>3. http://bucky.net/test_page.html チェック実行 | 終了後のステータスが0であること<br/>→ 「0 failures, 0 errors」 と表示されること |
+
+## Buckyコマンド実行機能
+
+| テスト条件 | テスト観点 | テストケース<br/>No. | テストケース | テスト手順 | 期待結果 |
+|:--|:--|--:|:--|:--|:--|
 | テスト用のプロジェクト作成機能 | 下記の構造のディレクトリ、ファイルが生成されること<br/>(./template/new 以下の内容）<br/>.<br/>├── config<br/>│ ├── bucky_config.yml<br/>│ ├── e2e_config.yml<br/>│ ├── for_spec<br/>│ │ └── test.yml<br/>│ ├── linkstatus_config.yml<br/>│ └── test_db_config.yml<br/>├── services<br/>│ └── README.md<br/>└── system<br/>├── evidences<br/>│ ├── README.md<br/>│ └── screen_shots<br/>│ └── README.md<br/>└── logs<br/>└── README.md | 1 | newコマンド実行後に期待通りのファイル、ディレクトリが作成されていること | 1. bucky new test_project | 対象ディレクトリとファイルが存在していること |
 | ページオブジェクト・パーツファイル作成機能 | 指定のサービス名、デバイスのディレクトリ以下に指定のページ名で.rbファイルと.ymlファイルが生成されること | 2 | make serviceコマンド実行後に期待通りのファイルが作成されていること | 1. (事前条件) bucky new test_project<br/>2. bucky make service test_service | 対象ディレクトリとファイルが存在していること |
 |  |  | 3 | make pageコマンド実行後に期待通りのファイルが作成されていること | 1. (事前条件) bucky new test_project<br/>2. (事前条件) bucky make service test_service<br/>3. bucky make page test_page | 対象ディレクトリとファイルが存在していること |
