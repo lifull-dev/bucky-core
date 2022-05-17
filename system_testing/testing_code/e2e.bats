@@ -56,47 +56,47 @@ setup() {
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "#19 When 'when condition' is added, results have no failures nor errors" {
+@test "#10 When 'when condition' is added, results have no failures nor errors" {
   export STAGE=development
   run bucky run -t e2e -d -D pc -c pc_e2e_4
   [ $(expr "$output" : ".*click.*") -ne 0 ]
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "#20 When 'when condition' is not added, results have no click procedure" {
+@test "#11 When 'when condition' is not added, results have no click procedure" {
   run bucky run -t e2e -d -D pc -c pc_e2e_4
   [ $(expr "$output" : ".*click.*") -eq 0 ]
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "#21 When 'different when condition' is added, results have no click procedure" {
+@test "#12 When 'different when condition' is added, results have no click procedure" {
   export STAGE=staging
   run bucky run -t e2e -d -D pc -c pc_e2e_4
   [ $(expr "$output" : ".*click.*") -eq 0 ]
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "#22 When click second element from scenario, results have no failures nor errors" {
+@test "#13 When click second element from scenario, results have no failures nor errors" {
   run bucky run -t e2e -d -D pc -c pc_e2e_5
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "#23 When click element from PageObject file, results have no failures nor errors" {
+@test "#14 When click element from PageObject file, results have no failures nor errors" {
   run bucky run -t e2e -d -D pc -c pc_e2e_6
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "#24 When click second element from PageObject file, results have no failures nor errors" {
+@test "#15 When click second element from PageObject file, results have no failures nor errors" {
   run bucky run -t e2e -d -D pc -c pc_e2e_7
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "#25 When click element from Verification file, results have no failures nor errors" {
+@test "#16 When click element from Verification file, results have no failures nor errors" {
   run bucky run -t e2e -d -D pc -c pc_e2e_8
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "#26 When click second element from Verification file, results have no failures nor errors" {
+@test "#17 When click second element from Verification file, results have no failures nor errors" {
   run bucky run -t e2e -d -D pc -c pc_e2e_9
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
