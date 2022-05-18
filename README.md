@@ -212,7 +212,7 @@ test_category: linkstatus
 exclude_urls:
   - https://example.com/fuga/?hoge=1 # PERFECT MATCHING
   - https://example.com/fuga/* # PARTIAL MATCHING
-  - /https://example.com/.*\.html/* # REGULAR EXPRESSION MATCHING
+  - /https://example.com/.*\.html/ # REGULAR EXPRESSION MATCHING
 cases:
   - case_name: test_code_1 # Suite filename + number
     desc: status check for top page
