@@ -11,7 +11,7 @@ setup() {
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "#2 After executing linkstatus on pc , results contain target link url and no failures/errors." {
+@test "#2 After executing linkstatus on pc, results contain target link url and no failures/errors." {
   run bucky run -t linkstatus -d -D pc -c pc_link_1
   [ $(expr "$output" : ".*http://bucky\.net/test_page.html.*") -ne 0 ]
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
@@ -22,7 +22,19 @@ setup() {
   [ $status -eq 1 ]
 }
 
-@test "#5 After executing linkstatus on sp , results have no failures nor errors" {
+@test "#5 After executing linkstatus on sp, results have no failures nor errors" {
   run bucky run -t linkstatus -d -D sp -c sp_link_1
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
+}
+
+@test "#6 After executing linkstatus with excluding by regex, results have no failures nor errors" {
+  run bucky run -t linkstatus -d -D pc -c pc_link_exclude_regex_1
+  [ $status -eq 0 ]
+  [ $(expr "$output" : ".*http://bucky\.net/test_page.html.*") -ne 1 ]
+}
+
+@test "#7 After executing linkstatus with excluding by normal, results have no failures nor errors" {
+  run bucky run -t linkstatus -d -D pc -c pc_link_exclude_normal_1
+  [ $status -eq 0 ]
+  [ $(expr "$output" : ".*http://bucky\.net/test_page.html.*") -ne 1 ]
 }
