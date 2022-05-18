@@ -13,7 +13,7 @@ AllCops:
 AbcSize:
   Enabled: false
 
-# Allow method prefix start with "set_" and "get_"
+# Allow method prefix start with 'set_' and 'get_'
 AccessorMethodName:
   Enabled: false
 
@@ -46,7 +46,7 @@ FrozenStringLiteralComment:
 GlobalVars:
   AllowedVariables: [$bucky_home_dir, $debug, $job_id, $round]
 
-# Not allow using "->" for multi-line lambdas.
+# Not allow using '->' for multi-line lambdas.
 Lambda:
   Enabled: false
 
@@ -61,7 +61,7 @@ MethodLength:
   Enabled: false
 
 ModuleLength:
-  Max: 130
+  Max: 140
   Exclude:
     - 'spec/**/*.rb'
 

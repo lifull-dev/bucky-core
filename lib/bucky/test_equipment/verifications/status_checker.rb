@@ -133,9 +133,12 @@ module Bucky
 
           # Exclude url if it has "*" in the last of it
           exclude_urls.each do |ex_url|
-            next unless ex_url.end_with?('*')
-
-            excluded_links.delete_if { |l| l.start_with?(ex_url.delete('*')) }
+            if ex_url.end_with?('*')
+              excluded_links.delete_if { |l| l.start_with?(ex_url.delete('*')) }
+            elsif ex_url.start_with?('/') && ex_url.end_with?('/')
+              ex_url.delete_prefix!('/').delete_suffix!('/')
+              excluded_links.delete_if { |l| l.match(/#{ex_url}/) }
+            end
           end
 
           excluded_links
