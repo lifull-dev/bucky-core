@@ -27,14 +27,21 @@ setup() {
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]
 }
 
-@test "[linkstatus] #6 After executing linkstatus with excluding by regex, results not contain target link url and no failures/errors." {
+@test "[linkstatus] #6 After executing linkstatus with excluding by normal, results not contain target link url and no failures/errors." {
+  run bucky run -t linkstatus -d -D pc -c pc_link_exclude_normal_1
+  [ $status -eq 0 ]
+  [ $(expr "$output" : ".*http://bucky\.net/test_page.html.*") -eq 0 ]
+}
+
+@test "[linkstatus] #7 After executing linkstatus with excluding by asterisk, results not contain target link url and no failures/errors." {
+  run bucky run -t linkstatus -d -D pc -c pc_link_exclude_asterisk_1
+  [ $status -eq 0 ]
+  [ $(expr "$output" : ".*http://bucky\.net/test_page.html.*") -eq 0 ]
+}
+
+@test "[linkstatus] #8 After executing linkstatus with excluding by regex, results not contain target link url and no failures/errors." {
   run bucky run -t linkstatus -d -D pc -c pc_link_exclude_regex_1
   [ $status -eq 0 ]
   [ $(expr "$output" : ".*http://bucky\.net/test_page.html.*") -eq 0 ]
 }
 
-@test "[linkstatus] #7 After executing linkstatus with excluding by normal, results not contain target link url and no failures/errors." {
-  run bucky run -t linkstatus -d -D pc -c pc_link_exclude_normal_1
-  [ $status -eq 0 ]
-  [ $(expr "$output" : ".*http://bucky\.net/test_page.html.*") -eq 0 ]
-}

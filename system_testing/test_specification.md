@@ -47,8 +47,9 @@ docker-compose -f docker-compose.system-test.yml down
 |  | 各デバイス(PC/SP)のUAで正常に実行できるか | 3 | デバイスPCでlinkstatusを実行し、正常に動作すること | 1. bucky run -t linkstatus -d -D pc -c pc_link_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行<br/>3. http://bucky.net/test_page.html に対してLinkチェック実行 | 終了後のステータスが0であること<br/>→ 「0 failures, 0 errors」 と表示されること |
 |  |  | 4 | linkstatusNGテストを実行し、正常に動作すること | 1. bucky run -t linkstatus -d -D pc -c pc_link_2<br/>2. http://bucky-error.net に対してhttpリクエストチェック実行 | 終了後のステータスが1であること |
 |  |  | 5 | デバイスSPでlinkstatusを実行し、正常に動作すること | 1. bucky run -t linkstatus -d -D sp -c sp_link_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行<br/>3. http://bucky.net/test_page.html チェック実行 | 終了後のステータスが0であること<br/>→ 「0 failures, 0 errors」 と表示されること |
-|  |  | 6 | 正規表現によるURL除外機能が正常に動作すること | 1. bucky run -t linkstatus -d -D pc -c pc_link_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行<br/>3. http://bucky.net/test_page.html チェック実行 | 終了後のステータスが0であること<br/>→ 出力に http://bucky.net/test_page.htmlが含まれないこと |
-|  |  | 7 | 通常のURL除外機能が正常に動作すること | 1. bucky run -t linkstatus -d -D pc -c pc_link_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行<br/>3. http://bucky.net/test_page.html チェック実行 | 終了後のステータスが0であること<br/>→ 出力に http://bucky.net/test_page.htmlが含まれないこと |
+|  |  | 6 | 通常のURL除外機能が正常に動作すること | 1. bucky run -t linkstatus -d -D pc -c pc_link_exclude_normal_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行<br/>3. http://bucky.net/test_page.html チェック実行 | 終了後のステータスが0であること<br/>→ 出力に http://bucky.net/test_page.htmlが含まれないこと |
+|  |  | 7 | アスタリスクを含むURL除外機能が正常に動作すること | 1. bucky run -t linkstatus -d -D pc -c pc_link_exclude_asterisk_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行<br/>3. http://bucky.net/test_page.html チェック実行 | 終了後のステータスが0であること<br/>→ 出力に http://bucky.net/test_page.htmlが含まれないこと |
+|  |  | 8 | 正規表現によるURL除外機能が正常に動作すること | 1. bucky run -t linkstatus -d -D pc -c pc_link_exclude_regex_1<br/>2. http://bucky.net に対してhttpリクエストチェック実行<br/>3. http://bucky.net/test_page.html チェック実行 | 終了後のステータスが0であること<br/>→ 出力に http://bucky.net/test_page.htmlが含まれないこと |
 
 ## Buckyコマンド実行機能
 
