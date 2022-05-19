@@ -11,16 +11,9 @@ describe Bucky::Core::TestCore::TestCaseLoader do
       $bucky_home_dir = bucky_home
     end
 
-    context 'In case there is no arguments' do
-      let(:test_cond) { {} }
-      it 'return test code object' do
-        expect(subject).not_to be_empty
-      end
-    end
-
     context 'In case there are some arguments' do
       context 'when give args of test suite' do
-        let(:test_cond) { { suite_name: [expect_scenario] } }
+        let(:test_cond) { { suite_name: [expect_scenario], test_category: 'e2e' } }
         let(:expect_scenario) { 'scenario_a' }
         it 'return test code object' do
           expect(subject).not_to be_empty
@@ -32,8 +25,8 @@ describe Bucky::Core::TestCore::TestCaseLoader do
         end
       end
 
-      context 'when give args of priority' do
-        let(:test_cond) { { priority: [expect_priority] } }
+      context 'When give args of priority' do
+        let(:test_cond) { { priority: [expect_priority], test_category: 'e2e' } }
         let(:expect_priority) { 'middle' }
         it 'return test code object' do
           expect(subject).not_to be_empty
