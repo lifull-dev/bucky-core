@@ -131,7 +131,6 @@ def setup_test_cond(test_cond)
   test_cond[:test_category] ||= 'e2e'
   test_cond[:re_test_count] = test_cond[:re_test_count] ? test_cond[:re_test_count].to_i : 1
   test_cond[:link_check_max_times] ||= 3
-  test_cond[:out] ||= 'report.json'
   # Change to array e.g.--suite_id 1,2,3 -> :suite_id=>[1,2,3]
   %i[suite_name case label xlabel device].each do |k|
     test_cond[k] = test_cond[k].split(',') unless test_cond[k].nil?
