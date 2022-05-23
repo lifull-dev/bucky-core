@@ -98,6 +98,7 @@ ENV_FOO=foo bucky run -t e2e -d
     -r, --re_test_count RE_TEST_COUNT # How many round you run tests
     -l, --label LABEL_NAME
     -m, --link_check_max_times MAX_TIMES # Works only with which category is linkstatus
+    -o, --out JSON_OUTPUT_FILE_PATH # Output summary report by json
 ```
 
 ### Rerun test
