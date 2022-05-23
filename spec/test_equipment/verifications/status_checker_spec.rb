@@ -106,7 +106,7 @@ describe Bucky::TestEquipment::Verifications::StatusChecker do
       end
     end
   end
-  describe 'link_status_check' do
+  describe 'linkstatus_check' do
     subject { test_class.new }
     let(:url) { 'https://example.com/' }
     let(:links) { ['https://example.com/hoge', 'https://example.com/fuga'] }
@@ -122,7 +122,7 @@ describe Bucky::TestEquipment::Verifications::StatusChecker do
     end
     context 'no error base url, link url' do
       it 'not raise exception' do
-        expect { subject.link_status_check(args) }.not_to raise_error
+        expect { subject.linkstatus_check(args) }.not_to raise_error
       end
     end
   end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'test/unit'
+require 'json'
 require_relative '../../core/test_core/test_result'
 
 module Bucky
@@ -25,6 +26,12 @@ module Bucky
         def run(result)
           super
           @@this_result.result = result unless $debug
+          w_pipe.puts({
+            test_class_name: self.class.name,
+            cases_count: result.run_count,
+            success_count: result.pass_count,
+            failure_count: result.run_count - result.pass_count
+          }.to_json)
         end
 
         def setup

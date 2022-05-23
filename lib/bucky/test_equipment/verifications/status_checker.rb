@@ -62,7 +62,7 @@ module Bucky
           end
         end
 
-        def link_status_check(args)
+        def linkstatus_check(args)
           url = args[:url]
           device = args[:device]
           exclude_urls = args[:exclude_urls]

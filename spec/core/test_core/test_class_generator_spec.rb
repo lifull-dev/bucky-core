@@ -10,8 +10,8 @@ describe Bucky::Core::TestCore::TestClassGenerator.new(test_cond: 'for_test') do
       allow(Bucky::Utils::Config).to receive(:instance).and_return(linkstatus_open_timeout: 60)
       allow(Bucky::Utils::Config).to receive(:instance).and_return(linkstatus_read_timeout: 60)
     end
-    let(:link_status_url_log) { { url: { code: 200, count: 1 } } }
-    let(:link_status_data) do
+    let(:linkstatus_url_log) { { url: { code: 200, count: 1 } } }
+    let(:linkstatus_data) do
       {
         test_class_name: 'SearchflowAreaTop',
         test_suite_name: 'searchflow_area_top',
@@ -65,7 +65,7 @@ describe Bucky::Core::TestCore::TestClassGenerator.new(test_cond: 'for_test') do
     describe 'generate class' do
       let(:device) { 'pc' }
       it 'generate test class according to test suite data' do
-        subject.generate_test_class(link_status_data, link_status_url_log)
+        subject.generate_test_class(data: linkstatus_data, linkstatus_url_log: linkstatus_url_log)
         expect(subject.instance_variable_get(:@test_classes).const_get(:TestFooPcLinkstatusSearchflowAreaTop).name).to eq('Bucky::Core::TestCore::TestClasses::TestFooPcLinkstatusSearchflowAreaTop')
       end
     end
@@ -74,14 +74,14 @@ describe Bucky::Core::TestCore::TestClassGenerator.new(test_cond: 'for_test') do
       let(:device) { 'sp' }
       context 'in case of linkstatus' do
         it 'generate test method according to test suite data' do
-          subject.generate_test_class(link_status_data, link_status_url_log)
+          subject.generate_test_class(data: linkstatus_data, linkstatus_url_log: linkstatus_url_log)
           expect(subject.instance_variable_get(:@test_classes).const_get(:TestFooSpLinkstatusSearchflowAreaTop).instance_methods).to include :test_foo_sp_linkstatus_searchflow_area_top_0
         end
       end
 
       context 'in case of e2e' do
         it 'generate test method according to test suite data' do
-          subject.generate_test_class(e2e_data, link_status_url_log)
+          subject.generate_test_class(data: e2e_data)
           expect(subject.instance_variable_get(:@test_classes).const_get(:TestFooPcE2eSearchflowAreaTop).instance_methods).to include :test_foo_pc_e2e_searchflow_area_top_0
         end
       end

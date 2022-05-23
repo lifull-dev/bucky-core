@@ -46,7 +46,7 @@ module Bucky
         end
 
         # Genrate test class by test suite and test case data
-        def generate_test_class(data, link_status_url_log = {})
+        def generate_test_class(data: [], linkstatus_url_log: {}, w_pipe: {})
           test_cond = @test_cond
           # Common proccessing
           # e.g.) TestSampleAppPcE2e1, TestSampleAppPcHttpstatus1
@@ -63,6 +63,7 @@ module Bucky
               match_obj = /\Atest_(.+)\(.+::(Test.+)\)\z/.match(original_name)
               "#{match_obj[1]}(#{match_obj[2]})"
             end
+            define_method(:w_pipe, proc { w_pipe })
 
             # Class structure is different for each test category
             case data[:test_category]
@@ -74,8 +75,8 @@ module Bucky
                   define_method(method_name) do
                     puts "\n#{simple_test_class_name(name)}"
                     t_case[:urls].each do |url|
-                      link_status_check_args = { url: url, device: data[:suite][:device], exclude_urls: data[:suite][:exclude_urls], link_check_max_times: test_cond[:link_check_max_times], url_log: link_status_url_log }
-                      link_status_check(link_status_check_args)
+                      linkstatus_check_args = { url: url, device: data[:suite][:device], exclude_urls: data[:suite][:exclude_urls], link_check_max_times: test_cond[:link_check_max_times], url_log: linkstatus_url_log }
+                      linkstatus_check(linkstatus_check_args)
                     end
                   end
                 )

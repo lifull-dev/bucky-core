@@ -34,9 +34,8 @@ module Bucky
             testcodes = []
             service = (test_cond[:service] || ['*']).first
             device = (test_cond[:device] || ['*']).first
-            category = (test_cond[:test_category] || ['*']).first
 
-            Dir.glob("#{$bucky_home_dir}/services/#{service}/#{device}/scenarios/#{category}/*.yml").each do |testcode_file|
+            Dir.glob("#{$bucky_home_dir}/services/#{service}/#{device}/scenarios/#{test_cond[:test_category]}/*.yml").each do |testcode_file|
               testcodes << load_testcode_in_file(testcode_file, test_cond)
             end
             # Delete nil element

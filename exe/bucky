@@ -89,7 +89,9 @@ end
 opts.on('-m', '--link_check_max_times') do |v|
   test_cond[:link_check_max_times] = v.to_i
 end
-
+opts.on('-o', '--out JSON_OUTPUT_FILE_PATH') do |v|
+  test_cond[:out] = v
+end
 lint_cond = {}
 opts.on('-C', '--category CATEGORY_NAME') do |v|
   lint_cond[:lint_category] = v
@@ -124,42 +126,34 @@ def bucky_home?
   File.exist?('.bucky_home')
 end
 
+def setup_test_cond(test_cond)
+  # Default conditions setting conditions setting
+  test_cond[:test_category] ||= 'e2e'
+  test_cond[:re_test_count] = test_cond[:re_test_count] ? test_cond[:re_test_count].to_i : 1
+  test_cond[:link_check_max_times] ||= 3
+  test_cond[:out] ||= 'report.json'
+  # Change to array e.g.--suite_id 1,2,3 -> :suite_id=>[1,2,3]
+  %i[suite_name case label xlabel device].each do |k|
+    test_cond[k] = test_cond[k].split(',') unless test_cond[k].nil?
+  end
+  test_cond
+end
+
 current_dir = Dir.pwd
 gem_script_dir = __dir__
 
-if ARGV == RUN_COMMAND
+if ARGV[0].end_with? 'run'
   error_and_exit('Not bucky project dirctory here.') unless bucky_home?
-
   $bucky_home_dir = Dir.pwd
-  # Default conditions setting conditions setting
-  test_cond[:test_category] ||= 'e2e'
-  test_cond[:re_test_count] = test_cond[:re_test_count] ? test_cond[:re_test_count].to_i : 1
-  test_cond[:link_check_max_times] ||= 3
-  # Change to array e.g.--suite_id 1,2,3 -> :suite_id=>[1,2,3]
-  test_cond.each { |k, v| test_cond[k] = v.split(',') if v.instance_of?(String) }
   require_relative '../lib/bucky/core/test_core/test_manager'
-  Bucky::Core::TestCore::TestManager.new(test_cond).run
+  Bucky::Core::TestCore::TestManager.new(setup_test_cond(test_cond)).send(ARGV[0])
   Bucky::Core::TestCore::ExitHandler.instance.bucky_exit
-
-elsif ARGV == RERUN_COMMAND
-  $bucky_home_dir = Dir.pwd
-  # Default conditions setting conditions setting
-  test_cond[:test_category] ||= 'e2e'
-  test_cond[:link_check_max_times] ||= 3
-  test_cond[:re_test_count] = test_cond[:re_test_count] ? test_cond[:re_test_count].to_i : 1
-  # Change to array e.g.--suite_id 1,2,3 -> :suite_id=>[1,2,3]
-  test_cond.each { |k, v| test_cond[k] = v.split(',') if v.instance_of?(String) }
-  require_relative '../lib/bucky/core/test_core/test_manager'
-  Bucky::Core::TestCore::TestManager.new(test_cond).rerun
-  Bucky::Core::TestCore::ExitHandler.instance.bucky_exit
-
 elsif ARGV == LINT_COMMAND
   $bucky_home_dir = Dir.pwd
   # Default conditions setting
   lint_cond[:lint_category] ||= 'config'
   require_relative '../lib/bucky/tools/lint'
   Bucky::Tools::Lint.check(lint_cond[:lint_category])
-
 elsif ARGV[0..0] == NEW_COMMAND
   error_and_exit('No test app name.') if ARGV.length < 2
 
