@@ -152,13 +152,13 @@ module Bucky
         end
 
         def execute_test
-          results_set = {}
+          all_round_results = []
           @re_test_count.times do |i|
             Bucky::Core::TestCore::ExitHandler.instance.reset
             $round = i + 1
             @json_report[:summary][:round_count] = $round
             test_suite_data = load_test_suites
-            results_set = do_test_suites(test_suite_data)
+            all_round_results.append(do_test_suites(test_suite_data))
             @test_cond[:re_test_cond] = @tdo.get_ng_test_cases_at_last_execution(
               is_error: 1, job_id: $job_id, round: $round
             )
@@ -167,11 +167,9 @@ module Bucky
 
           return unless @test_cond[:out]
 
-          results_set.each do |_class_name, res|
-            @json_report[:summary][:cases_count] += res['cases_count']
-            @json_report[:summary][:success_count] += res['success_count']
-            @json_report[:summary][:failure_count] += res['failure_count']
-          end
+          @json_report[:summary][:cases_count] = all_round_results[0].sum { |_case, res| res[:case_count] }
+          @json_report[:summary][:failure_count] = all_round_results[-1].sum { |_case, res| res[:failure_count] }
+          @json_report[:summary][:success_count] = @json_report[:summary][:cases_count] - @json_report[:summary][:failure_count]
 
           File.open(@test_cond[:out], 'w') do |f|
             f.puts(@json_report.to_json)
