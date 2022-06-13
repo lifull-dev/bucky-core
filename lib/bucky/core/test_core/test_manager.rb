@@ -167,8 +167,8 @@ module Bucky
 
           return unless @test_cond[:out]
 
-          @json_report[:summary][:cases_count] = all_round_results[0].sum { |_case, res| res[:cases_count] }
-          @json_report[:summary][:failure_count] = all_round_results[-1].sum { |_case, res| res[:failure_count] }
+          @json_report[:summary][:cases_count] = all_round_results[0].sum { |_case, res| res['cases_count'] }
+          @json_report[:summary][:failure_count] = all_round_results[-1].sum { |_case, res| res['failure_count'] }
           @json_report[:summary][:success_count] = @json_report[:summary][:cases_count] - @json_report[:summary][:failure_count]
 
           File.open(@test_cond[:out], 'w') do |f|
