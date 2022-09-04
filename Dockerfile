@@ -1,4 +1,4 @@
-FROM ruby:2.5.8-alpine
+FROM ruby:2.6.10-alpine
 ENV LANG ja_JP.UTF-8
 ENV PAGER busybox less
 
@@ -9,7 +9,7 @@ RUN apk update && \
     build-base \
     curl-dev \
     git \
-    iproute2-minimal \
+    iproute2 \
     libxml2-dev \
     libxslt-dev \
     linux-headers \
