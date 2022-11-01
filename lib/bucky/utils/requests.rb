@@ -18,7 +18,11 @@ module Bucky
       # @return [Net::HTTP]         HttpStatusCode
       def get_response(uri, device, open_timeout, read_timeout)
         parsed_uri = Addressable::URI.parse(uri.to_str.strip)
-        query = parsed_uri.query ? "?#{CGI.escape(parsed_uri.query)}" : ''
+        query = if parsed_uri.query.nil?
+                  ''
+                else
+                  '?' + parsed_uri.query_values.map { |k, v| "#{CGI.escape(k)}=#{CGI.escape(v)}" }.join('&')
+                end
         # If path is empty, add "/" e.g) http://example.com
         path = parsed_uri.path.empty? ? '/' : parsed_uri.path
 
