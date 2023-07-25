@@ -24,22 +24,23 @@ describe Bucky::Core::Database::TestDataOperator do
   describe '#save_job_record_and_get_job_id' do
     let(:start_time) { Time.now }
     let(:command_and_option) { 'bucky run -t e2e' }
+    let(:fqdn) { 'https://example.com' }
     before do
       allow(con_double).to receive(:[]).and_return(sequel_instance_double)
       allow(db_connector_double).to receive(:con).and_return(con_double)
     end
     it 'call Sequel#insert' do
       expect(sequel_instance_double).to receive(:insert)
-      subject.save_job_record_and_get_job_id(start_time, command_and_option)
+      subject.save_job_record_and_get_job_id(start_time, command_and_option, fqdn)
     end
     it 'return job_id' do
       allow(sequel_instance_double).to receive(:insert).and_return(1)
-      expect(subject.save_job_record_and_get_job_id(start_time, command_and_option)).to eq 1
+      expect(subject.save_job_record_and_get_job_id(start_time, command_and_option, fqdn)).to eq 1
     end
     it 'disconnect database' do
       allow(sequel_instance_double).to receive(:insert)
       expect(db_connector_double).to receive(:disconnect)
-      subject.save_job_record_and_get_job_id(start_time, command_and_option)
+      subject.save_job_record_and_get_job_id(start_time, command_and_option, fqdn)
     end
   end
 
