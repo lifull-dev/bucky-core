@@ -93,7 +93,7 @@ module Bucky
           @re_test_count = @test_cond[:re_test_count]
           @tdo = Bucky::Core::Database::TestDataOperator.new
           @start_time = Time.now
-          $job_id = @tdo.save_job_record_and_get_job_id(@start_time, @test_cond[:command_and_option])
+          $job_id = @tdo.save_job_record_and_get_job_id(@start_time, @test_cond[:command_and_option], @test_cond[:base_fqdn])
           @json_report = {
             summary: {
               cases_count: 0,

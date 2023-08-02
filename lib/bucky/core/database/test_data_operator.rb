@@ -15,11 +15,13 @@ module Bucky
 
         # Save job data and return job id
         # @param  [Time] start_time
+        # @param  [String] command_and_option
+        # @param  [String] fqdn
         # @return [Fixnum] job_id
-        def save_job_record_and_get_job_id(start_time, command_and_option)
+        def save_job_record_and_get_job_id(start_time, command_and_option, fqdn)
           return 0 if $debug
 
-          job_id = @connector.con[:jobs].insert(start_time: start_time, command_and_option: command_and_option)
+          job_id = @connector.con[:jobs].insert(start_time: start_time, command_and_option: command_and_option, base_fqdn: fqdn)
           @connector.disconnect
           job_id
         end
