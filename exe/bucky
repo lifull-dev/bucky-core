@@ -135,7 +135,7 @@ def setup_test_cond(test_cond)
   %i[suite_name case label xlabel device].each do |k|
     test_cond[k] = test_cond[k].split(',') unless test_cond[k].nil?
   end
-  test_cond[:base_fqdn] = ENV['BUCKY_FQDN']
+  test_cond[:base_fqdn] = ENV['BASE_FQDN'] ||= ''
   test_cond
 end
 

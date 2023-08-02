@@ -155,7 +155,7 @@ cases:
       - proc: open page
         exec:
           operate: go
-          url: <%= ENV['FQDN'] %>/results # Using erb notation to get environment variable
+          url: <%= ENV['BASE_FQDN'] %>/results # Using erb notation to get environment variable
       - proc: element click
         exec:
           operate: click
@@ -224,7 +224,7 @@ cases:
     desc: status check for detail page
     urls:
         - https://example.com/detail/1
-        - <%= ENV['FQDN'] %>/detail/2 # Using erb notation to get environment variable
+        - <%= ENV['BASE_FQDN'] %>/detail/2 # Using erb notation to get environment variable
 ```
 
 # Development
