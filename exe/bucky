@@ -146,6 +146,8 @@ if ARGV[0].end_with? 'run'
   error_and_exit('Not bucky project dirctory here.') unless bucky_home?
   $bucky_home_dir = Dir.pwd
   require_relative '../lib/bucky/core/test_core/test_manager'
+  p test_cond
+  p $debug
   Bucky::Core::TestCore::TestManager.new(setup_test_cond(test_cond)).send(ARGV[0])
   Bucky::Core::TestCore::ExitHandler.instance.bucky_exit
 elsif ARGV == LINT_COMMAND

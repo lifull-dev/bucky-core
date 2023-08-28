@@ -19,7 +19,7 @@ module Bucky
         # @param [String] operation
         # @param [String] test_case_name
         # @param [Hash] args
-        def method_missing(operation, test_case_name, **args)
+        def method_missing(operation, test_case_name, args)
           @operation = operation
           @test_case_name = test_case_name
           Bucky::Utils::BuckyLogger.write(test_case_name, args[:exec])
