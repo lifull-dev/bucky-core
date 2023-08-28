@@ -8,6 +8,8 @@ module Bucky
     module Database
       class TestDataOperator
         def initialize
+          return 0 if $debug
+          
           @connector = DbConnector.new
           @connector.connect
           @config = Bucky::Utils::Config.instance

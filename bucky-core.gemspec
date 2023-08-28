@@ -46,7 +46,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'nokogiri',           '~> 1.11.1'
   spec.add_runtime_dependency 'parallel',           '~> 1.11'
   spec.add_runtime_dependency 'ruby-mysql',         '~> 2.9'
-  spec.add_runtime_dependency 'selenium-webdriver', '~> 3.142'
+  spec.add_runtime_dependency 'selenium-webdriver', '~> 4.11'
   spec.add_runtime_dependency 'sequel',             '~> 5.71'
   spec.add_runtime_dependency 'test-unit',          '~> 3.2'
 end
