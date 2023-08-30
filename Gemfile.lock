@@ -100,7 +100,7 @@ GEM
     websocket (1.2.9)
 
 PLATFORMS
-  arm64-darwin-22
+  aarch64-linux-musl
 
 DEPENDENCIES
   awesome_print (~> 1.8)
@@ -118,4 +118,4 @@ DEPENDENCIES
   simplecov-console (~> 0.4.2)
 
 BUNDLED WITH
-   2.4.18
+   2.4.19
