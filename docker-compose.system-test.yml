@@ -9,11 +9,18 @@ services:
       - .:/bucky-core
     tty: true
     depends_on:
-      - chrome
-      - web
+      chrome:
+        condition: service_healthy
+      web:
+        condition: service_started
   chrome:
     container_name: bucky-chrome
-    image: selenium/standalone-chrome-debug:3.141.59-oxygen
+    image: selenium/standalone-chromium:128.0
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4444 || exit 1"]
+      interval: 3s
+      timeout: 5s
+      retries: 2
     ports:
       - '4444:4444'
       # For local debug

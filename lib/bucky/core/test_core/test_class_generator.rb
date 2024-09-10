@@ -67,7 +67,7 @@ module Bucky
 
             # Class structure is different for each test category
             case data[:test_category]
-            when 'linkstatus' then
+            when 'linkstatus'
               data[:suite][:cases].each_with_index do |t_case, i|
                 method_name = make_test_method_name(data, t_case, i)
                 description(
@@ -82,7 +82,7 @@ module Bucky
                 )
               end
 
-            when 'e2e' then
+            when 'e2e'
               if data[:suite][:setup_each]
                 def setup
                   super

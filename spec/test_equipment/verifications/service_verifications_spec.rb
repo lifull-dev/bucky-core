@@ -37,14 +37,14 @@ describe Bucky::TestEquipment::Verifications::ServiceVerifications do
     it 'if common e2e method, call send to e2e_verification' do
       allow(e2e_verification).to receive(:respond_to?).and_return(true)
       expect(e2e_verification).to receive(:send)
-      subject.send('assert_title', verify_args)
+      subject.send('assert_title', **verify_args)
     end
     it 'if page verify method, call method of page instance' do
       allow(e2e_verification).to receive(:respond_to?).and_return(false)
       allow(args).to receive(:key?).and_return(true)
       allow(subject).to receive(page_name).and_return(page_method_double)
       expect(page_method_double).to receive(:assert_sample)
-      subject.send('assert_sample', verify_page_args)
+      subject.send('assert_sample', **verify_page_args)
     end
     let(:args_mock) { double('args_mock') }
     it 'if call undefined method, raise exception' do

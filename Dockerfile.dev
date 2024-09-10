@@ -1,4 +1,4 @@
-FROM ruby:2.6.10-alpine
+FROM ruby:3.2-alpine
 ENV LANG ja_JP.UTF-8
 ENV PAGER busybox less
 
@@ -27,7 +27,7 @@ ENV PATH /bucky-core/exe/:$PATH
 WORKDIR $BC_DIR
 COPY . $BC_DIR
 RUN \
-    gem install bundler -v 1.17.3 && \
+    gem install bundler -v 2.5.18 && \
     echo 'gem: --no-document' >> ~/.gemrc && \
     cp ~/.gemrc /etc/gemrc && \
     chmod uog+r /etc/gemrc && \

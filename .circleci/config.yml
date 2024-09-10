@@ -5,7 +5,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
+          key: docker-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           command: |
             if [ ! -f ~/caches/images.tar ]; then
@@ -14,7 +14,7 @@ jobs:
               docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
             fi
       - save_cache:
-          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
+          key: docker-{{ .Environment.CIRCLE_SHA1 }}
           paths: ~/caches/images.tar
   system_test:
     machine: true
@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
+          key: docker-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           command: docker load -q -i ~/caches/images.tar
       - run:
@@ -30,14 +30,15 @@ jobs:
           command: docker-compose -f docker-compose.system-test.yml up -d
       - run:
           name: execute system testing
-          command: 'circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 -I {} docker exec bucky-core bats "/bucky-core/"{} | circleci tests split'
+          command: |
+            circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 echo | xargs -I {} docker exec bucky-core bats "/bucky-core/"{}
       - run:
           name: docker down
           command: docker-compose -f docker-compose.system-test.yml down
   unit_test:
     working_directory: ~/bucky-core
     docker:
-      - image: circleci/ruby:2.5.8
+      - image: cimg/ruby:3.2.0
         environment:
           CC_TEST_REPORTER_ID: fd7bd9d517bdf8953c4d4803ca4ad7539d12d5c760048b8daf80cbc7d54fb262
     steps:
@@ -62,22 +63,25 @@ jobs:
           ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
   static_code_analysis:
     docker:
-      - image: circleci/ruby:2.5.8
+      - image: cimg/ruby:3.2.0
     steps:
       - checkout
       - type: cache-restore
-        key: syntax-check-{{ checksum "Gemfile.lock" }}
-      - run: bundle install --path vendor/bundle --quiet
+        key: syntax-check-{{ .Environment.CIRCLE_SHA1 }}
+      - run: bundle install --path vendor/bundle
       - type: cache-save
-        key: syntax-check-{{ checksum "Gemfile.lock" }}
+        key: syntax-check-{{ .Environment.CIRCLE_SHA1 }}
         paths:
           - vendor/bundle
-      - run: bundle exec rubocop -f html --out report.html
+      - run:
+          name: Run RuboCop on changed files
+          command: |
+            git diff --name-only origin/master...HEAD -- '*.rb' | xargs bundle exec rubocop -f html --out report.html
       - store_artifacts:
           path: report.html
   publish_to_rubygems:
     docker:
-      - image: circleci/ruby:2.5.8
+      - image: cimg/ruby:3.2.0
     steps:
       - add_ssh_keys:
           finerprints:

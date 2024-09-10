@@ -1,0 +1,11 @@
+FROM selenium/standalone-chromium:128.0
+
+
+COPY .sample/nscacert.pem /usr/local/share/ca-certificates/nscacert.crt
+USER root:root
+RUN apt-get update -y && apt-get install -y ca-certificates libnss3-tools && update-ca-certificates && rm -rf /var/lib/apt/lists/*
+
+# https://github.com/seleniumhq-community/docker-seleniarm/blob/trunk/Base/Dockerfile#L101
+USER 1200:1201
+RUN mkdir -p $HOME/.pki/nssdb
+RUN certutil -d sql:$HOME/.pki/nssdb -A -t TC -n "org.Netskope Inc." -i /usr/local/share/ca-certificates/nscacert.crt

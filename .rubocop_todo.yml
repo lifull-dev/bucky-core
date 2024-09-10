@@ -29,7 +29,7 @@ Style/AccessModifierDeclarations:
     - 'lib/bucky/utils/bucky_logger.rb'
 
 # Offense count: 2
-Style/MethodMissingSuper:
+Lint/MissingSuper:
   Exclude:
     - 'lib/bucky/test_equipment/user_operation/user_operator.rb'
     - 'lib/bucky/test_equipment/verifications/service_verifications.rb'
@@ -43,7 +43,7 @@ Style/MissingRespondToMissing:
 # Offense count: 229
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
-Metrics/LineLength:
+Layout/LineLength:
   Max: 225
 
 Style/ExpandPathArguments:

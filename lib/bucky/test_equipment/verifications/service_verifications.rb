@@ -26,9 +26,9 @@ module Bucky
         def method_missing(verification, **args)
           if e2e_verification.respond_to? verification
             puts "    #{verification} is defined in E2eVerificationClass."
-            e2e_verification.send(verification, args[:exec])
+            e2e_verification.send(verification, **args[:exec])
           elsif args[:exec].key?(:page)
-            send(args[:exec][:page]).send(verification, args[:exec])
+            send(args[:exec][:page]).send(verification, **args[:exec])
           else
             raise StandardError, "Undefined verification method or invalid arguments. #{verification},#{args[:exec]}"
           end
@@ -41,7 +41,7 @@ module Bucky
         # Load page and define page verification method
         def collect_verifications
           module_service_name = @service.split('_').map(&:capitalize).join
-          Dir.glob("#{$bucky_home_dir}/services/#{@service}/#{@device}/verifications/*.rb").each do |file|
+          Dir.glob("#{$bucky_home_dir}/services/#{@service}/#{@device}/verifications/*.rb").sort.each do |file|
             require file
 
             page_name = file.split('/')[-1].sub('.rb', '')
