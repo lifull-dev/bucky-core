@@ -27,7 +27,7 @@ module Bucky
 
         def input(args)
           # when input successfully, return of click is nil.
-          wait_until_helper(5, 0.1, Selenium::WebDriver::Error::StaleElementReferenceError) { @pages.get_part(args).send_keys(args[:word]).nil? }
+          wait_until_helper((args || {}).fetch(:timeout, 5), 0.1, Selenium::WebDriver::Error::StaleElementReferenceError) { @pages.get_part(args).send_keys(args[:word]).nil? }
         end
 
         # Clear textbox
@@ -38,7 +38,7 @@ module Bucky
         def click(args)
           elem = @pages.get_part(args)
           # when click successfully, return of click is nil.
-          wait_until_helper(5, 0.1, Selenium::WebDriver::Error::WebDriverError) { elem.click.nil? }
+          wait_until_helper((args || {}).fetch(:timeout, 5), 0.1, Selenium::WebDriver::Error::WebDriverError) { elem.click.nil? }
         end
 
         def refresh(_)
@@ -68,7 +68,7 @@ module Bucky
 
         def switch_to_the_window(args)
           # when the window successfully switched, return of switch_to.window is nil.
-          wait_until_helper(5, 0.1, Selenium::WebDriver::Error::NoSuchWindowError) { @driver.switch_to.window(args[:window_name]).nil? }
+          wait_until_helper((args || {}).fetch(:timeout, 5), 0.1, Selenium::WebDriver::Error::NoSuchWindowError) { @driver.switch_to.window(args[:window_name]).nil? }
         end
 
         # Close window
@@ -84,7 +84,7 @@ module Bucky
         end
 
         def choose(args)
-          option = wait_until_helper(5, 0.1, Selenium::WebDriver::Error::StaleElementReferenceError) { Selenium::WebDriver::Support::Select.new(@pages.get_part(args)) }
+          option = wait_until_helper((args || {}).fetch(:timeout, 5), 0.1, Selenium::WebDriver::Error::StaleElementReferenceError) { Selenium::WebDriver::Support::Select.new(@pages.get_part(args)) }
           if args.key?(:text)
             type = :text
             selected = args[type].to_s
@@ -101,8 +101,8 @@ module Bucky
         end
 
         # Alert accept
-        def accept_alert(_)
-          alert = wait_until_helper(5, 0.1, Selenium::WebDriver::Error::NoSuchAlertError) { @driver.switch_to.alert }
+        def accept_alert(args)
+          alert = wait_until_helper((args || {}).fetch(:timeout, 5), 0.1, Selenium::WebDriver::Error::NoSuchAlertError) { @driver.switch_to.alert }
           alert.accept
         end
 
