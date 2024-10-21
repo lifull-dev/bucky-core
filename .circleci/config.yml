@@ -5,7 +5,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: docker-{{ .Environment.CIRCLE_SHA1 }}
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
       - run:
           command: |
             if [ ! -f ~/caches/images.tar ]; then
@@ -14,7 +14,7 @@ jobs:
               docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
             fi
       - save_cache:
-          key: docker-{{ .Environment.CIRCLE_SHA1 }}
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
           paths: ~/caches/images.tar
   system_test:
     machine: true
@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: docker-{{ .Environment.CIRCLE_SHA1 }}
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
       - run:
           command: docker load -q -i ~/caches/images.tar
       - run:
@@ -30,8 +30,7 @@ jobs:
           command: docker-compose -f docker-compose.system-test.yml up -d
       - run:
           name: execute system testing
-          command: |
-            circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 echo | xargs -I {} docker exec bucky-core bats "/bucky-core/"{}
+          command: 'circleci tests glob system_testing/testing_code/*.bats | xargs -n 1 -I {} docker exec bucky-core bats "/bucky-core/"{} | circleci tests split'
       - run:
           name: docker down
           command: docker-compose -f docker-compose.system-test.yml down
@@ -67,10 +66,10 @@ jobs:
     steps:
       - checkout
       - type: cache-restore
-        key: syntax-check-{{ .Environment.CIRCLE_SHA1 }}
-      - run: bundle install --path vendor/bundle
+        key: syntax-check-{{ checksum "Gemfile.lock" }}
+      - run: bundle install --path vendor/bundle --quiet
       - type: cache-save
-        key: syntax-check-{{ .Environment.CIRCLE_SHA1 }}
+        key: syntax-check-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
       - run:
