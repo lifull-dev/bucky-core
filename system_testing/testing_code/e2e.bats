@@ -11,7 +11,6 @@ setup() {
 
 @test "[e2e] #02 After executing e2e verify assert_title, results contain verify words, no failures/errors and exit code is 0" {
   run bucky run -t e2e -d -D pc -c pc_e2e_1
-  echo "$output"
   [ $status -eq 0 ]
   [ $(expr "$output" : ".*:verify.*assert_title.*") -ne 0 ]
   [ $(expr "$output" : ".*0 failures, 0 errors,.*") -ne 0 ]

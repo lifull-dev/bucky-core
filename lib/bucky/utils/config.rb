@@ -21,7 +21,6 @@ module Bucky
         file_sort_hierarchy(@@dir).each do |file|
           file_name = file.split('/').last
           default_config_file = "#{@default_config_dir}/#{file_name}"
-          # p "@default_config_file: #{@default_config_file}"
           data = load_yaml(file)
           next if data.empty?
 
