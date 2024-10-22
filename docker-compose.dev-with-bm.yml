@@ -16,9 +16,7 @@ services:
     networks:
       - bucky-management_default
   chrome:
-    build:
-      context: .
-      dockerfile: Dockerfile.seleniarm
+    image: selenium/standalone-chromium:128.0
     container_name: chrome
     ports:
       - '4444:4444'
