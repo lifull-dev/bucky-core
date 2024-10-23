@@ -9,7 +9,7 @@ AllCops:
     - 'template/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 3.2
 
 Metrics/AbcSize:
   Enabled: false

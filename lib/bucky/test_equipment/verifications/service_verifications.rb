@@ -41,7 +41,7 @@ module Bucky
         # Load page and define page verification method
         def collect_verifications
           module_service_name = @service.split('_').map(&:capitalize).join
-          Dir.glob("#{$bucky_home_dir}/services/#{@service}/#{@device}/verifications/*.rb").sort.each do |file|
+          Dir.glob("#{$bucky_home_dir}/services/#{@service}/#{@device}/verifications/*.rb").each do |file|
             require file
 
             page_name = file.split('/')[-1].sub('.rb', '')
