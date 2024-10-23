@@ -7,7 +7,7 @@ describe Bucky::TestEquipment::Verifications::ServiceVerifications do
   let(:e2e_verification) { double('e2e_verification') }
   let(:assert_title_mock) { double('assert_title_mock') }
   let(:page_name) { :sample_page }
-  let(:args) { { service: 'service_a', device: 'pc', driver: 'driver', method_name: 'test_case_name', pages: pages } }
+  let(:args) { { service: 'service_a', device: 'pc', driver: 'driver', method_name: 'test_case_name', pages: } }
   let(:bucky_home) { './spec/test_code' }
 
   subject { Bucky::TestEquipment::Verifications::ServiceVerifications.new(args) }

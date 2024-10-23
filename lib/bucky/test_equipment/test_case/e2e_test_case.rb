@@ -30,7 +30,7 @@ module Bucky
         def t_equip_setup
           @driver = create_webdriver(suite_data[:device])
           @pages = Bucky::TestEquipment::PageObject::Pages.new(suite_data[:service], suite_data[:device], @driver)
-          service_verifications_args = { service: suite_data[:service], device: suite_data[:device], driver: @driver, pages: @pages, method_name: method_name }
+          service_verifications_args = { service: suite_data[:service], device: suite_data[:device], driver: @driver, pages: @pages, method_name: }
           @service_verifications = Bucky::TestEquipment::Verifications::ServiceVerifications.new(service_verifications_args)
           user_operator_args = { app: suite_data[:service], device: suite_data[:device], driver: @driver, pages: @pages }
           @user_operator = Bucky::TestEquipment::UserOperation::UserOperator.new(user_operator_args)

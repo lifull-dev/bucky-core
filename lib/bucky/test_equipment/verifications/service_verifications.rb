@@ -48,7 +48,7 @@ module Bucky
             page_class_name = page_name.split('_').map(&:capitalize).join
 
             # Get instance of page object
-            page_class = eval(format('Services::%<module_service_name>s::%<device>s::Verifications::%<page_class_name>s', module_service_name: module_service_name, device: @device.capitalize, page_class_name: page_class_name))
+            page_class = eval(format('Services::%<module_service_name>s::%<device>s::Verifications::%<page_class_name>s', module_service_name:, device: @device.capitalize, page_class_name:))
             page_instance = page_class.new(@driver, @pages, @test_case_name)
 
             self.class.class_eval do

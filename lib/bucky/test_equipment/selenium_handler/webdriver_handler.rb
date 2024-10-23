@@ -16,7 +16,7 @@ module Bucky
           driver_args = create_driver_args(device_type)
           # Correctly create an options object
           options = generate_desire_caps(device_type)
-          driver = Selenium::WebDriver.for :remote, url: driver_args[:url], options: options, http_client: driver_args[:http_client]
+          driver = Selenium::WebDriver.for :remote, url: driver_args[:url], options:, http_client: driver_args[:http_client]
           driver.manage.window.resize_to(1920, 1080)
           driver.manage.timeouts.implicit_wait = @@config[:find_element_timeout]
           driver
