@@ -24,6 +24,12 @@ RUN apk update && \
   curl \
   parallel
 
+RUN git config --global http.sslVerify false && \
+  git clone https://github.com/bats-core/bats-core.git /tmp/bats-core && \
+  cd /tmp/bats-core && \
+  ./install.sh /usr/local && \
+  rm -rf /tmp/bats-core
+
 ENV BC_DIR /bucky-core/
 ENV PATH /bucky-core/exe/:$PATH
 WORKDIR $BC_DIR
@@ -33,6 +39,7 @@ RUN gem install bundler -v 2.5.18 && \
   echo 'gem: --no-document' >> ~/.gemrc && \
   cp ~/.gemrc /etc/gemrc && \
   chmod uog+r /etc/gemrc && \
+  git config --global http.sslVerify false && \
   bundle config --global build.nokogiri --use-system-libraries && \
   bundle config --global jobs 4 && \
   bundle install && \
