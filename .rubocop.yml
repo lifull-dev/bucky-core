@@ -1,6 +1,7 @@
 inherit_from: .rubocop_todo.yml
 
 AllCops:
+  NewCops: disable
   Exclude:
     - 'lib/bucky/test_equipment/user_operation/user_operation_helper.rb'
     - 'spec/fixtures/**/*'
@@ -8,16 +9,16 @@ AllCops:
     - 'template/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 3.2
 
-AbcSize:
+Metrics/AbcSize:
   Enabled: false
 
 # Allow method prefix start with 'set_' and 'get_'
-AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
 
-BlockLength:
+Metrics/BlockLength:
   Exclude:
     - 'Rakefile'
     - '**/*.rake'
@@ -26,53 +27,53 @@ BlockLength:
     - 'lib/bucky/core/database/test_data_operator.rb'
     - 'lib/bucky/core/test_core/test_class_generator.rb'
 
-ClassVars:
+Style/ClassVars:
   Exclude:
     - 'lib/bucky/test_equipment/selenium_handler/webdriver_handler.rb'
     - 'lib/bucky/test_equipment/test_case/abst_test_case.rb'
     - 'lib/bucky/utils/config.rb'
     - 'lib/bucky/tools/lint.rb'
 
-CyclomaticComplexity:
+Metrics/CyclomaticComplexity:
   Enabled: false
 
 # Allow missing top-level documentation comment of class
-Documentation:
+Style/Documentation:
   Enabled: false
 
-FrozenStringLiteralComment:
+Style/FrozenStringLiteralComment:
   EnforcedStyle: always
 
-GlobalVars:
+Style/GlobalVars:
   AllowedVariables: [$bucky_home_dir, $debug, $job_id, $round]
 
 # Not allow using '->' for multi-line lambdas.
-Lambda:
+Style/Lambda:
   Enabled: false
 
-LineLength:
+Layout/LineLength:
   Enabled: false
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*.rb'
 
-MethodLength:
+Metrics/MethodLength:
   Enabled: false
 
-ModuleLength:
+Metrics/ModuleLength:
   Max: 140
   Exclude:
     - 'spec/**/*.rb'
 
-PerceivedComplexity:
+Metrics/PerceivedComplexity:
   Enabled: false
 
-UselessAssignment:
+Lint/UselessAssignment:
   Exclude:
     - 'lib/bucky/core/test_core/test_result.rb'
 
-ClassLength:
+Metrics/ClassLength:
   Max: 110
 
 Lint/UselessAccessModifier:

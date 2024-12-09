@@ -11,16 +11,16 @@ module Bucky
       @@dir = "#{$bucky_home_dir}/config/**/*yml"
 
       attr_reader :data
+
       # @param [String] *.yml or hoge/fuga.yml
       def initialize
         @data = {}
         @resources = []
         @default_config_dir = File.expand_path('../../../template/new/config', __dir__)
-
         # Read from a file of shallow hierarchy, then overwrite it if there is same key in deep hierarchy
         file_sort_hierarchy(@@dir).each do |file|
           file_name = file.split('/').last
-          default_config_file = @default_config_dir + '/' + file_name
+          default_config_file = "#{@default_config_dir}/#{file_name}"
           data = load_yaml(file)
           next if data.empty?
 

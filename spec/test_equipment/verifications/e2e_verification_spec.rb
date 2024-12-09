@@ -38,11 +38,11 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
     end
     it 'call verify_rescue' do
       expect(subject).to receive(:verify_rescue)
-      subject.assert_title(args)
+      subject.assert_title(**args)
     end
     it 'call assert_equal' do
       expect(subject).to receive(:assert_equal)
-      subject.assert_title(args)
+      subject.assert_title(**args)
     end
   end
 
@@ -56,22 +56,22 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       let(:args) { { verify: 'assert_text', page: :top, part: :rosen, expect: 'text' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_text(args)
+        subject.assert_text(**args)
       end
       it 'call assert_equal' do
         expect(subject).to receive(:assert_equal)
-        subject.assert_text(args)
+        subject.assert_text(**args)
       end
     end
     context 'in case operate one part of multiple parts' do
       let(:args) { { verify: 'assert_text', page: :top, part: { locate: :rosen, num: 1 }, expect: 'text' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_text(args)
+        subject.assert_text(**args)
       end
       it 'call assert_true' do
         expect(subject).to receive(:assert_equal)
-        subject.assert_text(args)
+        subject.assert_text(**args)
       end
     end
   end
@@ -85,22 +85,22 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       let(:args) { { verify: 'assert_contained_text', page: :top, part: :rosen, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_contained_text(args)
+        subject.assert_contained_text(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert)
-        subject.assert_contained_text(args)
+        subject.assert_contained_text(**args)
       end
     end
     context 'in case operate one part of multiple parts' do
       let(:args) { { verify: 'assert_contained_text', page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_contained_text(args)
+        subject.assert_contained_text(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert)
-        subject.assert_contained_text(args)
+        subject.assert_contained_text(**args)
       end
     end
   end
@@ -112,11 +112,11 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
     end
     it 'call verify_rescue' do
       expect(subject).to receive(:verify_rescue)
-      subject.assert_contained_url(args)
+      subject.assert_contained_url(**args)
     end
     it 'call assert' do
       expect(subject).to receive(:assert)
-      subject.assert_contained_url(args)
+      subject.assert_contained_url(**args)
     end
   end
   describe '#assert_contained_attribute' do
@@ -129,22 +129,22 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       let(:args) { { verify: 'assert_contained_attribute', page: :top, part: :rosen, attribute: 'href', expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_contained_attribute(args)
+        subject.assert_contained_attribute(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert)
-        subject.assert_contained_attribute(args)
+        subject.assert_contained_attribute(**args)
       end
     end
     context 'in case operate one part of multiple parts' do
       let(:args) { { verify: 'assert_contained_attribute', page: :top, part: { locate: :rosen, num: 1 }, attribute: 'href', expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_contained_attribute(args)
+        subject.assert_contained_attribute(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert)
-        subject.assert_contained_attribute(args)
+        subject.assert_contained_attribute(**args)
       end
     end
   end
@@ -159,22 +159,22 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       let(:args) { { verify: 'assert_is_number', page: :top, part: :rosen, expect: '123' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_is_number(args)
+        subject.assert_is_number(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert)
-        subject.assert_is_number(args)
+        subject.assert_is_number(**args)
       end
     end
     context 'in case operate one part of multiple parts' do
       let(:args) { { verify: 'assert_is_number', page: :top, part: { locate: :rosen, num: 1 }, expect: '123' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_is_number(args)
+        subject.assert_is_number(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert)
-        subject.assert_is_number(args)
+        subject.assert_is_number(**args)
       end
     end
   end
@@ -189,22 +189,22 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       let(:args) { { verify: 'assert_display', page: :top, part: :rosen, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_display(args)
+        subject.assert_display(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert_true)
-        subject.assert_display(args)
+        subject.assert_display(**args)
       end
     end
     context 'in case operate one part of multiple parts' do
       let(:args) { { verify: 'assert_display', page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_display(args)
+        subject.assert_display(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert_true)
-        subject.assert_display(args)
+        subject.assert_display(**args)
       end
     end
   end
@@ -218,22 +218,22 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       let(:args) { { verify: 'assert_exist_part', page: :top, part: :rosen, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_exist_part(args)
+        subject.assert_exist_part(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert_true)
-        subject.assert_exist_part(args)
+        subject.assert_exist_part(**args)
       end
     end
     context 'in case operate one part of multiple parts' do
       let(:args) { { verify: 'assert_exist_part', page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_exist_part(args)
+        subject.assert_exist_part(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert_true)
-        subject.assert_exist_part(args)
+        subject.assert_exist_part(**args)
       end
     end
   end
@@ -248,22 +248,22 @@ describe Bucky::TestEquipment::Verifications::E2eVerification do
       let(:args) { { verify: 'assert_not_exist_part', page: :top, part: :rosen, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_not_exist_part(args)
+        subject.assert_not_exist_part(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert_false)
-        subject.assert_not_exist_part(args)
+        subject.assert_not_exist_part(**args)
       end
     end
     context 'in case operate one part of multiple parts' do
       let(:args) { { verify: 'assert_not_exist_part', page: :top, part: { locate: :rosen, num: 1 }, expect: 'hoge' } }
       it 'call verify_rescue' do
         expect(subject).to receive(:verify_rescue)
-        subject.assert_not_exist_part(args)
+        subject.assert_not_exist_part(**args)
       end
       it 'call assert' do
         expect(subject).to receive(:assert_false)
-        subject.assert_not_exist_part(args)
+        subject.assert_not_exist_part(**args)
       end
     end
   end

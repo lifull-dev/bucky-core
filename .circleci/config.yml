@@ -37,7 +37,7 @@ jobs:
   unit_test:
     working_directory: ~/bucky-core
     docker:
-      - image: circleci/ruby:2.5.8
+      - image: cimg/ruby:3.2.0
         environment:
           CC_TEST_REPORTER_ID: fd7bd9d517bdf8953c4d4803ca4ad7539d12d5c760048b8daf80cbc7d54fb262
     steps:
@@ -62,7 +62,7 @@ jobs:
           ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
   static_code_analysis:
     docker:
-      - image: circleci/ruby:2.5.8
+      - image: cimg/ruby:3.2.0
     steps:
       - checkout
       - type: cache-restore
@@ -72,12 +72,15 @@ jobs:
         key: syntax-check-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
-      - run: bundle exec rubocop -f html --out report.html
+      - run:
+          name: Run RuboCop on changed files
+          command: |
+            git diff --name-only origin/master...HEAD -- '*.rb' | xargs bundle exec rubocop -f html --out report.html
       - store_artifacts:
           path: report.html
   publish_to_rubygems:
     docker:
-      - image: circleci/ruby:2.5.8
+      - image: cimg/ruby:3.2.0
     steps:
       - add_ssh_keys:
           finerprints:

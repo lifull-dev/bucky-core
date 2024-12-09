@@ -10,7 +10,11 @@ module Bucky
       # @param [File] yaml file
       # @return [Hash] hashed yaml contents
       def load_yaml(file)
-        YAML.safe_load(ERB.new(File.read(file)).result, [Array, Hash, String, Numeric, Symbol, TrueClass, FalseClass], [], true)
+        YAML.safe_load(
+          ERB.new(File.read(file)).result,
+          permitted_classes: [Array, Hash, String, Numeric, Symbol, TrueClass, FalseClass],
+          aliases: true
+        )
       end
 
       # Sort files to hierarchy

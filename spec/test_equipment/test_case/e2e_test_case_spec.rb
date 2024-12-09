@@ -54,7 +54,7 @@ describe Bucky::TestEquipment::TestCase::E2eTestCase do
     end
     it 'call service_verifications.send' do
       expect(verification_double).to receive(:send)
-      subject.verify(verify_args)
+      subject.verify(**verify_args)
     end
   end
 
@@ -71,7 +71,7 @@ describe Bucky::TestEquipment::TestCase::E2eTestCase do
     end
     it 'call user_operator.send' do
       expect(user_operator_double).to receive(:send)
-      subject.operate(op_args)
+      subject.operate(**op_args)
     end
   end
 

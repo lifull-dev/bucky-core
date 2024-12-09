@@ -23,7 +23,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
       let(:operation_args) { { exec: { operation: 'go' }, step_number: 1, proc_name: 'test proc' } }
       it 'call operation_helper.send' do
         expect(user_operation_helper_double).to receive(:send)
-        subject.send(operation, 'test_method_name', operation_args)
+        subject.send(operation, 'test_method_name', **operation_args)
       end
     end
     context 'when call method of other than operation helper' do
@@ -35,7 +35,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
 
       it 'not call operation_helper.send' do
         expect(user_operation_helper_double).not_to receive(:send)
-        subject.send(operation, 'test_method_name', operation_args)
+        subject.send(operation, 'test_method_name', **operation_args)
       end
 
       context 'when call method of pageobject' do
@@ -44,7 +44,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
         it 'call pageobject.send' do
           allow(pages_double).to receive(:send).and_return(page_double)
           expect(page_double).to receive(:send)
-          subject.send(operation, 'test_method_name', operation_args)
+          subject.send(operation, 'test_method_name', **operation_args)
         end
       end
       context 'when call method of part' do
@@ -55,7 +55,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
             allow(pages_double).to receive(:send).and_return(page_double)
             allow(page_double).to receive(:send).and_return(part_double)
             expect(part_double).to receive(:send).with(operation)
-            subject.send(operation, 'test_method_name', operation_args)
+            subject.send(operation, 'test_method_name', **operation_args)
           end
         end
         context 'in case operate one part of multiple parts' do
@@ -66,7 +66,7 @@ describe Bucky::TestEquipment::UserOperation::UserOperator do
             allow(page_double).to receive(:send).and_return(parts_double)
             allow(parts_double).to receive(:[]).and_return(part_double)
             expect(part_double).to receive(:send)
-            subject.send(operation, 'test_method_name', operation_args)
+            subject.send(operation, 'test_method_name', **operation_args)
           end
         end
       end

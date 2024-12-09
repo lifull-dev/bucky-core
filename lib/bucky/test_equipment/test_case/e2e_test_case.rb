@@ -30,7 +30,7 @@ module Bucky
         def t_equip_setup
           @driver = create_webdriver(suite_data[:device])
           @pages = Bucky::TestEquipment::PageObject::Pages.new(suite_data[:service], suite_data[:device], @driver)
-          service_verifications_args = { service: suite_data[:service], device: suite_data[:device], driver: @driver, pages: @pages, method_name: method_name }
+          service_verifications_args = { service: suite_data[:service], device: suite_data[:device], driver: @driver, pages: @pages, method_name: }
           @service_verifications = Bucky::TestEquipment::Verifications::ServiceVerifications.new(service_verifications_args)
           user_operator_args = { app: suite_data[:service], device: suite_data[:device], driver: @driver, pages: @pages }
           @user_operator = Bucky::TestEquipment::UserOperation::UserOperator.new(user_operator_args)
@@ -39,13 +39,13 @@ module Bucky
         # Call mothod of verification
         # @param [Hash] verify_args e.g.) {:exec=>{verify: "assert_title", expect: "page title"}, :step_number=> 1, :proc_name=> "test proc"}
         def verify(**verify_args)
-          @service_verifications.send(verify_args[:exec][:verify], verify_args)
+          @service_verifications.send(verify_args[:exec][:verify], **verify_args)
         end
 
         # Call method of user operation
         # @param [Hash] op_args e.g.) {:exec=>{:operate=>"click", :page=>"top_page", :part=>"fizz_button"}, :step_number=> 1, :proc_name=> "test proc"}
         def operate(**op_args)
-          @user_operator.send(op_args[:exec][:operate], method_name, op_args)
+          @user_operator.send(op_args[:exec][:operate], method_name, **op_args)
         end
 
         def setup

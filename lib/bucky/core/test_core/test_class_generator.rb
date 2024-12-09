@@ -18,7 +18,7 @@ module Bucky
             procedure[:proc] ||= ''.dup
             puts "  #{step_number}:#{procedure[:proc]}"
             method = procedure[:exec].key?(:operate) ? :operate : :verify
-            send(method, exec: procedure[:exec], step_number: step_number, proc_name: procedure[:proc])
+            send(method, exec: procedure[:exec], step_number:, proc_name: procedure[:proc])
           end
         end
 
@@ -67,7 +67,7 @@ module Bucky
 
             # Class structure is different for each test category
             case data[:test_category]
-            when 'linkstatus' then
+            when 'linkstatus'
               data[:suite][:cases].each_with_index do |t_case, i|
                 method_name = make_test_method_name(data, t_case, i)
                 description(
@@ -75,14 +75,14 @@ module Bucky
                   define_method(method_name) do
                     puts "\n#{simple_test_class_name(name)}"
                     t_case[:urls].each do |url|
-                      linkstatus_check_args = { url: url, device: data[:suite][:device], exclude_urls: data[:suite][:exclude_urls], link_check_max_times: test_cond[:link_check_max_times], url_log: linkstatus_url_log }
+                      linkstatus_check_args = { url:, device: data[:suite][:device], exclude_urls: data[:suite][:exclude_urls], link_check_max_times: test_cond[:link_check_max_times], url_log: linkstatus_url_log }
                       linkstatus_check(linkstatus_check_args)
                     end
                   end
                 )
               end
 
-            when 'e2e' then
+            when 'e2e'
               if data[:suite][:setup_each]
                 def setup
                   super

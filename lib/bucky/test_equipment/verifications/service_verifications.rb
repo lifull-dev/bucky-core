@@ -26,9 +26,9 @@ module Bucky
         def method_missing(verification, **args)
           if e2e_verification.respond_to? verification
             puts "    #{verification} is defined in E2eVerificationClass."
-            e2e_verification.send(verification, args[:exec])
+            e2e_verification.send(verification, **args[:exec])
           elsif args[:exec].key?(:page)
-            send(args[:exec][:page]).send(verification, args[:exec])
+            send(args[:exec][:page]).send(verification, **args[:exec])
           else
             raise StandardError, "Undefined verification method or invalid arguments. #{verification},#{args[:exec]}"
           end
@@ -48,7 +48,7 @@ module Bucky
             page_class_name = page_name.split('_').map(&:capitalize).join
 
             # Get instance of page object
-            page_class = eval(format('Services::%<module_service_name>s::%<device>s::Verifications::%<page_class_name>s', module_service_name: module_service_name, device: @device.capitalize, page_class_name: page_class_name))
+            page_class = eval(format('Services::%<module_service_name>s::%<device>s::Verifications::%<page_class_name>s', module_service_name:, device: @device.capitalize, page_class_name:))
             page_instance = page_class.new(@driver, @pages, @test_case_name)
 
             self.class.class_eval do

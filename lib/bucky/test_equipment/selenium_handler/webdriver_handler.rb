@@ -14,8 +14,10 @@ module Bucky
         def create_webdriver(device_type)
           @@config = Bucky::Utils::Config.instance
           driver_args = create_driver_args(device_type)
-          driver = Selenium::WebDriver.for(:remote, **driver_args)
-          driver.manage.window.resize_to(1280, 1000)
+          # Correctly create an options object
+          options = generate_desire_caps(device_type)
+          driver = Selenium::WebDriver.for :remote, url: driver_args[:url], options:, http_client: driver_args[:http_client]
+          driver.manage.window.resize_to(1920, 1080)
           driver.manage.timeouts.implicit_wait = @@config[:find_element_timeout]
           driver
         rescue StandardError => e
@@ -27,21 +29,26 @@ module Bucky
 
         # @param  [String] device_type e.g.) sp, pc, tablet
         # @return [Hash] driver_args
-        def create_driver_args(device_type)
-          driver_args = { url: format('http://%<ip>s:%<port>s/wd/hub', ip: @@config[:selenium_ip], port: @@config[:selenium_port]) }
-          driver_args[:desired_capabilities] = generate_desire_caps(device_type)
+        def create_driver_args(_device_type)
+          {
+            url: format('http://%<ip>s:%<port>s/wd/hub', ip: @@config[:selenium_ip], port: @@config[:selenium_port]),
+            http_client: create_http_client
+          }
+        end
+
+        def create_http_client
           client = Selenium::WebDriver::Remote::Http::Default.new
           client.open_timeout = @@config[:driver_open_timeout]
           client.read_timeout = @@config[:driver_read_timeout]
-          driver_args[:http_client] = client
-          driver_args
+          client
         end
 
+        # Generate the desired capabilities
         # @param  [String] device_type e.g.) sp, pc, tablet
-        # @return [Hash]   desire_capabilities
+        # @return [Selenium::WebDriver::Options]
         def generate_desire_caps(device_type)
           case @@config[:browser]
-          when :chrome then
+          when :chrome
             set_chrome_option(device_type)
           else
             raise 'Currently only supports chrome. Sorry.'
@@ -49,17 +56,17 @@ module Bucky
         end
 
         def set_chrome_option(device_type)
-          chrome_options = { 'goog:chromeOptions' => { args: [] } }
-          unless device_type == 'pc'
+          options = Selenium::WebDriver::Options.chrome
+          if %w[sp tablet].include?(device_type)
             device_type = "#{device_type}_device_name".to_sym
-            mobile_emulation = { 'deviceName' => @@config[:device_name_on_chrome][@@config[device_type]] }
-            chrome_options['goog:chromeOptions']['mobileEmulation'] = mobile_emulation
+            options.add_emulation(device_name: @@config[:device_name_on_chrome][@@config[device_type]])
           end
-          chrome_options['goog:chromeOptions'][:args] << "--user-agent=#{@@config[:user_agent]}" if @@config[:user_agent]
-          chrome_options['goog:chromeOptions'][:args] << '--headless' if @@config[:headless]
-          chrome_options['goog:chromeOptions'][:args].concat(@@config[:chromedriver_flags]) unless @@config[:chromedriver_flags].nil?
-
-          Selenium::WebDriver::Remote::Capabilities.chrome(chrome_options)
+          options.add_argument("--user-agent=#{@@config[:user_agent]}") if @@config[:user_agent]
+          options.add_argument('--headless') if @@config[:headless]
+          @@config[:chromedriver_flags]&.each do |flag|
+            options.add_argument(flag)
+          end
+          options
         end
       end
     end

@@ -48,14 +48,14 @@ module Bucky
         def switch_to_next_window(_)
           window_index = @driver.window_handles.index(@driver.window_handle)
           windows_number = @driver.window_handles.size
-          unless window_index+1 == windows_number
-            @driver.switch_to.window(@driver.window_handles[window_index+1])
-          end
+          return if window_index + 1 == windows_number
+
+          @driver.switch_to.window(@driver.window_handles[window_index + 1])
         end
 
         def switch_to_previous_window(_)
           window_index = @driver.window_handles.index(@driver.window_handle)
-          @driver.switch_to.window(@driver.window_handles[window_index-1])
+          @driver.switch_to.window(@driver.window_handles[window_index - 1])
         end
 
         def switch_to_newest_window(_)
@@ -75,7 +75,7 @@ module Bucky
         def close(_)
           window_index = @driver.window_handles.index(@driver.window_handle)
           @driver.close
-          @driver.switch_to.window(@driver.window_handles[window_index-1])
+          @driver.switch_to.window(@driver.window_handles[window_index - 1])
         end
 
         def stop(_)
@@ -102,7 +102,7 @@ module Bucky
 
         # Alert accept
         def accept_alert(_)
-          alert = wait_until_helper(5, 0.1, Selenium::WebDriver::Error::NoAlertPresentError) { @driver.switch_to.alert }
+          alert = wait_until_helper(5, 0.1, Selenium::WebDriver::Error::NoSuchAlertError) { @driver.switch_to.alert }
           alert.accept
         end
 
