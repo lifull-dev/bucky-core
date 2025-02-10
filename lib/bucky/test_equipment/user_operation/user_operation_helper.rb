@@ -50,7 +50,7 @@ module Bucky
           windows_number = @driver.window_handles.size
           return if window_index + 1 == windows_number
 
-            @driver.switch_to.window(@driver.window_handles[window_index + 1])
+          @driver.switch_to.window(@driver.window_handles[window_index + 1])
         end
 
         def switch_to_previous_window(_)
