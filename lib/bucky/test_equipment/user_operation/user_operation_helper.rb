@@ -102,7 +102,7 @@ module Bucky
 
         # Alert accept
         def accept_alert(args)
-          alert = wait_until_helper((args || {}).fetch(:timeout, 5), 0.1, Selenium::WebDriver::Error::NoAlertPresentError) { @driver.switch_to.alert }
+          alert = wait_until_helper((args || {}).fetch(:timeout, 5), 0.1, Selenium::WebDriver::Error::StaleElementReferenceError) { @driver.switch_to.alert }
           alert.accept
         end
 
