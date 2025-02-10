@@ -27,7 +27,7 @@ module Bucky
 
         def input(args)
           # when input successfully, return of click is nil.
-          wait_until_helper((args || {}).fetch(:timeout, 5), 0.1, Selenium::WebDriver::Error::StaleElementReferenceError) { @pages.get_part(args).send_keys(args[:word]).nil? }
+          wait_until_helper((args || {}).fetch(:timeout, 10), 0.1, Selenium::WebDriver::Error::StaleElementReferenceError) { @pages.get_part(args).send_keys(args[:word]).nil? }
         end
 
         # Clear textbox
