@@ -75,7 +75,7 @@ jobs:
       - run:
           name: Run RuboCop on changed files
           command: |
-            git diff --name-only origin/master...HEAD -- '*.rb' | xargs bundle exec rubocop -f html --out report.html
+            git diff --name-only origin/master...HEAD -- '*.rb' | xargs -r bundle exec rubocop -f html --out report.html
       - store_artifacts:
           path: report.html
   publish_to_rubygems:
