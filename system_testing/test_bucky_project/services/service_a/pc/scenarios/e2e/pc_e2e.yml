@@ -17,6 +17,7 @@ cases:
           operate: click
           page: index
           part: link
+          timeout: 1
       - proc: check title
         exec:
           verify: assert_title
