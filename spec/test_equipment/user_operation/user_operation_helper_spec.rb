@@ -103,6 +103,8 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
   describe '#switch_to_the_window' do
     let(:operation) { :switch_to_the_window }
     let(:args) { { window_name: 'new' } }
+    let(:timeout_sec) { 2 }
+    let(:args_with_timeout) { { window_name: 'new', timeout: timeout_sec } }
     it 'call driver.swich_to_window_by_name' do
       expect(driver_double).to receive_message_chain(:switch_to, :window)
       subject.send(operation, args)
@@ -110,6 +112,10 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     it 'call wait_until_helper' do
       expect(subject).to receive(:wait_until_helper)
       subject.send(operation, args)
+    end
+    it 'call wait_until_helper with timeout argument' do
+      expect(subject).to receive(:wait_until_helper) { |timeout, *| expect(timeout).to eq(timeout_sec) }
+      subject.send(operation, args_with_timeout)
     end
   end
 
@@ -146,6 +152,8 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
   describe '#input' do
     let(:operation) { :input }
     let(:args) { { page: 'top', part: 'form', word: 'hogehoge' } }
+    let(:timeout_sec) { 2 }
+    let(:args_with_timeout) { args.merge(timeout: timeout_sec) }
     let(:elem_double) { double('elem double') }
     it 'call part#send_keys' do
       expect(pages_double).to receive_message_chain(:get_part, :send_keys)
@@ -155,6 +163,12 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
       allow(pages_double).to receive_message_chain(:get_part, :send_keys).and_return(elem_double)
       expect(subject).to receive(:wait_until_helper)
       subject.send(operation, args)
+    end
+    it 'call wait_until_helper with timeout argument' do
+      allow(pages_double).to receive_message_chain(:get_part, :send_keys).and_return(elem_double)
+      # Verify that some of the arguments match.
+      expect(subject).to receive(:wait_until_helper) { |timeout, *| expect(timeout).to eq(timeout_sec) }
+      subject.send(operation, args_with_timeout)
     end
   end
 
@@ -170,6 +184,8 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
   describe '#click' do
     let(:operation) { :click }
     let(:args) { { page: 'top', part: 'form' } }
+    let(:timeout_sec) { 2 }
+    let(:args_with_timeout) { args.merge(timeout: timeout_sec) }
     let(:elem_double) { double('elem double') }
     it 'call part#click' do
       allow(pages_double).to receive(:get_part).and_return(elem_double)
@@ -187,6 +203,14 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
       expect(subject).to receive(:wait_until_helper)
       subject.send(operation, args)
     end
+
+    it 'call wait_until_helper with timeout argument' do
+      allow(pages_double).to receive(:get_part).and_return(elem_double)
+      allow(elem_double).to receive(:click)
+      # Verify that some of the arguments match.
+      expect(subject).to receive(:wait_until_helper) { |timeout, *| expect(timeout).to eq(timeout_sec) }
+      subject.send(operation, args_with_timeout)
+    end
   end
 
   describe '#choose' do
@@ -195,6 +219,8 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
     let(:args_value) { { page: 'top', part: 'form', value: 1 } }
     let(:args_index) { { page: 'top', part: 'form', index: 1 } }
     let(:args_error) { { page: 'top', part: 'form', error: 1 } }
+    let(:timeout_sec) { 2 }
+    let(:args_text_with_timeout) { args_text.merge(timeout: timeout_sec) }
     let(:option_double) { double('option double') }
     let(:elem_double) { double('elem double') }
     before do
@@ -221,11 +247,19 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
       expect(subject).to receive(:wait_until_helper).and_return(option_double)
       subject.send(operation, args_text)
     end
+    it 'call wait_until_helper with timeout argument' do
+      allow(option_double).to receive(:select_by).with(:text, 'foo')
+      # Verify that some of the arguments match.
+      expect(subject).to receive(:wait_until_helper) { |timeout, *| expect(timeout).to eq(timeout_sec) }.and_return(option_double)
+      subject.send(operation, args_text_with_timeout)
+    end
   end
 
   describe '#accept_alert' do
     let(:operation) { :accept_alert }
     let(:alert_double) { double('alert double') }
+    let(:timeout_sec) { 2 }
+    let(:args_timeout) { { timeout: timeout_sec } }
     it 'call driver.switch_to.alert.accept' do
       expect(driver_double).to receive_message_chain(:switch_to, :alert, :accept)
       subject.send(operation, nil)
@@ -235,6 +269,13 @@ describe Bucky::TestEquipment::UserOperation::UserOperationHelper do
       allow(alert_double).to receive(:accept)
       expect(subject).to receive(:wait_until_helper).and_return(alert_double)
       subject.send(operation, nil)
+    end
+    it 'call wait_until_helper with timeout argument' do
+      allow(driver_double).to receive_message_chain(:switch_to, :alert).and_return(alert_double)
+      allow(alert_double).to receive(:accept)
+      # Verify that some of the arguments match.
+      expect(subject).to receive(:wait_until_helper) { |timeout, *| expect(timeout).to eq(2) }.and_return(alert_double)
+      subject.send(operation, args_timeout)
     end
   end
 
