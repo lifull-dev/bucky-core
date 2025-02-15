@@ -74,6 +74,8 @@ jobs:
           bundle config set --local path 'vendor/bundle'
           bundle config set --local without 'development'
           bundle install
+      - name: Add bundle bin to PATH
+        run: echo "$(pwd)/vendor/bundle/bin" >> $GITHUB_PATH
       - name: Setup Code Climate test-reporter
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
@@ -93,7 +95,6 @@ jobs:
         with:
           name: simplecov-coverage
           path: coverage/
-
 
   static_code_analysis:
     runs-on: ubuntu-latest
