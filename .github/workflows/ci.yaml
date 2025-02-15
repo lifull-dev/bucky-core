@@ -60,6 +60,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2  # 必要なRubyのバージョンを指定
+          bundler-cache: true # Gemのキャッシュを自動管理
       - name: Restore Gem cache
         uses: actions/cache@v4
         with:
@@ -86,6 +91,7 @@ jobs:
         with:
           name: simplecov-coverage
           path: coverage/
+
 
   static_code_analysis:
     runs-on: ubuntu-latest
