@@ -74,6 +74,8 @@ jobs:
           bundle config set --local path 'vendor/bundle'
           bundle config set --local without 'development'
           bundle install
+          bundle list
+          bundle info rspec
       - name: Add bundle bin to PATH
         run: echo "$(pwd)/vendor/bundle/bin" >> $GITHUB_PATH
       - name: Setup Code Climate test-reporter
