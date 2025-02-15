@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - master
+      - migrate_to_gha
   pull_request:
     branches:
       - master
+      - migrate_to_gha
 
 jobs:
   generate_cache_for_system_test:
