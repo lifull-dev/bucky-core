@@ -72,7 +72,7 @@ jobs:
       - name: Install dependencies
         run: |
           bundle config set --local path 'vendor/bundle'
-          bundle config set --local without 'development'
+          bundle config set --local with 'development'
           bundle install
           bundle list
           bundle info rspec
