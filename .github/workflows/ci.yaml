@@ -63,15 +63,17 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2  # 必要なRubyのバージョンを指定
-          bundler-cache: true # Gemのキャッシュを自動管理
+          ruby-version: 3.2  # 必要な Ruby バージョン
       - name: Restore Gem cache
         uses: actions/cache@v4
         with:
           path: vendor/bundle
           key: unit-test-${{ hashFiles('Gemfile.lock') }}
       - name: Install dependencies
-        run: bundle install --path vendor/bundle --quiet
+        run: |
+          bundle config set --local path 'vendor/bundle'
+          bundle config set --local without 'development'
+          bundle install
       - name: Setup Code Climate test-reporter
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
