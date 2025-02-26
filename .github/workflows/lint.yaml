@@ -1,0 +1,36 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - master
+      - migrate_to_gha
+  pull_request:
+    branches:
+      - master
+      - migrate_to_gha
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2  # 必要な Ruby バージョン
+      - name: Restore Gem cache
+        uses: actions/cache@v4
+        with:
+          path: vendor/bundle
+          key: lint-${{ hashFiles('Gemfile.lock') }}
+      - name: Install dependencies
+        run: |
+          bundle config set --local path 'vendor/bundle'
+          bundle config set --local with 'development'
+          bundle install
+      - name: Run RuboCop
+        run: |
+          git diff --name-only origin/master...HEAD -- '*.rb' | xargs -r bundle exec rubocop -f html --out report.html
+      - name: Upload RuboCop report
+        uses: actions/upload-artifact@v4
