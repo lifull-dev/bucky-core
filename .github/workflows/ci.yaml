@@ -74,8 +74,6 @@ jobs:
           bundle config set --local path 'vendor/bundle'
           bundle config set --local with 'development'
           bundle install
-          bundle list
-          bundle info rspec
       - name: Add bundle bin to PATH
         run: echo "$(pwd)/vendor/bundle/bin" >> $GITHUB_PATH
       - name: Run tests
@@ -91,6 +89,15 @@ jobs:
         with:
           name: simplecov-coverage
           path: coverage/
+      - name: Check coverage threshold
+        env:
+          COVERAGE_THRESHOLD: 90
+        run: |
+          COVERAGE=$(awk '/lines/ {print $2}' coverage/.last_run.json | tr -d ',')
+          if (( $(echo "$COVERAGE < $COVERAGE_THRESHOLD" | bc -l) )); then
+            echo "Test coverage ($COVERAGE%) is below the threshold ($COVERAGE_THRESHOLD%)"
+            exit 1
+          fi
 
   static_code_analysis:
     runs-on: ubuntu-latest
