@@ -1,14 +1,12 @@
 name: Lint
 
 on:
-  push:
-    branches:
-      - master
-      - migrate_to_gha
   pull_request:
     branches:
       - master
-      - migrate_to_gha
+      - migrate_to_gha # for debug
+    paths:
+      - '**/*.rb'
 
 jobs:
   run:
@@ -29,14 +27,10 @@ jobs:
           bundle config set --local path 'vendor/bundle'
           bundle config set --local with 'development'
           bundle install
-
-      - name: Set up forked repository (upstream)
-        env:
-          UPSTREAM_REPOSITORY: 'lifull-dev/bucky-core'
+      - name: Set up upstream
         run: |
-          git remote add upstream https://github.com/${UPSTREAM_REPOSITORY}.git
+          git remote add upstream git@github.com/${{ github.event.pull_request.base.repo.full_name }}.git
           git remote -v
-          # フォーク元リポジトリをフェッチ
           git fetch upstream
 
       - name: Run RuboCop
