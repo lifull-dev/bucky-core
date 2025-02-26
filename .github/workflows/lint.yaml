@@ -35,6 +35,8 @@ jobs:
 
       - name: Run RuboCop
         run: |
+          echo 'marge-base:'
+          git merge-base upstream/${{ github.base_ref }} HEAD
           git diff --name-only upstream/${{ github.base_ref }}...HEAD -- '*.rb' | xargs -r bundle exec rubocop -f html --out report.html
 
       - name: Upload RuboCop report
