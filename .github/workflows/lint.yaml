@@ -33,6 +33,7 @@ jobs:
           git remote -v
           git fetch upstream
           git fetch --all
+          git branch -r
 
       - name: Run RuboCop
         run: |
