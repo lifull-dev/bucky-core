@@ -32,10 +32,10 @@ jobs:
           git remote add upstream https://github.com/${{ github.event.pull_request.base.repo.full_name }}.git
           git remote -v
           git fetch upstream
+          git fetch --all
 
       - name: Run RuboCop
         run: |
-          echo 'marge-base:'
           git merge-base upstream/${{ github.base_ref }} HEAD
           git diff --name-only upstream/${{ github.base_ref }}...HEAD -- '*.rb' | xargs -r bundle exec rubocop -f html --out report.html
 
