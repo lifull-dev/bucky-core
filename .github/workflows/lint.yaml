@@ -29,20 +29,19 @@ jobs:
           bundle config set --local path 'vendor/bundle'
           bundle config set --local with 'development'
           bundle install
-      - name: Run RuboCop
-        run: |
-          git diff --name-only origin/${{ github.base_ref }}...HEAD -- '*.rb' | xargs -r bundle exec rubocop -f html --out report.html
-      - name: Upload RuboCop report
-        uses: actions/upload-artifact@v4
 
       - name: Set up baserepo
         run: |
           git remote add baserepo git@github.com/"${{ github.repository }}"
           echo ${{ github.repository }}
+          git remote -v
 
-      - name: Fetch upstream branches
+      - name: Fetch baserepo branches
         run: git fetch baserepo
 
       - name: Run RuboCop
         run: |
           git diff --name-only baserepo/${{ github.base_ref }}...HEAD -- '*.rb' | xargs -r bundle exec rubocop -f html --out report.html
+
+      - name: Upload RuboCop report
+        uses: actions/upload-artifact@v4
