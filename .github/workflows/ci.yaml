@@ -84,11 +84,11 @@ jobs:
         with:
           name: rspec-html-report
           path: rspec-report.html
-      - name: Upload coverage report
+      - name: Upload RSpec HTML report
         uses: actions/upload-artifact@v4
         with:
-          name: simplecov-coverage
-          path: coverage/
+          name: rspec-html-report
+          path: rspec-report.html
       - name: Check coverage threshold
         env:
           COVERAGE_THRESHOLD: 90.9
