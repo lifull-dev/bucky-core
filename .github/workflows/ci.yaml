@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI Pipeline
 
 on:
   push:
@@ -93,7 +93,13 @@ jobs:
         env:
           COVERAGE_THRESHOLD: 90
         run: |
-          COVERAGE=$(awk '/lines/ {print $2}' coverage/.last_run.json | tr -d ',')
+          cat coverage/.last_run.json
+          COVERAGE=$(jq '.result.covered_percent' coverage/.last_run.json)
+          if [[ -z "$COVERAGE" || ! "$COVERAGE" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+            echo "Failed to extract coverage percentage."
+            exit 1
+          fi
+          echo "Coverage: $COVERAGE%"
           if (( $(echo "$COVERAGE < $COVERAGE_THRESHOLD" | bc -l) )); then
             echo "Test coverage ($COVERAGE%) is below the threshold ($COVERAGE_THRESHOLD%)"
             exit 1
