@@ -15,17 +15,30 @@ module Bucky
 
         # Save job data and return job id
         # @param  [Time] start_time
-        # @param  [Time] end_time
-        # @param  [Time] duration
         # @param  [String] command_and_option
         # @param  [String] fqdn
         # @return [Fixnum] job_id
-        def save_job_record_and_get_job_id(start_time, end_time, duration, command_and_option, fqdn)
+        def save_job_record_and_get_job_id(start_time, command_and_option, fqdn)
           return 0 if $debug
 
-          job_id = @connector.con[:jobs].insert(start_time: start_time, end_time: end_time, exe_duration: duration, command_and_option: command_and_option, base_fqdn: fqdn)
+          job_id = @connector.con[:jobs].insert(start_time: start_time, command_and_option: command_and_option, base_fqdn: fqdn)
           @connector.disconnect
           job_id
+        end
+
+        # Update job record with end_time and duration
+        # @param [Integer] job_id
+        # @param [Time] end_time
+        # @param [Float] duration
+        def update_job_record(job_id, end_time, duration)
+          return if $debug
+
+          @connector.connect
+          @connector.con[:jobs].where(id: job_id).update(
+            end_time: end_time,
+            exe_duration: duration
+          )
+          @connector.disconnect
         end
 
         # Save test result
