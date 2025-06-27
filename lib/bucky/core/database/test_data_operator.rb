@@ -33,6 +33,8 @@ module Bucky
         def update_job_record(job_id, end_time, duration)
           return if $debug
           return unless job_id
+          return unless end_time
+          return unless duration
 
           @connector.connect
           @connector.con[:jobs].where(id: job_id).update(
@@ -40,6 +42,9 @@ module Bucky
             exe_duration: duration
           )
           @connector.disconnect
+        rescue => e
+          # Log error but don't fail the entire test run
+          puts "Warning: Failed to update job record: #{e.message}" if $debug
         end
 
         # Save test result

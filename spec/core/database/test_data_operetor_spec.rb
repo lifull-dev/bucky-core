@@ -9,9 +9,16 @@ describe Bucky::Core::Database::TestDataOperator do
   let(:con_double) { double('double of con') }
 
   before do
+    # Ensure global variables are in a known state
+    $debug = false
     allow(Bucky::Core::Database::DbConnector).to receive(:new).and_return(db_connector_double)
     allow(db_connector_double).to receive(:connect)
     allow(db_connector_double).to receive(:disconnect)
+  end
+  
+  after do
+    # Clean up global variables
+    $debug = false
   end
 
   describe '#initialize' do
@@ -76,12 +83,28 @@ describe Bucky::Core::Database::TestDataOperator do
       end
     end
     
+    context 'when end_time is nil' do
+      it 'returns early without database operations' do
+        expect(db_connector_double).not_to receive(:connect)
+        expect(db_connector_double).not_to receive(:disconnect)
+        subject.update_job_record(job_id, nil, duration)
+      end
+    end
+    
+    context 'when duration is nil' do
+      it 'returns early without database operations' do
+        expect(db_connector_double).not_to receive(:connect)
+        expect(db_connector_double).not_to receive(:disconnect)
+        subject.update_job_record(job_id, end_time, nil)
+      end
+    end
+    
     context 'when debug mode is enabled' do
       before { $debug = true }
       after { $debug = false }
       
       it 'returns early without database operations' do
-        # The initialize method will still call connect, but update_job_record should return early
+        expect(db_connector_double).not_to receive(:connect)
         expect(db_connector_double).not_to receive(:disconnect)
         subject.update_job_record(job_id, end_time, duration)
       end
