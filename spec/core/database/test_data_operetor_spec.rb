@@ -291,40 +291,4 @@ describe Bucky::Core::Database::TestDataOperator do
       test_data_operator.send(:get_test_suite_from_test_data, test_data)
     end
   end
-
-  describe '#update_job_record' do
-    let(:job_id) { 1 }
-    let(:end_time) { Time.now }
-    let(:duration) { 10.5 }
-    let(:sequel_where) { double('double of Sequel where response') }
-    
-    before do
-      allow(con_double).to receive(:[]).and_return(sequel_instance_double)
-      allow(db_connector_double).to receive(:con).and_return(con_double)
-      allow(sequel_instance_double).to receive(:where).and_return(sequel_where)
-    end
-    
-    it 'call Sequel#where and update' do
-      expect(sequel_instance_double).to receive(:where).with(id: job_id)
-      expect(sequel_where).to receive(:update).with(end_time: end_time, exe_duration: duration)
-      subject.update_job_record(job_id, end_time, duration)
-    end
-    
-    it 'disconnect database' do
-      allow(sequel_where).to receive(:update)
-      expect(db_connector_double).to receive(:disconnect)
-      subject.update_job_record(job_id, end_time, duration)
-    end
-    
-    context 'when debug mode is enabled' do
-      before { $debug = true }
-      after { $debug = false }
-      
-      it 'returns early without database operations' do
-        expect(db_connector_double).not_to receive(:connect)
-        expect(db_connector_double).not_to receive(:disconnect)
-        subject.update_job_record(job_id, end_time, duration)
-      end
-    end
-  end
 end

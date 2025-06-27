@@ -11,7 +11,6 @@ describe Bucky::Core::TestCore::TestManager do
     allow(Bucky::Core::Database::TestDataOperator).to receive(:new).and_return(tdo)
     allow(tdo).to receive(:save_job_record_and_get_job_id)
     allow(tdo).to receive(:get_ng_test_cases_at_last_execution).and_return(ng_case_data)
-    allow(tdo).to receive(:update_job_record)
     allow(tm).to receive(:do_test_suites).and_return({})
   end
 
