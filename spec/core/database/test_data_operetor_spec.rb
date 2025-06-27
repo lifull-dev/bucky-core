@@ -68,6 +68,14 @@ describe Bucky::Core::Database::TestDataOperator do
       subject.update_job_record(job_id, end_time, duration)
     end
     
+    context 'when job_id is nil' do
+      it 'returns early without database operations' do
+        expect(db_connector_double).not_to receive(:connect)
+        expect(db_connector_double).not_to receive(:disconnect)
+        subject.update_job_record(nil, end_time, duration)
+      end
+    end
+    
     context 'when debug mode is enabled' do
       before { $debug = true }
       after { $debug = false }

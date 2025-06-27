@@ -116,7 +116,7 @@ module Bucky
           # Update job record with end_time and duration when test completes
           @end_time = Time.now
           @duration = @end_time - @start_time
-          @tdo.update_job_record($job_id, @end_time, @duration)
+          @tdo.update_job_record($job_id, @end_time, @duration) if $job_id
         end
 
         # Rerun by job id
@@ -131,7 +131,7 @@ module Bucky
           # Update job record with end_time and duration when test completes
           @end_time = Time.now
           @duration = @end_time - @start_time
-          @tdo.update_job_record($job_id, @end_time, @duration)
+          @tdo.update_job_record($job_id, @end_time, @duration) if $job_id
         end
 
         private

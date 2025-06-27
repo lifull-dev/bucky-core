@@ -32,6 +32,7 @@ module Bucky
         # @param [Float] duration
         def update_job_record(job_id, end_time, duration)
           return if $debug
+          return unless job_id
 
           @connector.connect
           @connector.con[:jobs].where(id: job_id).update(
