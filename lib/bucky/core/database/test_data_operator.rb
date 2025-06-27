@@ -26,27 +26,6 @@ module Bucky
           job_id
         end
 
-        # Update job record with end_time and duration
-        # @param [Integer] job_id
-        # @param [Time] end_time
-        # @param [Float] duration
-        def update_job_record(job_id, end_time, duration)
-          return if $debug
-          return unless job_id
-          return unless end_time
-          return unless duration
-
-          @connector.connect
-          @connector.con[:jobs].where(id: job_id).update(
-            end_time: end_time,
-            exe_duration: duration
-          )
-          @connector.disconnect
-        rescue => e
-          # Log error but don't fail the entire test run
-          puts "Warning: Failed to update job record: #{e.message}" if $debug
-        end
-
         # Save test result
         # @param  [Hash] test_suite_result test data for Sequel
         def save_test_result(test_suite_result)
@@ -212,6 +191,21 @@ module Bucky
             end
           end
         end
+      end
+
+      # Update job record with end_time and duration
+      # @param [Integer] job_id
+      # @param [Time] end_time
+      # @param [Float] duration
+      def update_job_record(job_id, end_time, duration)
+        return if $debug
+
+        @connector.connect
+        @connector.con[:jobs].where(id: job_id).update(
+          end_time: end_time,
+          exe_duration: duration
+        )
+        @connector.disconnect
       end
     end
   end
