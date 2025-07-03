@@ -116,13 +116,14 @@ module Bucky
         # @param [Time] end_time
         # @param [Float] duration
         def update_job_record(job_id, end_time, duration)
-          puts "DEBUG: Updating job #{job_id} with end_time #{end_time} and duration #{duration}"
+          rounded_duration = duration.round(2)
+          puts "DEBUG: Updating job #{job_id} with end_time #{end_time} and duration #{rounded_duration}"
           return if $debug
 
           @connector.connect
           @connector.con[:jobs].where(id: job_id).update(
             end_time: end_time,
-            duration: duration
+            duration: rounded_duration
           )
           @connector.disconnect
         end
