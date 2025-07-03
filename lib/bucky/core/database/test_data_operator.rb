@@ -111,6 +111,22 @@ module Bucky
           round
         end
 
+        # Update job record with end_time and duration
+        # @param [Integer] job_id
+        # @param [Time] end_time
+        # @param [Float] duration
+        def update_job_record(job_id, end_time, duration)
+          puts "DEBUG: Updating job #{job_id} with end_time #{end_time} and duration #{duration}"
+          return if $debug
+
+          @connector.connect
+          @connector.con[:jobs].where(id: job_id).update(
+            end_time: end_time,
+            duration: duration
+          )
+          @connector.disconnect
+        end
+
         private
 
         # Common method for getting suite
@@ -193,21 +209,6 @@ module Bucky
         end
       end
 
-      # Update job record with end_time and duration
-      # @param [Integer] job_id
-      # @param [Time] end_time
-      # @param [Float] duration
-      def update_job_record(job_id, end_time, duration)
-        puts "DEBUG: Updating job #{job_id} with end_time #{end_time} and duration #{duration}"
-        return if $debug
-
-        @connector.connect
-        @connector.con[:jobs].where(id: job_id).update(
-          end_time: end_time,
-          duration: duration
-        )
-        @connector.disconnect
-      end
     end
   end
 end
