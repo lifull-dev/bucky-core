@@ -28,15 +28,15 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'awesome_print',  '~> 1.8'
-  spec.add_development_dependency 'bundler',        '2.5.18'
+  spec.add_development_dependency 'bundler',        '~> 2.3'
   spec.add_development_dependency 'hirb',           '~> 0.7'
-  spec.add_development_dependency 'pry',            '~> 0.10'
+  spec.add_development_dependency 'pry',            '~> 0.13'
   spec.add_development_dependency 'pry-byebug',     '~> 3.4'
   spec.add_development_dependency 'pry-stack_explorer', '~> 0.4'
   spec.add_development_dependency 'rake',           '~> 13'
   spec.add_development_dependency 'rspec',          '~> 3.6'
   spec.add_development_dependency 'rspec_junit_formatter', '~> 0.3'
-  spec.add_development_dependency 'rubocop', '1.66.1'
+  spec.add_development_dependency 'rubocop', '~> 1.21.0'
   spec.add_development_dependency 'simplecov', '~> 0.15.1'
   spec.add_development_dependency 'simplecov-console', '~> 0.4.2'
 
@@ -46,7 +46,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'nokogiri',           '~> 1.11.1'
   spec.add_runtime_dependency 'parallel',           '~> 1.11'
   spec.add_runtime_dependency 'ruby-mysql',         '~> 2.9'
-  spec.add_runtime_dependency 'selenium-webdriver', '4.24'
-  spec.add_runtime_dependency 'sequel',             '5.84'
+  spec.add_runtime_dependency 'selenium-webdriver', '~> 4.0'
+  spec.add_runtime_dependency 'sequel',             '~> 5.0'
   spec.add_runtime_dependency 'test-unit',          '~> 3.2'
 end
