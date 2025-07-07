@@ -209,7 +209,6 @@ module Bucky
           end
         end
       end
-
     end
   end
 end
