@@ -112,7 +112,7 @@ module Bucky
 
         def run
           execute_test
-
+          
           # Update job record with end_time and duration when test completes
           @end_time = Time.now
           @duration = @end_time - @start_time
@@ -127,7 +127,7 @@ module Bucky
             is_error: 1, job_id: rerun_job_id, round: $round
           )
           execute_test
-
+          
           # Update job record with end_time and duration when test completes
           @end_time = Time.now
           @duration = @end_time - @start_time
@@ -152,9 +152,8 @@ module Bucky
           linkstatus_parallel_num = Bucky::Utils::Config.instance[:linkstatus_parallel_num]
           tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
           case @test_cond[:test_category]
-          when 'e2e'
-            results_set = parallel_new_worker_each(test_suite_data, e2e_parallel_num) { |data, w_pipe| tcg.generate_test_class(data: data, w_pipe: w_pipe) }
-          when 'linkstatus'
+          when 'e2e' then results_set = parallel_new_worker_each(test_suite_data, e2e_parallel_num) { |data, w_pipe| tcg.generate_test_class(data: data, w_pipe: w_pipe) }
+          when 'linkstatus' then
             linkstatus_url_log = {}
             results_set = parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num) { |data, w_pipe| tcg.generate_test_class(data: data, linkstatus_url_log: linkstatus_url_log, w_pipe: w_pipe) }
           end
