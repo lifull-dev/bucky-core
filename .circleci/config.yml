@@ -5,7 +5,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: docker-v2-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
       - run:
           command: |
             if [ ! -f ~/caches/images.tar ]; then
@@ -14,7 +14,7 @@ jobs:
               docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
             fi
       - save_cache:
-          key: docker-v2-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
           paths: ~/caches/images.tar
   system_test:
     machine: true
@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: docker-v2-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
+          key: docker-{{ checksum ".circleci/config.yml" }}-{{ checksum "docker-compose.system-test.yml" }}-{{ checksum "Dockerfile.system-test" }}-{{ checksum "bucky-core.gemspec" }}-{{ checksum ".dockerignore" }}
       - run:
           command: docker load -q -i ~/caches/images.tar
       - run:
@@ -43,10 +43,10 @@ jobs:
     steps:
       - checkout
       - type: cache-restore
-        key: unit-test-v2-{{ checksum "Gemfile.lock" }}
+        key: unit-test-{{ checksum "Gemfile.lock" }}
       - run: bundle install --path vendor/bundle --quiet
       - type: cache-save
-        key: unit-test-v2-{{ checksum "Gemfile.lock" }}
+        key: unit-test-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
       # Download test-reporter
@@ -66,10 +66,10 @@ jobs:
     steps:
       - checkout
       - type: cache-restore
-        key: syntax-check-v2-{{ checksum "Gemfile.lock" }}
+        key: syntax-check-{{ checksum "Gemfile.lock" }}
       - run: bundle install --path vendor/bundle --quiet
       - type: cache-save
-        key: syntax-check-v2-{{ checksum "Gemfile.lock" }}
+        key: syntax-check-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
       - run:
