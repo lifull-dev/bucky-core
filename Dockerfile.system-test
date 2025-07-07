@@ -33,7 +33,7 @@ ENV PATH /bucky-core/exe/:$PATH
 WORKDIR $BC_DIR
 COPY . $BC_DIR
 
-RUN gem install bundler -v 2.5.18 && \
+RUN gem install bundler -v 2.3.27 && \
   echo 'gem: --no-document' >> ~/.gemrc && \
   cp ~/.gemrc /etc/gemrc && \
   chmod uog+r /etc/gemrc && \
