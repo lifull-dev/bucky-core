@@ -73,6 +73,11 @@ module Bucky
                 description(
                   t_case[:case_name],
                   define_method(method_name) do
+                    # Check if test should be skipped
+                    if t_case[:skip]
+                      skip_reason = t_case[:skip_reason] || "Test skipped"
+                      omit(skip_reason)
+                    end
                     puts "\n#{simple_test_class_name(name)}"
                     t_case[:urls].each do |url|
                       linkstatus_check_args = { url:, device: data[:suite][:device], exclude_urls: data[:suite][:exclude_urls], link_check_max_times: test_cond[:link_check_max_times], url_log: linkstatus_url_log }
@@ -104,6 +109,11 @@ module Bucky
                 # e.g.) test_sample_app_pc_e2e_1_2
                 method_name = make_test_method_name(data, t_case, i)
                 method_obj = proc do
+                  # Check if test should be skipped
+                  if t_case[:skip]
+                    skip_reason = t_case[:skip_reason] || "Test skipped"
+                    omit(skip_reason)
+                  end
                   puts "\n#{simple_test_class_name(name)}\n #{t_case[:desc]} ...."
                   add_test_procedure(t_case[:procs])
                 end

@@ -99,6 +99,7 @@ module Bucky
               cases_count: 0,
               success_count: 0,
               failure_count: 0,
+              skip_count: 0,
               job_id: $job_id,
               test_category: test_cond[:test_category],
               device: test_cond[:device],
@@ -169,7 +170,8 @@ module Bucky
 
           @json_report[:summary][:cases_count] = all_round_results[0].sum { |_case, res| res['cases_count'] }
           @json_report[:summary][:failure_count] = all_round_results[-1].sum { |_case, res| res['failure_count'] }
-          @json_report[:summary][:success_count] = @json_report[:summary][:cases_count] - @json_report[:summary][:failure_count]
+          @json_report[:summary][:skip_count] = all_round_results[-1].sum { |_case, res| res['skip_count'] || 0 }
+          @json_report[:summary][:success_count] = @json_report[:summary][:cases_count] - @json_report[:summary][:failure_count] - @json_report[:summary][:skip_count]
 
           File.open(@test_cond[:out], 'w') do |f|
             f.puts(@json_report.to_json)
