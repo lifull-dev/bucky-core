@@ -89,6 +89,7 @@ module Bucky
               }
             end
           end
+          @connector.disconnect
           re_test_cond
         end
 
