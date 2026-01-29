@@ -16,7 +16,6 @@ RUN apk update && \
     mysql-dev \
     openssh \
     ruby-dev \
-    ruby-json \
     tzdata \
     yaml \
     yaml-dev \

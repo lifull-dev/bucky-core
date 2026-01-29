@@ -21,7 +21,7 @@ module Bucky
         def save_job_record_and_get_job_id(start_time, command_and_option, fqdn)
           return 0 if $debug
 
-          job_id = @connector.con[:jobs].insert(start_time: start_time, command_and_option: command_and_option, base_fqdn: fqdn)
+          job_id = @connector.con[:jobs].insert(start_time:, command_and_option:, base_fqdn: fqdn)
           @connector.disconnect
           job_id
         end
@@ -95,7 +95,7 @@ module Bucky
         def get_test_case_id(test_suite_id, case_name)
           return nil if $debug
 
-          test_case = @connector.con[:test_cases].filter(test_suite_id: test_suite_id, case_name: case_name).first
+          test_case = @connector.con[:test_cases].filter(test_suite_id:, case_name:).first
           @connector.disconnect
           raise "Cannot get test_case id. test_suite_id: #{test_suite_id}, case_name: #{case_name}" if test_case.nil?
 
@@ -106,9 +106,24 @@ module Bucky
         # @param  [Int] job_id
         # @return [Int] round
         def get_last_round_from_job_id(job_id)
-          round = @connector.con[:test_case_results].where(job_id: job_id).max(:round)
+          round = @connector.con[:test_case_results].where(job_id:).max(:round)
           @connector.disconnect
           round
+        end
+
+        # Update job record with end_time and duration
+        # @param [Integer] job_id
+        # @param [Time] end_time
+        # @param [Float] duration
+        def update_job_record(job_id, end_time, duration)
+          rounded_duration = duration.round(2)
+          return if $debug
+
+          @connector.con[:jobs].where(id: job_id).update(
+            end_time:,
+            duration: rounded_duration
+          )
+          @connector.disconnect
         end
 
         private
@@ -131,7 +146,7 @@ module Bucky
               test_suite_name: test_data[:test_suite_name],
               suite_description: test_data[:suite][:desc],
               github_url: @config[:test_code_repo],
-              file_path: file_path
+              file_path:
             )
             saved_test_suite[:id]
           else # If there is no test_suite, save new record and return suite_id.
@@ -143,7 +158,7 @@ module Bucky
               test_suite_name: test_data[:test_suite_name],
               suite_description: test_data[:suite][:desc],
               github_url: @config[:test_code_repo],
-              file_path: file_path
+              file_path:
             )
           end
         end
@@ -159,11 +174,11 @@ module Bucky
           return nil if labels.empty?
 
           labels.each do |label_name|
-            label = @connector.con[:labels].filter(label_name: label_name).first
+            label = @connector.con[:labels].filter(label_name:).first
             label_ids << if label
                            label[:id]
                          else
-                           @connector.con[:labels].insert(label_name: label_name)
+                           @connector.con[:labels].insert(label_name:)
                          end
           end
           label_ids
@@ -180,14 +195,14 @@ module Bucky
             # Create new connection
             # If there is no labels, return nil
             label_ids&.each do |label_id|
-              @connector.con[:test_case_labels].insert(test_case_id: saved_test_case[:id], label_id: label_id)
+              @connector.con[:test_case_labels].insert(test_case_id: saved_test_case[:id], label_id:)
             end
           else
             # Add case data
             test_case_id = @connector.con[:test_cases].insert(test_suite_id: suite_id, case_name: test_case[:case_name], case_description: test_case[:desc])
             # If there is no labels, return nil
             label_ids&.each do |label_id|
-              @connector.con[:test_case_labels].insert(test_case_id: test_case_id, label_id: label_id)
+              @connector.con[:test_case_labels].insert(test_case_id:, label_id:)
             end
           end
         end
