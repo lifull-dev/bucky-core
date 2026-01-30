@@ -10,12 +10,13 @@ describe Bucky::Core::TestCore::TestManager do
   before do
     allow(Bucky::Core::Database::TestDataOperator).to receive(:new).and_return(tdo)
     allow(tdo).to receive(:save_job_record_and_get_job_id)
+    allow(tdo).to receive(:update_job_record)
     allow(tdo).to receive(:get_ng_test_cases_at_last_execution).and_return(ng_case_data)
     allow(tm).to receive(:do_test_suites).and_return({})
   end
 
   describe '#run' do
-    let(:tm) { Bucky::Core::TestCore::TestManager.new(re_test_count: re_test_count) }
+    let(:tm) { Bucky::Core::TestCore::TestManager.new(re_test_count:) }
 
     describe '@re_test_count: run untill max round' do
       context '@re_test_count is 1' do
@@ -50,9 +51,10 @@ describe Bucky::Core::TestCore::TestManager do
   end
 
   describe '#rerun' do
-    let(:tm) { Bucky::Core::TestCore::TestManager.new(re_test_count: re_test_count, job: rerun_job_id) }
+    let(:tm) { Bucky::Core::TestCore::TestManager.new(re_test_count:, job: rerun_job_id) }
     before do
       allow(tdo).to receive(:get_last_round_from_job_id)
+      allow(tdo).to receive(:update_job_record)
     end
 
     describe 'call execute_test on rerun method' do

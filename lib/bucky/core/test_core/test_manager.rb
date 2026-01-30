@@ -55,7 +55,7 @@ module Bucky
           data_set_grouped = data_set.group_by.with_index { |_elem, index| index % max_processes }
           r_pipe, w_pipe = IO.pipe
           # Use 'values' method to get only hash's key into an array
-          data_set_grouped.values.each do |data_for_pre_worker|
+          data_set_grouped.each_value do |data_for_pre_worker|
             # Number of child process is equal to max_processes (or equal to data_set length when data_set length is less than max_processes)
             fork do
               data_for_pre_worker.each { |data| block.call(data, w_pipe) }
@@ -112,6 +112,11 @@ module Bucky
 
         def run
           execute_test
+
+          # Update job record with end_time and duration when test completes
+          @end_time = Time.now
+          @duration = @end_time - @start_time
+          @tdo.update_job_record($job_id, @end_time, @duration)
         end
 
         # Rerun by job id
@@ -122,6 +127,11 @@ module Bucky
             is_error: 1, job_id: rerun_job_id, round: $round
           )
           execute_test
+
+          # Update job record with end_time and duration when test completes
+          @end_time = Time.now
+          @duration = @end_time - @start_time
+          @tdo.update_job_record($job_id, @end_time, @duration)
         end
 
         private
@@ -142,10 +152,10 @@ module Bucky
           linkstatus_parallel_num = Bucky::Utils::Config.instance[:linkstatus_parallel_num]
           tcg = Bucky::Core::TestCore::TestClassGenerator.new(@test_cond)
           case @test_cond[:test_category]
-          when 'e2e' then results_set = parallel_new_worker_each(test_suite_data, e2e_parallel_num) { |data, w_pipe| tcg.generate_test_class(data: data, w_pipe: w_pipe) }
-          when 'linkstatus' then
+          when 'e2e' then results_set = parallel_new_worker_each(test_suite_data, e2e_parallel_num) { |data, w_pipe| tcg.generate_test_class(data:, w_pipe:) }
+          when 'linkstatus'
             linkstatus_url_log = {}
-            results_set = parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num) { |data, w_pipe| tcg.generate_test_class(data: data, linkstatus_url_log: linkstatus_url_log, w_pipe: w_pipe) }
+            results_set = parallel_distribute_into_workers(test_suite_data, linkstatus_parallel_num) { |data, w_pipe| tcg.generate_test_class(data:, linkstatus_url_log:, w_pipe:) }
           end
 
           results_set

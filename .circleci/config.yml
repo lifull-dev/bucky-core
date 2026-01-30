@@ -38,8 +38,6 @@ jobs:
     working_directory: ~/bucky-core
     docker:
       - image: cimg/ruby:3.2.0
-        environment:
-          CC_TEST_REPORTER_ID: fd7bd9d517bdf8953c4d4803ca4ad7539d12d5c760048b8daf80cbc7d54fb262
     steps:
       - checkout
       - type: cache-restore
@@ -49,17 +47,15 @@ jobs:
         key: unit-test-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
-      # Download test-reporter
+      # Run rspec
       - run:
-          name: Setup Code Climate test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-      # Run rspec and show on code climate
-      - run: |
-          ./cc-test-reporter before-build
-          bundle exec rspec
-          ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
+          name: Run RSpec tests
+          command: bundle exec rspec --format progress --format RspecJunitFormatter --out test-results/rspec/results.xml
+      # Store test results
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
   static_code_analysis:
     docker:
       - image: cimg/ruby:3.2.0
@@ -83,7 +79,7 @@ jobs:
       - image: cimg/ruby:3.2.0
     steps:
       - add_ssh_keys:
-          finerprints:
+          fingerprints:
             - "6a:f3:d3:b5:a5:da:ce:e0:9f:22:f8:4a:2f:51:67:2b"
       - checkout
       - run:
