@@ -53,14 +53,39 @@ module Bucky
                 elapsed_time = added_result_info[case_name.to_sym][:elapsed_time],
                 is_error = 1,
                 job_id = $job_id,
-                round = $round
+                round = $round,
+                skip_flag = false,
+                skip_reason = nil
+              ]
+          end
+
+          ##############################################
+          # Store skipped cases in data set. #
+          ##############################################
+          skip_test_case_name = []
+          @result.omissions.each do |omission|
+            case_name = omission.method_name
+            case_id = @tdo.get_test_case_id(added_result_info[case_name.to_sym][:test_suite_id], added_result_info[case_name.to_sym][:case_name])
+            skip_test_case_name.push(case_name.to_sym)
+            data_set[case_name] =
+              [
+                id = nil,
+                test_case_id = case_id,
+                error_title = "SKIPPED: #{omission.message}",
+                error_message = omission.location.join("\n"),
+                elapsed_time = added_result_info[case_name.to_sym][:elapsed_time],
+                is_error = 1,
+                job_id = $job_id,
+                round = $round,
+                skip_flag = true,
+                skip_reason = omission.message
               ]
           end
 
           ############################################
           # Store passed cases in data set. #
           ############################################
-          added_result_info.delete_if { |k, _v| error_test_case_name.include?(k) }
+          added_result_info.delete_if { |k, _v| error_test_case_name.include?(k) || skip_test_case_name.include?(k) }
           added_result_info.each do |case_name, added_info|
             case_id = @tdo.get_test_case_id(added_info[:test_suite_id], added_info[:case_name])
             data_set[case_name] =
@@ -72,7 +97,9 @@ module Bucky
                 elapsed_time = added_info[:elapsed_time],
                 is_error = 0,
                 job_id = $job_id,
-                round = $round
+                round = $round,
+                skip_flag = false,
+                skip_reason = nil
               ]
           end
 
@@ -80,7 +107,7 @@ module Bucky
           data_set_ary = data_set.map { |_, v| v }
 
           # Table colomn
-          column_name_ary = %i[id test_case_id error_title error_message elapsed_time is_error job_id round]
+          column_name_ary = %i[id test_case_id error_title error_message elapsed_time is_error job_id round skip_flag skip_reason]
           {
             column: column_name_ary,
             data_set: data_set_ary

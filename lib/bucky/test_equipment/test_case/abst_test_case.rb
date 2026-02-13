@@ -30,7 +30,8 @@ module Bucky
             test_class_name: self.class.name,
             cases_count: result.run_count,
             success_count: result.pass_count,
-            failure_count: result.run_count - result.pass_count
+            failure_count: result.run_count - result.pass_count - result.omission_count,
+            skip_count: result.omission_count
           }.to_json)
         end
 
