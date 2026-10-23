@@ -11,7 +11,7 @@ cases:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
       - proc: open index
         exec:
           operate: click
@@ -29,7 +29,7 @@ cases:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
       - proc: open index
         exec:
           operate: click
@@ -46,7 +46,7 @@ cases:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
       - proc: check UserAgent(OS)
         exec:
           verify: assert_contained_text
@@ -60,7 +60,7 @@ cases:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
       - proc: index
         exec:
           operate: click
@@ -74,7 +74,7 @@ cases:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
       - proc: index
         exec:
           operate: click
@@ -89,7 +89,7 @@ cases:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
       - proc: index
         exec:
           operate: click_single_element
@@ -101,7 +101,7 @@ cases:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
       - proc: index
         exec:
           operate: click_multiple_element
@@ -113,7 +113,7 @@ cases:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
       - proc: index
         exec:
           verify: click_single_element
@@ -125,7 +125,7 @@ cases:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
       - proc: index
         exec:
           verify: click_multiple_element
