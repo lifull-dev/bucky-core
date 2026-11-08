@@ -3,7 +3,6 @@
 
 # CI
 .codeclimate.yml
-.circleci
 .rubocop*
 
 # Docker

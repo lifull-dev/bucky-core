@@ -7,7 +7,7 @@ cases:
   - case_name: pc_link_1
     desc: pc linkstatus test 1
     urls:
-      - http://bucky.net
+      - http://web
   - case_name: pc_link_2
     desc: pc linkstatus test 2
     urls:

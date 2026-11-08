@@ -11,7 +11,7 @@ cases:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
       - proc: check UserAgent(DeviceName)
         exec:
           verify: assert_contained_text

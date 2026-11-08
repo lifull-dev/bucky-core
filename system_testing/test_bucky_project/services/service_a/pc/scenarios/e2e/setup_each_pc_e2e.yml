@@ -8,7 +8,7 @@ setup_each:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
 cases:
   - case_name: setup_each_pc_e2e_1
     func: setup each pc e2e 1 func

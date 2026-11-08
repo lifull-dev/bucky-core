@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit_test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: ruby/setup-ruby@v1.334.0
+        with:
+          ruby-version: '3.2.0'
+      - name: Install dependencies
+        run: |
+          bundle config set --local path vendor/bundle
+          bundle install --jobs 4 --retry 3
+      - name: Run RSpec
+        run: |
+          mkdir -p test-results/rspec
+          bundle exec rspec --format progress --format RspecJunitFormatter --out test-results/rspec/results.xml
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: rspec-results
+          path: |
+            test-results
+            coverage
+          if-no-files-found: ignore
+
+  static_code_analysis:
+    name: Static code analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: ruby/setup-ruby@v1.334.0
+        with:
+          ruby-version: '3.2.0'
+      - name: Install dependencies
+        run: |
+          bundle config set --local path vendor/bundle
+          bundle install --jobs 4 --retry 3
+      - name: Run RuboCop on changed Ruby files
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            base_sha="$PR_BASE_SHA"
+          else
+            git fetch --no-tags origin master
+            base_sha="$(git merge-base origin/master HEAD)"
+          fi
+
+          mapfile -t ruby_files < <(git diff --name-only "$base_sha...HEAD" -- '*.rb')
+          if ((${#ruby_files[@]} == 0)); then
+            echo "No changed Ruby files to lint."
+            exit 0
+          fi
+
+          bundle exec rubocop -f html --out report.html "${ruby_files[@]}"
+      - name: Upload RuboCop report
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: rubocop-report
+          path: report.html
+          if-no-files-found: ignore
+
+  system_test:
+    name: System tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Start system test services
+        run: docker compose -f docker-compose.system-test.yml up -d --build
+      - name: Wait for the test site
+        run: |
+          for attempt in {1..30}; do
+            if docker exec bucky-chrome curl --fail --silent --show-error http://web/ >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs bucky.net
+          exit 1
+      - name: Run Bats tests
+        shell: bash
+        run: |
+          while IFS= read -r -d '' test_file; do
+            docker exec bucky-core bats --print-output-on-failure "/bucky-core/${test_file}"
+          done < <(find system_testing/testing_code -type f -name '*.bats' -print0)
+      - name: Collect system test diagnostics
+        if: failure()
+        run: |
+          docker ps -a
+          docker exec bucky-chrome getent hosts web || true
+          docker exec bucky-chrome curl --verbose --max-time 5 http://web/ || true
+          docker logs bucky.net || true
+      - name: Stop system test services
+        if: always()
+        run: docker compose -f docker-compose.system-test.yml down

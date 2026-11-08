@@ -7,4 +7,4 @@ cases:
   - case_name: sp_link_1
     desc: sp linkstatus test 1
     urls:
-      - http://bucky.net
+      - http://web

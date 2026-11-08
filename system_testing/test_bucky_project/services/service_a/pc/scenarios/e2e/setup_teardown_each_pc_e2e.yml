@@ -8,13 +8,13 @@ setup_each:
       - proc: open index
         exec:
           operate: go
-          url: http://bucky.net
+          url: http://web
 teardown_each:
     procs:
       - proc: open test_page.html
         exec:
           operate: go
-          url: http://bucky.net/test_page.html
+          url: http://web/test_page.html
 
 cases:
   - case_name: setup_teardown_each_pc_e2e_1

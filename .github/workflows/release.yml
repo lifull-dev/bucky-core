@@ -1,0 +1,96 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish_gem:
+    name: Publish RubyGem
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: ruby/setup-ruby@v1.334.0
+        with:
+          ruby-version: '3.2.0'
+      - name: Set release version on master
+        env:
+          VERSION: ${{ github.ref_name }}
+        run: |
+          if [[ ! "$VERSION" =~ ^v[0-9]+(\.[0-9]+){2}$ ]]; then
+            echo "Release tag must have the form vX.Y.Z: $VERSION" >&2
+            exit 1
+          fi
+          VERSION="${VERSION#v}"
+          export VERSION
+
+          git fetch origin master
+          git checkout -B master origin/master
+          ruby <<'RUBY'
+          path = 'lib/bucky/version.rb'
+          version = ENV.fetch('VERSION')
+          source = File.read(path)
+          updated = source.sub(/VERSION = '[^']+'/) { "VERSION = '#{version}'" }
+          abort "Could not update version in #{path}" if updated == source && !source.include?("VERSION = '#{version}'")
+          File.write(path, updated)
+          RUBY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- lib/bucky/version.rb; then
+            git add lib/bucky/version.rb
+            git commit -m "Version $VERSION"
+          fi
+
+      - name: Build and publish gem
+        env:
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+        run: |
+          mkdir -p "$HOME/.gem"
+          printf -- "---\n:rubygems_api_key: %s\n" "$RUBYGEMS_API_KEY" > "$HOME/.gem/credentials"
+          chmod 0600 "$HOME/.gem/credentials"
+          trap 'rm -f "$HOME/.gem/credentials"' EXIT
+          gem build bucky-core.gemspec
+          gem push "bucky-core-${GITHUB_REF_NAME#v}.gem"
+      - name: Push version update to master
+        run: git push origin master
+
+  publish_docker:
+    name: Publish Docker image
+    needs: publish_gem
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_REPO: lifullsetg/bucky-core
+      VERSION: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Build Docker image
+        run: |
+          VERSION="${VERSION#v}"
+          docker build -t "$DOCKER_REPO:$VERSION" .
+          docker tag "$DOCKER_REPO:$VERSION" "$DOCKER_REPO:latest"
+      - name: Log in to Docker Hub
+        env:
+          DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        run: echo "$DOCKER_HUB_TOKEN" | docker login --username "$DOCKER_HUB_USER" --password-stdin
+      - name: Push Docker images
+        run: |
+          VERSION="${VERSION#v}"
+          docker push "$DOCKER_REPO:$VERSION"
+          docker push "$DOCKER_REPO:latest"
+      - name: Log out from Docker Hub
+        if: always()
+        run: docker logout
